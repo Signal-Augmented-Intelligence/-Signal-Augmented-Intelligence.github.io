@@ -23,7 +23,7 @@ excerpt: "Members and alumni of SAI Lab, Hanshin University."
       <p class="person-name">{{ p.name }}{% if p.name_ko != "" %} <span lang="ko">| {{ p.name_ko }}</span>{% endif %}</p>
       <p class="person-role">{{ p.role }}</p>
       {% if p.interests != "" %}<p class="person-interests">{{ p.interests }}</p>{% endif %}
-      {% if p.url != "" %}<p class="person-links"><a href="{{ p.url }}">Website</a></p>{% endif %}
+      {% if p.profile or p.url != "" %}<p class="person-links">{% if p.profile %}<a href="{{ p.profile | relative_url }}">Profile</a>{% endif %}{% if p.profile and p.url != "" %} · {% endif %}{% if p.url != "" %}<a href="{{ p.url }}">Website</a>{% endif %}</p>{% endif %}
     </li>
   {% endfor %}
   </ul>

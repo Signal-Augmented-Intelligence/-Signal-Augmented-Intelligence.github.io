@@ -1,0 +1,16 @@
+---
+title: "Research"
+permalink: /research/
+excerpt: "Research themes at SAI Lab, Hanshin University."
+---
+{% for theme in site.data.research %}
+<section id="{{ theme.slug }}">
+  <h2>{{ theme.title }}</h2>
+  <p>{{ theme.summary }}</p>
+  <ul class="related-publications">
+  {% for url in theme.publications %}{% assign pub = site.publications | where: 'url', url | first %}
+    <li><a href="{{ pub.url | relative_url }}">{{ pub.title }}</a> <span class="publication-note">{{ pub.typeLabel }}, {{ pub.year }}</span></li>
+  {% endfor %}
+  </ul>
+</section>
+{% endfor %}

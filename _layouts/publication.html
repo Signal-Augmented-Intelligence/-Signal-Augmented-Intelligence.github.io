@@ -1,0 +1,14 @@
+---
+layout: archive
+---
+<div class="publication-meta">
+{% if page.title_ko %}<p class="publication-title-ko" lang="ko">{{ page.title_ko }}</p>{% endif %}
+<p>{{ page.authors | join: ', ' }}</p>
+<p><em>{{ page.venue }}</em></p>
+<p>{{ page.typeLabel }} · {{ page.citation_date }}{% if page.citation_note != empty %} · {{ page.citation_note }}{% endif %}</p>
+{% if page.resources %}
+<p class="publication-resources">{% for resource in page.resources %}<a href="{{ resource.url }}">{{ resource.label }}</a>{% unless forloop.last %}<span aria-hidden="true"> · </span>{% endunless %}{% endfor %}</p>
+{% endif %}
+</div>
+<div class="publication-description">{{ content }}</div>
+<p><a href="{{ '/publications/' | relative_url }}">All publications</a></p>

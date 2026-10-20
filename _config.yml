@@ -1,0 +1,87 @@
+# SAI Lab site — local review draft.
+# Organization: Signal-Augmented-Intelligence. Repository not created yet; stays draft until approved.
+locale: en-US
+site_theme: default
+title: "SAI Lab"
+title_separator: "·"
+name: "SAI Lab"
+description: "SAI Lab (Signal Augmented Intelligence) at Hanshin University. Research on speech recognition, acoustic signal processing, and language-model applications."
+url: "https://signal-augmented-intelligence.github.io"
+baseurl: ""
+repository: "Signal-Augmented-Intelligence/Signal-Augmented-Intelligence.github.io"
+social:
+  type: Organization
+  name: "SAI Lab"
+author:
+  name: "SAI Lab"
+lab:
+  name: "SAI Lab"
+  full_name: "Signal Augmented Intelligence"
+  institution: "Hanshin University"
+  advisor: "Prof. Seon Man Kim"
+draft: true
+publication_category:
+  journal:
+    title: "Journal articles"
+  paper:
+    title: "Conference papers"
+  poster:
+    title: "Conference posters"
+breadcrumbs: false
+future: true
+read_more: disabled
+atom_feed:
+  hide: true
+analytics:
+  provider: false
+include:
+  - _pages
+exclude:
+  - README.md
+  - REVIEW.md
+  - DESIGN_NOTES.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+  - .github
+  - .bundle
+  - vendor
+  - node_modules
+  - scripts
+  - assets/js/_main.js
+  - assets/js/plugins
+encoding: utf-8
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  auto_ids: true
+  hard_wrap: false
+collections:
+  publications:
+    output: true
+    permalink: /publications/:path/
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: archive
+      author_profile: true
+  - scope:
+      path: ""
+      type: publications
+    values:
+      layout: publication
+      author_profile: true
+sass:
+  sass_dir: _sass
+  style: compressed
+timezone: Asia/Seoul
+plugins:
+  - jekyll-sitemap
+  - jekyll-redirect-from
+compress_html:
+  clippings: all
+  ignore:
+    envs: development

@@ -1,0 +1,20 @@
+---
+title: "People"
+permalink: /people/
+excerpt: "Members of SAI Lab, Hanshin University."
+---
+{% for group in site.data.people %}
+<section id="{{ group.slug }}">
+  <h2>{{ group.title }}</h2>
+  <hr>
+  <ul class="people-list">
+  {% for person in group.members %}
+    <li>
+      <h3>{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}</h3>
+      <p>{{ person.role }}{% if person.since %} · Since {{ person.since }}{% endif %}</p>
+      {% if person.interests %}<p class="publication-note">{{ person.interests }}</p>{% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+{% endfor %}

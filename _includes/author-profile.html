@@ -1,0 +1,9 @@
+{% assign lab = site.lab %}
+<div itemscope itemtype="https://schema.org/ResearchOrganization">
+  <div class="author__content author__content--no-avatar">
+    <h3 class="author__name" itemprop="name">{{ lab.name }}</h3>
+    <p class="author__bio" itemprop="alternateName">{{ lab.full_name }}</p>
+    <p class="author__bio" itemprop="parentOrganization">{{ lab.institution }}</p>
+    <p class="author__bio author__advisor">Advisor<br>{{ lab.advisor }}</p>
+  </div>
+</div>

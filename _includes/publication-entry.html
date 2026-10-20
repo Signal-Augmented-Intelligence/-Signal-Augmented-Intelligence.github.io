@@ -1,0 +1,9 @@
+{% assign pub = include.pub %}
+<li>
+  <article class="archive__item publication-entry">
+    <h3 class="archive__item-title"><a href="{{ pub.url | relative_url }}" rel="permalink">{{ pub.title }}</a></h3>
+    <p>{{ pub.authors | join: ', ' }}</p>
+    <p><em>{{ pub.venue }}</em>, {{ pub.citation_date }}.</p>
+    {% if pub.citation_note != empty %}<p class="publication-note">{{ pub.citation_note }}</p>{% endif %}
+  </article>
+</li>

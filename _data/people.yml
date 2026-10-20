@@ -1,6 +1,7 @@
 # Add a person only after they confirm name, role, period, photo and link.
 # id: lowercase-hyphen, never changed (publications and seminars link to it).
 # group: faculty / phd / ms / undergrad / alumni
+# profile: (optional) path of a detail page, e.g. /people/<id>/ — shown as a "Profile" link.
 # photo: file name in images/people/ (3:4, long side 800px, <= 200 KB). Leave empty for a grey placeholder.
 - id: seon-man-kim
   name: "Seon Man Kim"
@@ -12,6 +13,7 @@
   interests: ""
   photo: ""
   url: ""
+  profile: "/people/seon-man-kim/"
   after: ""
 - id: so-yeong-park
   name: "So Yeong Park"

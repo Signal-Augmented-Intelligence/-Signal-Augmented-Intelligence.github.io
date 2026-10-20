@@ -1,13 +1,13 @@
 ---
-year: "2026"
-type: "poster"
-typeLabel: "Poster presentation"
 title: "Inference Parameter Optimization of Qwen3-ASR across Multiple Korean Speech Corpora"
-venue: "Institute of Electronics and Information Engineers Summer Conference · P4-80"
+title_ko: ""
+type: conference-poster
 authors: ["So Yeong Park", "Hyeon Jae Shin", "Seon Man Kim"]
-citation_date: "2026"
-citation_note: ""
-sort_order: 40
+venue: "Institute of Electronics and Information Engineers Summer Conference · P4-80"
+pub_date: "2026"
+status: ""
+award: ""
+links: []
 permalink: "/publications/qwen3-asr-inference/"
 excerpt: "Inference parameter settings for Qwen3-ASR across multiple Korean speech corpora."
 ---

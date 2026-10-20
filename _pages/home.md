@@ -1,27 +1,39 @@
 ---
 title: "SAI Lab"
 permalink: /
-excerpt: "SAI Lab (Signal Augmented Intelligence) at Hanshin University. Research on speech recognition, acoustic signal processing, and language-model applications."
+excerpt: "SAI Lab (Signal Augmented Intelligence) at Hanshin University."
 ---
-SAI Lab (Signal Augmented Intelligence) is a research group at {{ site.lab.institution }}, led by {{ site.lab.advisor }}. Recent work at the lab covers Korean speech recognition, acoustic signal processing for robots, and language models for question answering.
+{% assign lab = site.data.lab %}
+<p class="lab-intro">{{ lab.name }} ({{ lab.full_name }}) is a research group at {{ lab.institution }}, led by {{ lab.advisor }}. Recent work at the lab covers Korean speech recognition, acoustic signal processing for robots, and language models for question answering.</p>
 
-## Research
+<section id="research">
+  <h2>Research</h2>
+  <hr>
+  <ul>
+  {% for theme in site.data.research %}<li><a href="{{ '/research/' | relative_url }}#{{ theme.slug }}">{{ theme.title }}</a></li>
+  {% endfor %}</ul>
+</section>
 
-<ul>
-{% for theme in site.data.research %}<li><a href="{{ '/research/' | relative_url }}#{{ theme.slug }}">{{ theme.title }}</a></li>
-{% endfor %}</ul>
+<section id="news">
+  <h2>News</h2>
+  <hr>
+  {% include news-list.html limit=3 %}
+  <p><a href="{{ '/news/' | relative_url }}">All news</a></p>
+</section>
 
-## News
-
-{% include news-list.html limit=3 %}
-
-[All news]({{ '/news/' | relative_url }})
-
-## Recent publications
-
-{% assign recent = site.publications | sort: 'sort_order' | reverse %}
-<ol class="publication-list">
-{% for pub in recent limit: 3 %}{% include publication-entry.html pub=pub %}{% endfor %}
-</ol>
-
-[All publications]({{ '/publications/' | relative_url }})
+<section id="recent-publications">
+  <h2>Recent Publications</h2>
+  <hr>
+  {% assign recent = site.publications | sort: 'pub_date' | reverse %}
+  <ol class="publication-list">
+  {% for pub in recent limit: 3 %}{% include publication-entry.html pub=pub %}{% endfor %}
+  </ol>
+  <p><a href="{{ '/publications/' | relative_url }}">All publications</a></p>
+</section>
+{% if lab.email != "" or lab.location != "" %}
+<section id="contact">
+  <h2>Contact</h2>
+  <hr>
+  <p>{% if lab.location != "" %}{{ lab.location }}{% endif %}{% if lab.email != "" and lab.location != "" %}<br>{% endif %}{% if lab.email != "" %}<a href="mailto:{{ lab.email }}">{{ lab.email }}</a>{% endif %}</p>
+</section>
+{% endif %}

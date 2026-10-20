@@ -1,20 +1,33 @@
 ---
 title: "People"
 permalink: /people/
-excerpt: "Members of SAI Lab, Hanshin University."
+excerpt: "Members and alumni of SAI Lab, Hanshin University."
 ---
-{% for group in site.data.people %}
-<section id="{{ group.slug }}">
+{% for group in site.data.people_groups %}
+{% assign members = site.data.people | where: 'group', group.id %}
+{% if members.size > 0 %}
+<section id="{{ group.id }}">
   <h2>{{ group.title }}</h2>
   <hr>
-  <ul class="people-list">
-  {% for person in group.members %}
-    <li>
-      <h3>{% if person.url %}<a href="{{ person.url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}</h3>
-      <p>{{ person.role }}{% if person.since %} · Since {{ person.since }}{% endif %}</p>
-      {% if person.interests %}<p class="publication-note">{{ person.interests }}</p>{% endif %}
+  {% if group.id == 'alumni' %}
+  <ul class="alumni-list">
+  {% for p in members %}
+    <li id="{{ p.id }}">{% if p.url != "" %}<a href="{{ p.url }}">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}{% if p.name_ko != "" %} <span lang="ko">| {{ p.name_ko }}</span>{% endif %}{% if p.after != "" %} <span class="publication-note">— {{ p.after }}</span>{% endif %}</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+  <ul class="people-grid">
+  {% for p in members %}
+    <li id="{{ p.id }}">
+      <div class="person-photo">{% if p.photo != "" %}<img src="{{ '/images/people/' | append: p.photo | relative_url }}" alt="{{ p.name }}" width="600" height="800" loading="lazy">{% endif %}</div>
+      <p class="person-name">{{ p.name }}{% if p.name_ko != "" %} <span lang="ko">| {{ p.name_ko }}</span>{% endif %}</p>
+      <p class="person-role">{{ p.role }}</p>
+      {% if p.interests != "" %}<p class="person-interests">{{ p.interests }}</p>{% endif %}
+      {% if p.url != "" %}<p class="person-links"><a href="{{ p.url }}">Website</a></p>{% endif %}
     </li>
   {% endfor %}
   </ul>
+  {% endif %}
 </section>
+{% endif %}
 {% endfor %}

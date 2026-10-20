@@ -1,6 +1,6 @@
+{% assign lab = site.data.lab %}
 <div class="page__footer-copyright">
   {% if site.draft %}<p class="draft-note">Draft for internal review. Not yet approved for publication.</p>{% endif %}
-  &copy; {{ site.time | date: '%Y' }} {{ site.lab.name }}, {{ site.lab.institution }}. Built with
-  <a href="https://jekyllrb.com">Jekyll</a> &amp;
-  <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a>.
+  <p>{{ lab.name }} · {{ lab.full_name }} · {{ lab.institution }}{% if lab.email != "" %} · <a href="mailto:{{ lab.email }}">{{ lab.email }}</a>{% endif %}</p>
+  <p>&copy; {{ site.time | date: '%Y' }} {{ lab.name }}. Built with <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a>.</p>
 </div>

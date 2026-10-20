@@ -1,0 +1,31 @@
+---
+title: "Seminars"
+permalink: /seminars/
+excerpt: "Seminar slides from SAI Lab."
+---
+{% assign org = site.data.lab.github_org %}
+{% assign visible = site.data.seminars | where_exp: 's', 's.access != "hidden"' | sort: 'date' | reverse %}
+{% if visible.size == 0 %}
+<p>No seminars have been posted yet.</p>
+{% else %}
+{% assign terms = visible | group_by: 'term' %}
+<nav class="page-toc" aria-label="On this page"><p>{% for t in terms %}<a href="#{{ t.name | slugify }}">{{ t.name }}</a>{% unless forloop.last %}<span aria-hidden="true"> · </span>{% endunless %}{% endfor %}</p></nav>
+{% for t in terms %}
+<section id="{{ t.name | slugify }}">
+  <h2>{{ t.name }}</h2>
+  <hr>
+  <ol class="seminar-list">
+  {% for s in t.items %}{% assign who = site.data.people | where: 'id', s.presenter | first %}
+    <li class="seminar-entry">
+      <span class="seminar-date">{% include fmt-date.html date=s.date format='%b %-d' %}</span>
+      <div class="seminar-body">
+        <p class="seminar-title">{{ s.title }}</p>
+        <p class="publication-note">{% if who %}<a href="{{ '/people/' | relative_url }}#{{ who.id }}">{{ who.name }}</a>{% else %}{{ s.presenter }}{% endif %} · {{ site.data.seminar_types[s.type] }}</p>
+      </div>
+      <span class="seminar-file">{% if s.access == 'public' %}<a href="https://github.com/{{ org }}/seminars-public/releases/download/{{ s.file }}">PDF</a>{% else %}<a href="https://github.com/{{ org }}/seminars-internal/releases/download/{{ s.file }}" title="Requires SAI Lab GitHub membership">Members only</a>{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ol>
+</section>
+{% endfor %}
+{% endif %}

@@ -1,15 +1,26 @@
-# Publish a person only after they confirm name, role, period and any link.
-# Co-authors of lab publications are NOT listed here until they confirm membership and consent.
-- slug: faculty
-  title: "Faculty"
-  members:
-    - name: "Seon Man Kim"
-      role: "Advisor"
-- slug: students
-  title: "Students"
-  members:
-    - name: "So Yeong Park"
-      role: "Undergraduate Researcher"
-      since: "Jun 2025"
-      interests: "Korean speech recognition, audio-language understanding and retrieval, reliable evaluation of language models"
-      url: "https://green4849.github.io/"
+# Add a person only after they confirm name, role, period, photo and link.
+# id: lowercase-hyphen, never changed (publications and seminars link to it).
+# group: faculty / phd / ms / undergrad / alumni
+# photo: file name in images/people/ (3:4, long side 800px, <= 200 KB). Leave empty for a grey placeholder.
+- id: seon-man-kim
+  name: "Seon Man Kim"
+  name_ko: "김선만"
+  group: faculty
+  role: "Advisor"
+  since:
+  until:
+  interests: ""
+  photo: ""
+  url: ""
+  after: ""
+- id: so-yeong-park
+  name: "So Yeong Park"
+  name_ko: "박소영"
+  group: undergrad
+  role: "Undergraduate Researcher"
+  since: 2025-06
+  until:
+  interests: "Korean speech recognition, LLM applications"
+  photo: ""
+  url: "https://green4849.github.io/"
+  after: ""

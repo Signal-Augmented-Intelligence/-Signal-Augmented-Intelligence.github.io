@@ -1,0 +1,11 @@
+# People page sections, in display order.
+- id: faculty
+  title: "Faculty"
+- id: phd
+  title: "PhD Students"
+- id: ms
+  title: "MS Students"
+- id: undergrad
+  title: "Undergraduate Researchers"
+- id: alumni
+  title: "Alumni"

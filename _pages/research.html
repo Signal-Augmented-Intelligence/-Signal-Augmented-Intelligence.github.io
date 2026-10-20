@@ -6,10 +6,11 @@ excerpt: "Research themes at SAI Lab, Hanshin University."
 {% for theme in site.data.research %}
 <section id="{{ theme.slug }}">
   <h2>{{ theme.title }}</h2>
+  <hr>
   <p>{{ theme.summary }}</p>
   <ul class="related-publications">
-  {% for url in theme.publications %}{% assign pub = site.publications | where: 'url', url | first %}
-    <li><a href="{{ pub.url | relative_url }}">{{ pub.title }}</a> <span class="publication-note">{{ pub.typeLabel }}, {{ pub.year }}</span></li>
+  {% for url in theme.publications %}{% assign pub = site.publications | where: 'url', url | first %}{% assign type = site.data.publication_types | where: 'id', pub.type | first %}
+    <li><a href="{{ pub.url | relative_url }}">{{ pub.title }}</a> <span class="publication-note">{{ type.label }}, {{ pub.pub_date | slice: 0, 4 }}</span></li>
   {% endfor %}
   </ul>
 </section>

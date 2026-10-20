@@ -1,0 +1,13 @@
+# One entry per seminar. See guideline.md section 6.
+# term: section heading, e.g. "2026 Fall". The PDF lives in a GitHub Release whose tag is the
+#       first part of `file` (e.g. 2026-fall) in seminars-public (access: public) or
+#       seminars-internal (access: members / hidden).
+#
+# - date: 2026-10-21
+#   term: "2026 Fall"
+#   presenter: so-yeong-park        # people.yml id
+#   title: "Decoding parameters for Korean ASR"
+#   type: research                  # research / paper-review / tutorial / invited
+#   access: public                  # public / members / hidden
+#   file: 2026-fall/2026-10-21-park.pdf
+[]

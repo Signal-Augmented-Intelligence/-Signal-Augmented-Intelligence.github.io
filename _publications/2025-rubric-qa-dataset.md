@@ -1,13 +1,13 @@
 ---
-year: "2025"
-type: "poster"
-typeLabel: "Poster presentation"
 title: "Design and Construction of a Rubric-Based Training Dataset for University Academic Regulations"
-venue: "Korean Institute of Smart Media Fall Conference"
+title_ko: ""
+type: conference-poster
 authors: ["So Yeong Park", "Min Jun Kim", "Seon Man Kim"]
-citation_date: "Nov 15, 2025"
-citation_note: "Outstanding Paper Award"
-sort_order: 20
+venue: "Korean Institute of Smart Media Fall Conference"
+pub_date: "2025-11-15"
+status: ""
+award: "Outstanding Paper Award"
+links: []
 permalink: "/publications/rubric-qa-dataset/"
 excerpt: "A rubric-based training dataset for university academic regulations."
 ---

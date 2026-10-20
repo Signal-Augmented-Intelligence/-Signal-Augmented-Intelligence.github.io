@@ -5,7 +5,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 이 문서는 사이트를 **만들고, 고치고, 다음 관리자에게 넘길 때** 기준으로 삼는 문서입니다. 사이트를 맡게 되면 이 문서부터 끝까지 읽어 주세요.
 
 - 작성: 2026-10-20 (박소영)
-- 상태: 설계 확정, 구현 전
+- 상태: 설계 확정, 1차 구현 완료 (공개 전, `draft: true`)
 - 관련 문서: `SAI-Lab-웹사이트-기획안.md` (배경·검토 과정), `SAI-Lab-웹사이트-레퍼런스와-세미나기능.md` (레퍼런스 조사)
 
 ---
@@ -110,8 +110,9 @@ Oct 14   Paper review: …                        Members only
 
 | 파일 | 내용 |
 | --- | --- |
-| `_data/lab.yml` | 랩명(영·국문), 풀네임, 소속, 지도교수, 공식 이메일, 위치, 로고 경로 |
+| `_data/lab.yml` | 랩명(영·국문), 풀네임, 소속, 지도교수, 공식 이메일, 위치, 로고 경로. 이메일·위치·로고는 비워 두면 표시되지 않음 |
 | `_data/people.yml` | 구성원 |
+| `_data/people_groups.yml`, `_data/publication_types.yml`, `_data/seminar_types.yml` | 섹션 순서와 이름표 (자주 바꿀 일 없음) |
 | `_publications/*.md` | 논문 1편당 파일 1개 |
 | `_data/research.yml` | 연구 주제 |
 | `_data/seminars.yml` | 세미나 |
@@ -137,30 +138,37 @@ Oct 14   Paper review: …                        Members only
 ```yaml
 ---
 title: "…"
-title_ko: "…"                  # 국문 제목 있으면
+title_ko: ""                   # 국문 제목 있으면
 type: journal                  # journal / conference-paper / conference-poster / other
-authors: ["So Yeong Park", "Seon Man Kim"]   # 출판된 순서 그대로
+authors: ["So Yeong Park", "Seon Man Kim"]   # 출판된 순서 그대로. people.yml의 name과 같으면 자동 링크
 venue: "…"
-date: "2026-06-19"             # 아는 만큼만: "2026", "2026-08"도 가능
+pub_date: "2026-06-19"         # 아는 만큼만: "2026", "2026-08"도 가능 (키 이름은 date가 아니라 pub_date)
 status: ""                     # 예: "Accepted Aug 25, 2026"
 award: ""                      # 예: "Paper Encouragement Award"
-links:
-  - { label: "DOI", url: "…" }
-  - { label: "Paper", url: "…" }
-figure: ""                     # 대표 그림 (선택)
+links:                         # 없으면 links: []
+  - label: "DOI"
+    url: "https://…"
+permalink: "/publications/짧은이름/"   # 한 번 정하면 바꾸지 않음
+excerpt: "한 문장 요약"
+figure: ""                     # 대표 그림 경로 (선택), figure_alt / figure_caption 함께
 ---
 개요 2–3문장.
 ```
 
+- 정렬은 `pub_date` 최신순입니다. 날짜를 연도까지만 쓴 항목은 같은 해 안에서 날짜가 있는 항목보다 뒤에 놓입니다.
+
 ### seminars.yml
 ```yaml
 - date: 2026-10-21
+  term: "2026 Fall"             # 학기 섹션 제목. 같은 학기는 정확히 같은 글자로
   presenter: so-yeong-park      # people.yml id
   title: "Decoding parameters for Korean ASR"
   type: research                # research / paper-review / tutorial / invited
   access: public                # public / members / hidden
-  file: 2026-fall/2026-10-21-park.pdf
+  file: 2026-fall/2026-10-21-park.pdf   # <Release 태그>/<파일명>.pdf
 ```
+- 사이트는 `file`로 링크를 만듭니다: `https://github.com/Signal-Augmented-Intelligence/<seminars-public 또는 seminars-internal>/releases/download/<file>`
+- 따라서 Release 태그(`2026-fall`)와 첨부 파일 이름이 `file` 값과 **정확히** 같아야 합니다.
 
 ## 6. 세미나 자료 운영
 
@@ -247,7 +255,9 @@ JEKYLL_ENV=production bundle exec jekyll build --strict_front_matter && python3 
 | --- | --- |
 | GitHub 조직 | 생성 완료. 교수님 Owner 초대 확인 필요 |
 | 사이트 저장소 / 세미나 저장소 | 미생성 |
-| 로컬 시안 | `sai-lab-site/` (이 가이드라인 확정 전 구조라 재정리 필요) |
+| 사이트 구조 | 이 가이드라인대로 1차 구현 (단일 컬럼, People 사진 칸, Publications 목차, Seminars, 자동 검사) |
+| 세미나 항목 | 아직 없음 (`_data/seminars.yml`이 비어 있으면 "No seminars have been posted yet." 표시) |
+| 랩 대표색 | 로고 확정 후 링크 색에 반영 (현재는 Academic Pages 기본 링크색) |
 | 로고 | 정비 중 |
 | 연구 주제 분류·소개 문구 | 교수님 확정 필요 |
 | AINC Lab 시절 논문을 SAI Lab 실적으로 실을지 | 교수님 확인 필요 |

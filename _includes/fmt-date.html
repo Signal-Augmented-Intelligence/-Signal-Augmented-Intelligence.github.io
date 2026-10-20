@@ -1,0 +1,3 @@
+{%- assign d = include.date | append: '' -%}
+{%- assign fmt = include.format | default: '%b %-d, %Y' -%}
+{%- if d.size == 4 -%}{{ d }}{%- elsif d.size == 7 -%}{{ d | append: '-01' | date: '%b %Y' }}{%- elsif d.size >= 10 -%}{{ d | date: fmt }}{%- endif -%}

@@ -4,8 +4,8 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 
 이 문서는 사이트를 **만들고, 고치고, 다음 관리자에게 넘길 때** 기준으로 삼는 문서입니다. 사이트를 맡게 되면 이 문서부터 끝까지 읽어 주세요.
 
-- 작성: 2026-10-20 (박소영)
-- 상태: 설계 확정, 1차 구현 완료 (공개 전, `draft: true`)
+- 작성: 2026-10-20 (박소영) · 개정: 2026-10-21 (메뉴 구조, 교수님 페이지, 세미나 업로드)
+- 상태: 2차 구현 (공개 전, `draft: true`)
 - 관련 문서: `SAI-Lab-웹사이트-기획안.md` (배경·검토 과정), `SAI-Lab-웹사이트-레퍼런스와-세미나기능.md` (레퍼런스 조사)
 
 ---
@@ -20,104 +20,122 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | GitHub 조직 | [`Signal-Augmented-Intelligence`](https://github.com/Signal-Augmented-Intelligence) |
 | 사이트 저장소 | `Signal-Augmented-Intelligence/Signal-Augmented-Intelligence.github.io` |
 | 사이트 주소 | `https://signal-augmented-intelligence.github.io/` |
-| 세미나 자료 저장소 | `seminars-public` (공개), `seminars-internal` (비공개) |
-| 기술 | Jekyll + Academic Pages(Minimal Mistakes 계열), GitHub Pages, GitHub Actions |
+| 세미나 PDF | 사이트 저장소 `files/seminars/` |
+| 기술 | Jekyll + Academic Pages(Minimal Mistakes 계열), GitHub Pages, GitHub Actions, 업로드 중계는 Google Apps Script |
 
 ## 2. 소유와 권한
 
 - 조직의 **Owner는 교수님**입니다. 사이트·저장소·주소는 조직 소유이므로 관리자가 바뀌어도 유지됩니다.
-- 현재 관리자도 Owner 권한을 갖고, 졸업·이탈 시 **조직에서 본인만 나가면** 됩니다 (8장 체크리스트).
-- 구성원은 저장소별 **Write** 권한. `main` 브랜치는 직접 수정하지 않고 Pull Request로만 반영합니다.
-- 도메인을 따로 살 경우: 판매처 계정과 결제 수단은 **교수님 명의**. 학생 명의로 사면 졸업 후 갱신이 끊길 수 있습니다.
-- 외부 서비스 계정(Google Drive 등)을 쓰게 되면 그것도 교수님 또는 조직 명의로 만듭니다.
+- **관리자**는 조직 Owner 권한으로 Pull Request를 확인·병합합니다. 졸업·이탈 시 조직에서 본인만 나가면 됩니다 (9장).
+- GitHub을 쓰는 구성원은 저장소 **Write** 권한으로 웹 편집 → Pull Request. `main`은 직접 수정하지 않습니다.
+- GitHub을 쓰지 않는 구성원은 계정 없이 **세미나 업로드 페이지**(`/upload/`)를 씁니다 (6장). 업로드도 Pull Request로만 들어오므로 관리자 확인 전에는 사이트에 반영되지 않습니다.
+- 공용 계정은 만들지 않습니다.
+- 업로드 중계 스크립트, 도메인 등 외부 서비스는 **교수님(또는 랩 공식) 명의**로 만듭니다. 학생 명의로 두면 졸업 후 끊깁니다.
 
 ## 3. 디자인 기준
 
-**기준 디자인은 박소영 개인 사이트([green4849.github.io](https://green4849.github.io/))입니다.** 새 장식을 더하지 말고 이 결을 유지합니다.
+**기준 디자인은 박소영 개인 사이트([green4849.github.io](https://green4849.github.io/))의 글자 결**이고, 메뉴와 하위 페이지 구성은 [KAIST Smart Sound Lab](https://sound.kaist.ac.kr/)을 참고했습니다. 새 장식을 더하지 말고 이 결을 유지합니다.
 
 ### 타이포그래피
 | 요소 | 값 |
 | --- | --- |
-| 글꼴 | Roboto 가변 폰트, 사이트에 로컬 포함 (`assets/fonts/roboto/`) |
+| 글꼴 | Roboto 가변 폰트(`assets/fonts/roboto/`) + 한글은 Pretendard 가변 폰트(`assets/fonts/pretendard/`, 필요한 글자 묶음만 내려받는 방식). 둘 다 사이트에 포함 |
 | 본문 | 16px, weight 320, line-height 1.5 |
 | 콘텐츠 최대 폭 | 1000px, **단일 컬럼** (좌측 사이드바 없음) |
 | 페이지 제목 | 2rem, weight 400 |
-| 섹션 제목 | 1.25rem, weight 400, 아래 구분선 |
+| 섹션 제목 | 1.25rem, weight 400, 아래 구분선(왼쪽 끝에 작은 눈금) |
 | 항목 제목 (논문·세미나) | 1rem, weight 500 |
-| 메타데이터 (날짜·종류·수상) | 0.875rem |
-| 한글 | Roboto에 한글이 없어 시스템 글꼴로 표시됨. 국문이 많아지면 한글 글꼴(예: Pretendard 로컬 포함) 추가 검토 |
+| 메타데이터 (날짜·종류·수상) | 0.875rem, 날짜 숫자는 고정폭 |
 
-### 색과 브랜딩
-- 랩 대표색(로고의 파란색 계열)은 **링크와 현재 메뉴 표시에만** 씁니다. 배경이나 면을 채우는 데 쓰지 않습니다.
+### 신호 모티프
+- 마스트헤드의 랩명 왼쪽에 **이산 샘플(stem) 표시 하나**만 둡니다 (`_includes/signal-mark.html`, 단색 SVG). 로고 파일이 정해지면(`_data/lab.yml`의 `logo`) 그 자리를 로고가 대신합니다.
+- 그 밖에는 섹션 구분선의 작은 눈금, 날짜 숫자 정렬 정도로만 표현합니다. 파형 그림, 그라데이션, 움직임은 쓰지 않습니다.
+
+### 색
+- 대표색은 **링크·현재 메뉴·현재 탭 표시에만** 씁니다. 배경이나 면을 채우는 데 쓰지 않습니다.
 - 라이트·다크 모드 모두 본문 대비 4.5:1 이상.
-- 로고: 확정된 공식 파일만 사용. 마스트헤드 왼쪽 작은 워드마크와 파비콘. 확정 전에는 텍스트 "SAI Lab"만.
 
 ### 쓰지 않는 것
 큰 그라데이션 첫 화면, 이미지 슬라이드, 카드 레이아웃 남발, 둥근 태그 배지, 과한 버튼, 출처 없는 이미지·아이콘, 애니메이션.
 
-### 접근성
-키보드 포커스 표시, 모든 이미지 대체 텍스트, 움직임 줄이기 설정 존중.
+### 언어
+- **영어 기본 + 국문 병기.** 메뉴·섹션 제목·날짜·이름표는 영어.
+- 사람 이름은 `So Yeong Park | 박소영`.
+- 원래 국문인 고유명사(과제명, 학회명, 위원회명)와 영어로 옮기면 길거나 어색한 제목은 **국문 그대로** 씁니다.
+
+### 화면 범위
+지금은 **데스크톱 웹 기준**으로 설계·확인합니다. 모바일 배치는 나중에 다룹니다 (11장).
 
 ## 4. 메뉴와 페이지
 
-메뉴: **Home · Research · People · Publications · Seminars · News** (+ 공식 연락처가 정해지면 Contact)
+상위 메뉴: **Members · Research · Seminars** (+ `_data/lab.yml`에 공식 연락처가 들어가면 **Contact**). News는 상위 메뉴에 두지 않고 푸터 바로가기에만 둡니다.
+
+| 주소 | 페이지 | 파일 |
+| --- | --- | --- |
+| `/` | Home | `_pages/home.md` |
+| `/members/professor/` | Members ▸ Professor (`/members/`도 여기로) | `_pages/members-professor.html` + `_data/professor.yml` |
+| `/members/our-team/` | Members ▸ Our Team | `_pages/members-team.html` + `_data/people.yml` |
+| `/members/alumni/` | Members ▸ Alumni | `_pages/members-alumni.html` |
+| `/research/` | Research ▸ Areas | `_pages/research.html` + `_research/*.md` |
+| `/research/<주제>/` | 주제 상세 | `_layouts/research-area.html` |
+| `/research/publications/` | Research ▸ Publications (`/publications/`도 여기로) | `_pages/publications.html` |
+| `/publications/<논문>/` | 논문 상세 | `_publications/*.md` |
+| `/seminars/` | Seminars | `_pages/seminars.html` + `_data/seminars.yml` |
+| `/news/` | News | `_pages/news.html` + `_data/news.yml` |
+| `/contact/` | Contact | `_pages/contact.html` |
+| `/upload/` | 세미나 업로드 (메뉴·검색 노출 없음) | `_pages/upload.html` |
+
+예전 주소 `/people/`, `/people/seon-man-kim/`은 새 주소로 자동 이동합니다.
 
 ### Home
-랩명(+로고) → 소개 2–3문장 → 연구 주제 목록 → 최근 소식 3건 → 최근 논문 3편 → 연락처 한 줄
+랩명 → 소개 2–3문장 → **Highlights** (세미나 중 `highlight: true`이고 PDF가 있는 것, 최신 5건, `View all →`) → Research Areas → Recent Publications 3편. Highlights가 하나도 없으면 그 섹션은 나오지 않습니다.
 
-### Research
-주제마다: 제목 / 설명 2–3문장 / 대표 그림 1개(캡션에 출처 논문과 조건) / 관련 논문 목록. 주제 분류와 명칭은 교수님 확정.
+### Members ▸ Professor
+사진(선택) · 이름 · 직위 · 소속 · 연락처 → Biography(입력 시) → Education & Career → Research Areas → Courses Taught(입력 시) → Publications → Intellectual Property → Research Projects → Academic Services(연도별, 날짜 없는 항목은 Other) → Student Awards. 비어 있는 항목은 표시되지 않습니다.
 
-### People (참고: [KAIST MAC Lab People](https://mac.kaist.ac.kr/people.html))
-- 섹션 순서: **Faculty → PhD Students → MS Students → Undergraduate Researchers → Alumni**
-- 현재 구성원 항목: **사진 칸** / 이름 `English | 한글` / 역할 / (선택) 관심 분야 한 줄 / (선택) 개인 사이트 링크
-- **사진 칸 규칙**
-  - 비율 3:4 세로, 모든 사람 같은 크기. 데스크톱 4열, 태블릿 3열, 모바일 2열 그리드
-  - 파일: `images/people/<id>.jpg`, 600×800px 이상으로 받아 긴 변 800px로 줄여 저장, 200KB 이하
-  - 사진이 없는 사람은 **같은 크기의 옅은 회색 빈 칸**만 둡니다 (아이콘·이니셜·임의 이미지 넣지 않음) → 그리드 줄이 맞음
-  - 사진은 본인이 제공하고 게시에 동의한 것만
-- Alumni: 사진 없이 한 줄. `이름 | 한글 — MS 2026 → 진로` 형식, 진로는 본인 동의 시에만
-- 한 사람은 한 섹션에만 (학위 과정이 바뀌면 이동)
-- 이메일은 공개하지 않는 것이 기본
+### Members ▸ Our Team
+- 섹션: **Ph.D. Students → M.S. Students → Undergraduate Researchers** (사람이 있는 섹션만 표시)
+- 한 사람: **사진 칸 + 옆에 이름 `English | 한글` / 역할 / 한 줄 소개 / (선택) Website 링크**. 개인 페이지는 따로 없습니다.
+- 사진 칸: 3:4 세로, 모두 같은 크기. 사진이 없으면 같은 크기 옅은 회색 칸만 둡니다 (아이콘·이니셜 넣지 않음).
+- 파일: `images/people/<id>.jpg`, 긴 변 800px, 200KB 이하. 본인이 제공하고 게시에 동의한 것만.
 
-### Publications (참고: [NAIST NLP Publications](https://nlp.naist.jp/en/publications/))
-- 섹션: **Journal Articles → Conference Papers → Conference Posters → Others** (국내/국제 학회는 나누지 않음)
-- 페이지 상단에 섹션 목차, 섹션 안은 최신순
-- 항목: 제목(상세 페이지 링크) / 저자(구성원 이름은 People로 자동 링크, 굵게 하지 않음) / 학회·저널, 날짜 / 상태·수상은 메타데이터 줄에 글자로
-- 링크는 한 줄로: `DOI · Paper · Code · Slides` — 실제로 있는 것만
-- 상세 페이지 구조(개인 사이트에서 확정한 형식): 서지 → 원문·기록 링크 → 대표 그림 1개 → 개요 2–3문장 → 관련 발표·수상. 방법·실험표·개인 기여 섹션은 넣지 않음
+### Members ▸ Alumni
+사진 없이 한 줄: `이름 | 한글 — 현재 소속` (진로는 본인 동의 시에만).
 
-### Seminars (PDF 자료실)
-- 녹화·초록·상세 페이지 없이 **발표 PDF를 내려받는 용도**로만 사용
-- 학기별 섹션(`2026 Fall`), 페이지 상단에 학기 목차, 학기 안은 최신순
-- 항목 형식 (Publications와 같은 결):
-```
-Oct 21   Decoding parameters for Korean ASR              PDF
-         So Yeong Park · Research meeting
-Oct 14   Paper review: …                        Members only
-         …
-```
-  - 날짜: 메타데이터 크기, 고정 폭 / 제목: 1rem·500 / 발표자·종류: 0.875rem / 오른쪽: `PDF` 또는 `Members only`
-  - 모바일: 날짜 → 제목 → 발표자·종류 → PDF 세로 배치
-- 종류: Research meeting · Paper review · Tutorial · Invited talk
+### Research ▸ Areas / 주제 상세
+- 목록: 주제마다 제목 + 한 줄 설명 + `Read more →`
+- 상세: `← Back to Research` → 제목 → 대표 그림(선택) → Overview → Related Publications → Related Seminars(세미나의 `topics`에 이 주제가 있는 것)
+- 주제 분류와 명칭은 교수님 확정 전 임시입니다.
+
+### Research ▸ Publications
+- 섹션: **Journal Articles → Conference Papers → Conference Posters → Others** (국내/국제 학회는 나누지 않음), 상단 목차, 섹션 안 최신순
+- 항목: 제목(상세 링크) / 저자(구성원 이름은 Members로 자동 링크, 굵게 하지 않음) / 학회·저널, 날짜 / 상태·수상 / 링크 한 줄
+- 상세 페이지: 서지 → 원문·기록 링크 → 대표 그림 1개 → 개요 2–3문장 → 관련 발표·수상
+
+### Seminars
+- 학기별 섹션, 상단 학기 목차, 학기 안 최신순
+- 항목: 날짜 / **제목**(PDF가 있으면 제목도 PDF 링크) / 발표자 · 종류 / 개요 한 문장 / 오른쪽 `PDF`
+- 학기는 날짜로 자동 계산: 3–8월 Spring, 9–12월 Fall, 1–2월 전년도 Winter (`term`으로 직접 지정 가능)
 
 ### News
-날짜(작게) + 한 문장 + 근거 링크. 수상·게재·발표·행사. 대학 뉴스보다 외부 언론 링크 우선.
+날짜 + 한 문장 + 근거 링크. 대학 뉴스보다 외부 언론 링크 우선.
 
 ## 5. 데이터 파일 (내용은 여기서만 고침)
 
-템플릿(`_layouts/`, `_includes/`)은 디자인을 바꿀 때만 수정합니다. 내용 수정은 아래 파일에서만 합니다.
+템플릿(`_layouts/`, `_includes/`, `_pages/`)은 디자인·구조를 바꿀 때만 수정합니다.
 
 | 파일 | 내용 |
 | --- | --- |
-| `_data/lab.yml` | 랩명(영·국문), 풀네임, 소속, 지도교수, 공식 이메일, 위치, 로고 경로. 이메일·위치·로고는 비워 두면 표시되지 않음 |
-| `_data/people.yml` | 구성원 |
-| `_data/people_groups.yml`, `_data/publication_types.yml`, `_data/seminar_types.yml` | 섹션 순서와 이름표 (자주 바꿀 일 없음) |
+| `_data/lab.yml` | 랩명, 소속, 지도교수, 공식 이메일·위치(비우면 표시 안 함, Contact 메뉴도 숨김), 로고, 업로드 중계 주소 |
+| `_data/professor.yml` | 교수님 페이지 전체. 출처와 확인일은 파일 맨 위 주석에 |
+| `_data/people.yml` | 구성원 (교수님 포함 — 논문 저자 자동 링크용) |
+| `_data/people_groups.yml`, `_data/publication_types.yml`, `_data/seminar_types.yml` | 섹션 순서와 이름표 |
+| `_data/navigation.yml` | 상위 메뉴, Members·Research 탭, 푸터 바로가기 |
+| `_research/*.md` | 연구 주제 1개당 파일 1개 |
 | `_publications/*.md` | 논문 1편당 파일 1개 |
-| `_data/research.yml` | 연구 주제 |
 | `_data/seminars.yml` | 세미나 |
+| `files/seminars/` | 세미나 PDF |
 | `_data/news.yml` | 소식 |
-| `_data/links.yml` | 수상·언론·행사 근거 링크 목록 |
 
 ### people.yml
 ```yaml
@@ -128,11 +146,25 @@ Oct 14   Paper review: …                        Members only
   role: "Undergraduate Researcher"
   since: 2025-06
   until:                       # 졸업·이탈 시 입력하고 group을 alumni로
-  interests: "Korean speech recognition, LLM applications"
-  photo: so-yeong-park.jpg     # 없으면 비워 둠 → 회색 빈 칸
+  bio: "Korean speech recognition, LLM applications"   # 사진 옆 한 줄 소개 (본인 작성)
+  photo: so-yeong-park.jpg     # 없으면 비워 둠 → 회색 칸
   url: "https://green4849.github.io/"
   after: ""                    # alumni 진로 (동의 시)
 ```
+
+### _research/짧은이름.md
+```yaml
+---
+title: "Korean speech recognition"
+order: 2                       # Research 목록 순서
+summary: "한 줄 설명"
+figure: ""                     # 대표 그림 (선택), figure_alt / figure_caption 함께
+publications:                  # 관련 논문 permalink
+  - /publications/qwen3-asr-evaluation/
+---
+Overview 본문 (비우면 summary를 씀)
+```
+- 파일 이름(확장자 제외)이 주제 id입니다. 세미나 `topics`에 이 id를 쓰면 주제 상세에 자동으로 붙습니다.
 
 ### _publications/YYYY-짧은이름.md
 ```yaml
@@ -142,126 +174,126 @@ title_ko: ""                   # 국문 제목 있으면
 type: journal                  # journal / conference-paper / conference-poster / other
 authors: ["So Yeong Park", "Seon Man Kim"]   # 출판된 순서 그대로. people.yml의 name과 같으면 자동 링크
 venue: "…"
-pub_date: "2026-06-19"         # 아는 만큼만: "2026", "2026-08"도 가능 (키 이름은 date가 아니라 pub_date)
+pub_date: "2026-06-19"         # 아는 만큼만: "2026", "2026-08"도 가능
 status: ""                     # 예: "Accepted Aug 25, 2026"
-award: ""                      # 예: "Paper Encouragement Award"
-links:                         # 없으면 links: []
-  - label: "DOI"
-    url: "https://…"
+award: ""
+links: []                      # - label: "DOI"  /  url: "https://…"
 permalink: "/publications/짧은이름/"   # 한 번 정하면 바꾸지 않음
 excerpt: "한 문장 요약"
-figure: ""                     # 대표 그림 경로 (선택), figure_alt / figure_caption 함께
 ---
 개요 2–3문장.
 ```
 
-- 정렬은 `pub_date` 최신순입니다. 날짜를 연도까지만 쓴 항목은 같은 해 안에서 날짜가 있는 항목보다 뒤에 놓입니다.
-
 ### seminars.yml
 ```yaml
-- date: 2026-10-21
-  term: "2026 Fall"             # 학기 섹션 제목. 같은 학기는 정확히 같은 글자로
-  presenter: so-yeong-park      # people.yml id
+- date: 2026-10-21                     # 따옴표 없이 YYYY-MM-DD
+  presenter: so-yeong-park             # people.yml id (외부 발표자는 이름을 그대로 써도 됨)
   title: "Decoding parameters for Korean ASR"
-  type: research                # research / paper-review / tutorial / invited
-  access: public                # public / members / hidden
-  file: 2026-fall/2026-10-21-park.pdf   # <Release 태그>/<파일명>.pdf
+  summary: "한 문장 개요"
+  type: research                       # 선택: research / paper-review / tutorial / invited
+  topics: [korean-asr]                 # 선택: _research/ 파일 이름
+  file: "2026-10-21-so-yeong-park.pdf" # 선택: files/seminars/ 안의 PDF. 비우면 제목만 표시
+  highlight: false                     # 관리자가 지정. true면 Home Highlights에 표시
 ```
-- 사이트는 `file`로 링크를 만듭니다: `https://github.com/Signal-Augmented-Intelligence/<seminars-public 또는 seminars-internal>/releases/download/<file>`
-- 따라서 Release 태그(`2026-fall`)와 첨부 파일 이름이 `file` 값과 **정확히** 같아야 합니다.
+- **필수는 날짜·발표자·제목·개요 한 문장**뿐입니다. 나머지는 없어도 됩니다.
+- 올리는 기준은 **올린다 / 안 올린다** 하나입니다. PDF가 있으면 링크, 없으면 제목만 나옵니다.
+- `highlight`는 발표자가 아니라 관리자(또는 교수님)가 정합니다. PDF가 있는 항목만 Home에 나옵니다.
 
-## 6. 세미나 자료 운영
+## 6. 세미나 자료 올리기
 
-### 공개 범위 — 항목마다 `access`로 직접 지정
-| 값 | 사이트 표시 | 파일 위치 |
-| --- | --- | --- |
-| `public` | 제목 + `PDF` 링크 | `seminars-public` 저장소의 학기 Release |
-| `members` | 제목 + `Members only` (조직 구성원이 GitHub 로그인 시 열림) | `seminars-internal` 저장소의 학기 Release |
-| `hidden` | 사이트에 표시 안 함 | `seminars-internal` |
+### 방법 1 — 업로드 페이지 (GitHub 계정 없이)
+1. 사이트의 `/upload/` 주소를 엽니다 (랩 안에서만 공유).
+2. 업로드 코드, 발표일, 발표자, 제목, 개요 한 문장, PDF(선택, 20 MB 이하)를 넣고 제출합니다.
+3. 자동으로 Pull Request가 만들어집니다. 관리자가 내용을 확인하고 필요하면 `highlight: true`로 바꾼 뒤 병합합니다.
+4. 병합 후 몇 분 뒤 Seminars 페이지에 반영됩니다. 잘못 올렸으면 관리자가 Pull Request를 닫으면 끝입니다.
 
-- 미발표 연구 결과, 다른 사람 논문의 그림을 옮긴 논문 리뷰 → `members` 또는 `hidden`
-- 애매하면 `members`로 시작. **한 번 공개한 파일은 나중에 비공개로 바꿔도 이미 내려받은 사본은 회수할 수 없습니다.**
-- `members` 항목의 제목은 공개 사이트에 보입니다. 제목도 숨겨야 하면 `hidden`.
+### 방법 2 — GitHub 웹 편집
+`files/seminars/`에 PDF 업로드("Add file → Upload files") → `_data/seminars.yml`에 한 항목 추가 → Pull Request.
 
-### 왜 Releases에 두나
-- 사이트 저장소에 PDF를 쌓으면 GitHub Pages 한도(사이트 1 GB, 파일당 100 MB)에 걸립니다.
-- Release 첨부파일은 파일당 2 GiB 미만이면 되고 총량·대역폭 제한이 없습니다 ([GitHub Docs — About releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)).
-- 조직 소유라 관리자가 졸업해도 링크가 유지됩니다.
-- 학기마다 Release 하나 (태그 예: `2026-fall`).
+### 업로드 중계 설정 (관리자, 처음 한 번)
+업로드 페이지는 정적 사이트라 파일을 직접 받을 수 없어서, Google Apps Script가 받아 Pull Request로 바꿔 줍니다. 코드는 `tools/upload-relay/Code.gs`.
 
-### 발표자가 올리는 순서
-1. PPT를 **PDF로 내보내기** (사이트에는 PDF만 올림)
-2. PDF 압축 (권장 20 MB 이하)
-3. 공개 범위에 맞는 저장소의 해당 학기 Release에 첨부 (없으면 관리자에게 요청)
-4. `_data/seminars.yml`에 한 항목 추가 → Pull Request
-5. 관리자 확인 후 병합 → 몇 분 뒤 사이트 반영
+1. **교수님(또는 랩 공식) Google 계정**으로 [script.google.com](https://script.google.com)에서 새 프로젝트를 만들고 `Code.gs` 내용을 붙여 넣습니다.
+2. GitHub에서 **세분화된 토큰(fine-grained token)** 을 만듭니다: 리소스 소유자 `Signal-Augmented-Intelligence`, 저장소는 사이트 저장소 하나만, 권한은 Contents(읽기·쓰기)와 Pull requests(읽기·쓰기)만. 만료일을 정하고 달력에 갱신일을 적어 둡니다.
+3. Apps Script의 프로젝트 설정 → 스크립트 속성에 `UPLOAD_CODE`(랩 안에서 공유할 코드)와 `GITHUB_TOKEN`(2의 토큰)을 넣습니다. **토큰은 사이트 코드나 문서에 절대 적지 않습니다.**
+4. 배포 → 새 배포 → 유형 "웹 앱", 실행 계정 "나", 액세스 "모든 사용자"로 배포하고 웹 앱 주소를 복사합니다.
+5. 그 주소를 `_data/lab.yml`의 `upload_endpoint`에 넣고 Pull Request로 반영합니다. 비어 있는 동안 업로드 페이지는 비활성화되어 있습니다.
+6. 업로드 코드를 바꾸려면 3의 `UPLOAD_CODE`만 고치면 됩니다. 토큰이 만료되면 2–3을 다시 합니다.
+
+구현 때 확인할 것: Apps Script가 한 번에 받을 수 있는 크기에 맞춰 업로드 페이지의 20 MB 상한을 조정합니다.
 
 ## 7. 콘텐츠 원칙
 
 1. **확인된 사실만** 싣습니다. 모르는 날짜는 연도까지만, 미확인 정보는 비워 둡니다.
 2. 논문의 **종류와 상태를 섞지 않습니다** (저널 / 학회 논문 / 포스터, 게재 승인 / 게재 / 발표).
 3. 결과 수치를 쓸 때는 **조건을 함께** 씁니다.
-4. **사람 정보는 본인 동의 후** 게시합니다 (이름 표기, 역할, 기간, 사진, 링크, 진로).
+4. **사람 정보는 본인 동의 후** 게시합니다 (이름 표기, 역할, 한 줄 소개, 사진, 링크, 진로).
 5. **동의 기록은 공개 저장소에 두지 않습니다** (비공개 문서에 보관).
-6. 공개 금지: 개인 이메일·전화번호·학번·주민번호, 내부 서버 주소, 비공개 실험 결과, 로그인 정보.
-7. 원고·상장 원본을 올릴 때는 파일 안의 이메일·메타데이터·직인 공개에 대해 당사자 동의를 받습니다.
-8. 근거 링크는 외부 언론 > 학회·기관 기록 > 대학 뉴스 순. 본인 이름이 명시된 기사인지, 행사 보도인지 구분해 기록합니다.
+6. 공개 금지: 개인 이메일·전화번호·학번·주민번호, 내부 서버 주소, 비공개 실험 결과, 로그인 정보, 토큰.
+7. 근거 링크는 외부 언론 > 학회·기관 기록 > 대학 뉴스 순.
+8. 소개 문구는 무엇을 연구하는지만 담담하게 씁니다. 홍보성 문장은 쓰지 않습니다.
 
 ## 8. 수정·배포·점검
 
 ### 일반 수정 (git을 몰라도 가능)
 GitHub 웹에서 데이터 파일 열기 → 연필 아이콘 → 수정 → "Propose changes" → Pull Request → 관리자 승인 → 자동 배포.
 
-### Pull Request 체크리스트
+### Pull Request 확인 (관리자)
 - [ ] 당사자 동의를 받았다
-- [ ] 출처 링크가 있다 / 날짜는 아는 만큼만 썼다
+- [ ] 세미나: 제목과 개요 한 문장이 있다 / Home에 올릴지(`highlight`) 정했다
 - [ ] 개인정보가 없다
-- [ ] 세미나 `access`와 파일 저장소가 일치한다
 
-### 자동 검사 (GitHub Actions)
-빌드, 내부 링크·앵커, 필수 필드, 개인정보 패턴(전화번호·학번·주민번호 형식, 개인 이메일), 세미나 `access`·파일 위치 일치. `_config.yml`의 `draft: true` 동안에는 검색 차단 + 배포 중단.
+### 자동 확인 (GitHub Actions)
+빌드 성공, 내부 링크·앵커, 렌더링된 페이지의 개인정보 패턴(휴대전화·주민번호 형식, 개인 이메일). 데이터 파일 자체는 따로 검사하지 않습니다.
 
-### 로컬 미리보기
-```sh
-bundle install
-bundle exec jekyll serve --host 127.0.0.1
-JEKYLL_ENV=production bundle exec jekyll build --strict_front_matter && python3 scripts/check-site.py
-```
-화면 확인은 데스크톱·모바일 실제 브라우저에서 한 경우에만 "확인 완료"라고 기록합니다.
+### `draft: true` 동안
+배포는 되지만 검색엔진 노출을 막고(`noindex`, robots `Disallow`) 푸터에 내부 검토용 문구가 붙습니다. 공개 승인 후 `_config.yml`에서 `draft: false`로 바꿉니다.
 
-### 정기 점검
-- 학기 초: People 명단, 졸업생 이동, 새 학기 세미나 Release 생성
-- 학회 시즌 후: 논문·수상·소식 반영
-- 연 1회: 깨진 외부 링크, 도메인 갱신(있다면)
+### 확인 방법
+사이트는 GitHub 배포 주소에서 확인합니다. 화면 확인은 실제 브라우저에서 본 경우에만 "확인 완료"라고 기록합니다.
 
 ## 9. 인수인계 체크리스트
 
 **넘기는 사람**
 - [ ] 다음 관리자를 조직 Owner로 초대하고 수락 확인
+- [ ] 업로드 중계(Apps Script)의 소유 계정과 토큰 만료일 전달
 - [ ] 이 문서의 "현재 상태"(10장) 갱신
 - [ ] 진행 중인 Pull Request·미반영 자료 목록 전달
 - [ ] 비공개 동의 기록 위치 전달
-- [ ] 본인 People 항목을 Alumni로 이동
+- [ ] 본인 항목을 `alumni`로 이동
 - [ ] 마지막으로 조직에서 본인 탈퇴 (교수님 Owner 유지 확인 후)
 
 **받는 사람**
-- [ ] 이 문서 정독, 로컬 빌드 한 번 성공
+- [ ] 이 문서 정독
 - [ ] 데이터 파일 수정 → PR → 배포 한 번 직접 해 보기
-- [ ] 세미나 Release 첨부 한 번 해 보기
+- [ ] 업로드 페이지로 테스트 제출 → PR 확인 후 닫기
 
-## 10. 현재 상태와 남은 일 (2026-10-20)
+## 10. 현재 상태와 남은 일 (2026-10-21)
 
 | 항목 | 상태 |
 | --- | --- |
-| GitHub 조직 | 생성 완료. 교수님 Owner 초대 확인 필요 |
-| 사이트 저장소 / 세미나 저장소 | 미생성 |
-| 사이트 구조 | 이 가이드라인대로 1차 구현 (단일 컬럼, People 사진 칸, Publications 목차, Seminars, 자동 검사) |
-| 세미나 항목 | 아직 없음 (`_data/seminars.yml`이 비어 있으면 "No seminars have been posted yet." 표시) |
-| 랩 대표색 | 로고 확정 후 링크 색에 반영 (현재는 Academic Pages 기본 링크색) |
-| 로고 | 정비 중 |
-| 연구 주제 분류·소개 문구 | 교수님 확정 필요 |
-| AINC Lab 시절 논문을 SAI Lab 실적으로 실을지 | 교수님 확인 필요 |
-| 구성원 명단·사진·동의 | 수집 전 |
-| 공식 연락처·위치 | 미정 |
-| 논문 리뷰 세미나 공개 범위 | 미정 (`members` 또는 `hidden` 권장) |
-| 언어 | 영어 기본 + 국문 병기 권장, 미확정 |
+| GitHub 조직·사이트 저장소 | 생성 완료. 교수님 Owner 초대 확인 필요 |
+| 사이트 구조 | 2차 구현: Members(Professor/Our Team/Alumni), Research(Areas/Publications), Seminars, News(푸터), Contact(연락처 입력 시), 업로드 페이지 |
+| 세미나 항목 | 아직 없음 ("No seminars have been posted yet." 표시) |
+| 업로드 중계 | 코드 포함, Apps Script 배포·`upload_endpoint` 입력 전 |
+| 랩 대표색·로고 | 로고 정비 중 (확정 전에는 신호 표시 + "SAI Lab") |
+| 연구 주제 분류·소개 문구 | 교수님 확정 필요 (현재 임시) |
+| 교수님 페이지 | 공개 출처 기준 1차. 약력·경력·담당 과목·사진은 교수님께 받아야 함. 과제 역할·연구비 표기는 교수님 확인 필요 |
+| 구성원 명단·사진·한 줄 소개·동의 | 수집 전 |
+| 공식 연락처 | 미정 (Contact 메뉴 숨김 상태) |
+| 화면 확인 | 배포 후 데스크톱 브라우저에서 확인 필요 |
+
+## 11. 나중에 고려할 것
+
+| 항목 | 내용 |
+| --- | --- |
+| 저작권 검토 | 논문 리뷰 슬라이드의 타인 그림, 자료 라이선스 표기, 한 번 공개한 파일은 회수 불가 |
+| 모바일 | 탭·사진 배치·PDF 링크의 모바일 화면 |
+| 검색 | 자료가 쌓이면 제목·발표자·주제 검색 |
+| 세미나 주제별 보기 | 자료가 쌓이면 학기별 옆에 주제별 탭 |
+| PDF 보관 위치 | 저장소 용량이 1 GB에 가까워지면 Releases나 별도 저장소로 이전 |
+| 비공개 자료 | 내부 전용 자료가 필요해지면 그때 구분 추가 |
+| PDF 정리 | 메타데이터 제거, 용량 압축 |
+| 업로드 양식 확대 | 한 줄 소개·논문·소식용 양식, 학교 Google 계정 로그인 제한 |
+| 이전 사이트 자료 | AINC 사이트의 세미나·과제·학회 발표·교수님 약력 이관 (별도 작업) |
+| 데모 영상 | 주제 상세에 영상이 생기면 추가 |

@@ -4,36 +4,35 @@ permalink: /
 excerpt: "SAI Lab (Signal Augmented Intelligence) at Hanshin University."
 ---
 {% assign lab = site.data.lab %}
-<p class="lab-intro">{{ lab.name }} ({{ lab.full_name }}) is a research group at {{ lab.institution }}, led by {{ lab.advisor }}. Recent work at the lab covers Korean speech recognition, acoustic signal processing for robots, and language models for question answering.</p>
+<!-- 소개 문구: 교수님 확정 전 임시 문구 -->
+<p class="lab-intro">{{ lab.name }} ({{ lab.full_name }}) is a research group at {{ lab.institution }}, led by {{ lab.advisor }}. The lab works on learning-based processing of speech and acoustic signals, from enhancement and denoising to speech recognition, for wearable and robotic devices.</p>
+
+{% assign highlights = site.data.seminars | where: 'highlight', true | sort: 'date' | reverse %}
+{% assign shown = 0 %}{% for s in highlights %}{% if s.file and s.file != "" %}{% assign shown = shown | plus: 1 %}{% endif %}{% endfor %}
+{% if shown > 0 %}
+<section id="highlights">
+  <div class="section-head"><h2>Highlights</h2><a href="{{ '/seminars/' | relative_url }}">View all →</a></div>
+  <hr>
+  <ol class="seminar-list">
+  {% assign count = 0 %}{% for s in highlights %}{% if s.file and s.file != "" and count < 5 %}{% assign count = count | plus: 1 %}{% capture term %}{% include seminar-term.html s=s %}{% endcapture %}{% include seminar-entry.html s=s term=term %}{% endif %}{% endfor %}
+  </ol>
+</section>
+{% endif %}
 
 <section id="research">
-  <h2>Research</h2>
+  <div class="section-head"><h2>Research Areas</h2><a href="{{ '/research/' | relative_url }}">View all →</a></div>
   <hr>
-  <ul>
-  {% for theme in site.data.research %}<li><a href="{{ '/research/' | relative_url }}#{{ theme.slug }}">{{ theme.title }}</a></li>
+  <ul class="area-list area-list--compact">
+  {% assign areas = site.research | sort: 'order' %}{% for area in areas %}
+    <li><a href="{{ area.url | relative_url }}">{{ area.title }}</a></li>
   {% endfor %}</ul>
 </section>
 
-<section id="news">
-  <h2>News</h2>
-  <hr>
-  {% include news-list.html limit=3 %}
-  <p><a href="{{ '/news/' | relative_url }}">All news</a></p>
-</section>
-
 <section id="recent-publications">
-  <h2>Recent Publications</h2>
+  <div class="section-head"><h2>Recent Publications</h2><a href="{{ '/research/publications/' | relative_url }}">View all →</a></div>
   <hr>
   {% assign recent = site.publications | sort: 'pub_date' | reverse %}
   <ol class="publication-list">
   {% for pub in recent limit: 3 %}{% include publication-entry.html pub=pub %}{% endfor %}
   </ol>
-  <p><a href="{{ '/publications/' | relative_url }}">All publications</a></p>
 </section>
-{% if lab.email != "" or lab.location != "" %}
-<section id="contact">
-  <h2>Contact</h2>
-  <hr>
-  <p>{% if lab.location != "" %}{{ lab.location }}{% endif %}{% if lab.email != "" and lab.location != "" %}<br>{% endif %}{% if lab.email != "" %}<a href="mailto:{{ lab.email }}">{{ lab.email }}</a>{% endif %}</p>
-</section>
-{% endif %}

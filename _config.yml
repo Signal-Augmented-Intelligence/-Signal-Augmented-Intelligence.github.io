@@ -1,11 +1,11 @@
 # SAI Lab website. Content lives in _data/ and _publications/; see guideline.md.
-# draft: true blocks search indexing and deployment until the lab approves publication.
+# draft: true keeps the deployed site out of search engines (noindex, robots Disallow) and shows a footer note.
 locale: en-US
 site_theme: default
 title: "SAI Lab"
 title_separator: "·"
 name: "SAI Lab"
-description: "SAI Lab (Signal Augmented Intelligence) at Hanshin University. Research on speech recognition, acoustic signal processing, and language-model applications."
+description: "SAI Lab (Signal Augmented Intelligence) at Hanshin University. Research on speech and acoustic signal processing, speech recognition, and learning-based signal enhancement."
 url: "https://signal-augmented-intelligence.github.io"
 baseurl: ""
 repository: "Signal-Augmented-Intelligence/Signal-Augmented-Intelligence.github.io"
@@ -36,6 +36,7 @@ exclude:
   - vendor
   - node_modules
   - scripts
+  - tools
   - assets/js/_main.js
   - assets/js/plugins
 encoding: utf-8
@@ -49,6 +50,9 @@ collections:
   publications:
     output: true
     permalink: /publications/:path/
+  research:
+    output: true
+    permalink: /research/:path/
 defaults:
   - scope:
       path: ""
@@ -61,6 +65,12 @@ defaults:
       type: publications
     values:
       layout: publication
+      author_profile: false
+  - scope:
+      path: ""
+      type: research
+    values:
+      layout: research-area
       author_profile: false
 sass:
   sass_dir: _sass

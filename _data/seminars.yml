@@ -1,13 +1,14 @@
-# One entry per seminar. See guideline.md section 6.
-# term: section heading, e.g. "2026 Fall". The PDF lives in a GitHub Release whose tag is the
-#       first part of `file` (e.g. 2026-fall) in seminars-public (access: public) or
-#       seminars-internal (access: members / hidden).
+# One entry per seminar, any order (the site sorts by date). See guideline.md section 6.
+# Required: date, presenter, title, summary (one sentence). Everything else is optional.
 #
-# - date: 2026-10-21
-#   term: "2026 Fall"
-#   presenter: so-yeong-park        # people.yml id
+# - date: 2026-10-21                 # YYYY-MM-DD, no quotes
+#   presenter: so-yeong-park         # people.yml id (a guest's name in plain text also works)
 #   title: "Decoding parameters for Korean ASR"
-#   type: research                  # research / paper-review / tutorial / invited
-#   access: public                  # public / members / hidden
-#   file: 2026-fall/2026-10-21-park.pdf
+#   summary: "한 문장 개요"
+#   type: research                   # optional: research / paper-review / tutorial / invited
+#   topics: [korean-asr]             # optional: file names in _research/ (without .md)
+#   file: "2026-10-21-so-yeong-park.pdf"   # optional: PDF in files/seminars/. Empty = title only
+#   highlight: false                 # set by the site manager: true shows it on the home page
+#   term: ""                         # optional override; otherwise from the date
+#                                    # (Mar–Aug: Spring, Sep–Dec: Fall, Jan–Feb: Winter of the previous year)
 []

@@ -1,0 +1,34 @@
+---
+layout: default
+---
+<div id="main" role="main">
+  <div class="archive">
+    <p class="back-link"><a href="{{ '/research/' | relative_url }}">← Back to Research</a></p>
+    <h1 class="page__title">{{ page.title }}</h1>
+    {% if page.figure and page.figure != "" %}<figure class="publication-figure"><img src="{{ page.figure | relative_url }}" alt="{{ page.figure_alt }}">{% if page.figure_caption and page.figure_caption != "" %}<figcaption>{{ page.figure_caption }}</figcaption>{% endif %}</figure>{% endif %}
+    <section id="overview">
+      <h2>Overview</h2>
+      <hr>
+      {% assign body = content | strip %}{% if body != "" %}{{ content }}{% else %}<p>{{ page.summary }}</p>{% endif %}
+    </section>
+    {% if page.publications.size > 0 %}
+    <section id="related-publications">
+      <h2>Related Publications</h2>
+      <hr>
+      <ol class="publication-list">
+      {% for url in page.publications %}{% assign pub = site.publications | where: 'url', url | first %}{% if pub %}{% include publication-entry.html pub=pub %}{% endif %}{% endfor %}
+      </ol>
+    </section>
+    {% endif %}
+    {% assign related = site.data.seminars | where_exp: 's', 's.topics contains page.slug' %}
+    {% if related.size > 0 %}{% assign related = related | sort: 'date' | reverse %}
+    <section id="related-seminars">
+      <h2>Related Seminars</h2>
+      <hr>
+      <ol class="seminar-list">
+      {% for s in related %}{% capture term %}{% include seminar-term.html s=s %}{% endcapture %}{% include seminar-entry.html s=s term=term %}{% endfor %}
+      </ol>
+    </section>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<nav class="subnav" aria-label="{{ include.label | default: 'Section' }}">
+  <ul>
+  {% for item in include.items %}<li><a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a></li>
+  {% endfor %}</ul>
+</nav>

@@ -1,11 +1,7 @@
-# People page sections, in display order.
-- id: faculty
-  title: "Faculty"
+# Members > Our Team sections, in display order. Faculty is on Members > Professor, alumni on Members > Alumni.
 - id: phd
-  title: "PhD Students"
+  title: "Ph.D. Students"
 - id: ms
-  title: "MS Students"
+  title: "M.S. Students"
 - id: undergrad
   title: "Undergraduate Researchers"
-- id: alumni
-  title: "Alumni"

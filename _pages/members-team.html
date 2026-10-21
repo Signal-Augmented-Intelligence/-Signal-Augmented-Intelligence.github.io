@@ -1,0 +1,34 @@
+---
+title: "Our Team"
+section_title: "Members"
+subnav: members
+layout: section
+permalink: /members/our-team/
+redirect_from:
+  - /people/
+excerpt: "Members of SAI Lab, Hanshin University."
+---
+{% assign any = false %}
+{% for group in site.data.people_groups %}
+{% assign members = site.data.people | where: 'group', group.id %}
+{% if members.size > 0 %}{% assign any = true %}
+<section id="{{ group.id }}">
+  <h2>{{ group.title }}</h2>
+  <hr>
+  <ul class="team-grid">
+  {% for m in members %}
+    <li id="{{ m.id }}" class="team-member">
+      <div class="person-photo">{% if m.photo != "" %}<img src="{{ '/images/people/' | append: m.photo | relative_url }}" alt="{{ m.name }}" width="600" height="800" loading="lazy">{% endif %}</div>
+      <div class="team-text">
+        <p class="person-name">{{ m.name }}{% if m.name_ko != "" %} <span lang="ko">| {{ m.name_ko }}</span>{% endif %}</p>
+        <p class="person-role">{{ m.role }}</p>
+        {% if m.bio != "" %}<p class="person-bio">{{ m.bio }}</p>{% endif %}
+        {% if m.url != "" %}<p class="person-links"><a href="{{ m.url }}">Website</a></p>{% endif %}
+      </div>
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endfor %}
+{% unless any %}<p>Members will be listed here.</p>{% endunless %}

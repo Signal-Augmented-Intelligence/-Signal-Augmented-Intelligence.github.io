@@ -1,6 +1,15 @@
 {% assign lab = site.data.lab %}
+{% assign has_contact = false %}{% if lab.email != "" or lab.location != "" %}{% assign has_contact = true %}{% endif %}
 <div class="page__footer-copyright">
   {% if site.draft %}<p class="draft-note">Draft for internal review. Not yet approved for publication.</p>{% endif %}
-  <p>{{ lab.name }} · {{ lab.full_name }} · {{ lab.institution }}{% if lab.email != "" %} · <a href="mailto:{{ lab.email }}">{{ lab.email }}</a>{% endif %}</p>
-  <p>&copy; {{ site.time | date: '%Y' }} {{ lab.name }}. Built with <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a>.</p>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-lab">{{ lab.name }} · {{ lab.full_name }}</p>
+      <p>{{ lab.institution }}{% if lab.location != "" %} · {{ lab.location }}{% endif %}{% if lab.email != "" %} · <a href="mailto:{{ lab.email }}">{{ lab.email }}</a>{% endif %}</p>
+    </div>
+    <nav class="footer-links" aria-label="Quick links">
+      {% for link in site.data.navigation.footer %}{% if link.requires_contact and has_contact == false %}{% continue %}{% endif %}<a href="{{ link.url | relative_url }}">{{ link.title }}</a>{% endfor %}
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; {{ site.time | date: '%Y' }} {{ lab.name }}. Built with <a href="https://jekyllrb.com">Jekyll</a> &amp; <a href="https://github.com/academicpages/academicpages.github.io">Academic Pages</a>.</p>
 </div>

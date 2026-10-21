@@ -1,0 +1,10 @@
+{% assign s = include.s %}{% assign who = site.data.people | where: 'id', s.presenter | first %}
+<li class="seminar-entry">
+  <span class="seminar-date">{% include fmt-date.html date=s.date format='%b %-d' %}</span>
+  <div class="seminar-body">
+    <p class="seminar-title">{% if s.file and s.file != "" %}<a href="{{ '/files/seminars/' | append: s.file | relative_url }}">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}</p>
+    <p class="seminar-meta">{% if who %}{% include person-link.html name=who.name %}{% else %}{{ s.presenter }}{% endif %}{% if s.type and site.data.seminar_types[s.type] %} · {{ site.data.seminar_types[s.type] }}{% endif %}{% if include.term and include.term != "" %} · {{ include.term }}{% endif %}</p>
+    {% if s.summary and s.summary != "" %}<p class="seminar-summary">{{ s.summary }}</p>{% endif %}
+  </div>
+  <span class="seminar-file">{% if s.file and s.file != "" %}<a href="{{ '/files/seminars/' | append: s.file | relative_url }}" aria-label="PDF: {{ s.title | escape }}">PDF</a>{% endif %}</span>
+</li>

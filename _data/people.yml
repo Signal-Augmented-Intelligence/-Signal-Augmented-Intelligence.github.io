@@ -1,8 +1,10 @@
-# Add a person only after they confirm name, role, period, photo and link.
+# Add a person only after they confirm name, role, one-line introduction, photo and link.
 # id: lowercase-hyphen, never changed (publications and seminars link to it).
 # group: faculty / phd / ms / undergrad / alumni
-# profile: (optional) path of a detail page, e.g. /people/<id>/ — shown as a "Profile" link.
+#   faculty is shown on Members > Professor (details in _data/professor.yml), the rest on Our Team / Alumni.
+# bio: one line next to the photo, written by the member (English or 국문).
 # photo: file name in images/people/ (3:4, long side 800px, <= 200 KB). Leave empty for a grey placeholder.
+# after: alumni only — current position, one line (with the person's consent).
 - id: seon-man-kim
   name: "Seon Man Kim"
   name_ko: "김선만"
@@ -10,10 +12,9 @@
   role: "Advisor"
   since:
   until:
-  interests: ""
+  bio: ""
   photo: ""
   url: ""
-  profile: "/people/seon-man-kim/"
   after: ""
 - id: so-yeong-park
   name: "So Yeong Park"
@@ -22,7 +23,7 @@
   role: "Undergraduate Researcher"
   since: 2025-06
   until:
-  interests: "Korean speech recognition, LLM applications"
+  bio: "Korean speech recognition, LLM applications"
   photo: ""
   url: "https://green4849.github.io/"
   after: ""

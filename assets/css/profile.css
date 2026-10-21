@@ -1,5 +1,5 @@
 /* SAI Lab site (see guideline.md section 3). Typography carried over from the personal Academic Pages site:
-   Roboto 320, 16px / 1.5, 1000px container, compact paper entries. */
+   Roboto 320, 16px / 1.5, 1000px container, compact paper entries. Hangul falls back to Pretendard (local). */
 @font-face {
   font-family: "Roboto";
   src: url("../fonts/roboto/Roboto-Variable.ttf") format("truetype");
@@ -9,7 +9,7 @@
 }
 html { font-size: 16px; }
 body {
-  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Roboto", "Pretendard Variable", "Helvetica Neue", Arial, sans-serif;
   font-weight: 320;
   line-height: 1.5;
   font-optical-sizing: auto;
@@ -133,30 +133,86 @@ a:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline
 /* Publications */
 .publication-links { font-size: 0.875rem; }
 
-/* People: equal 3:4 photo slots; empty slot stays a plain grey box */
-.archive .people-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem 1.5rem; }
-.archive .people-grid > li { margin: 0; }
-.person-photo { aspect-ratio: 3 / 4; margin-bottom: 0.625rem; background: var(--global-border-color); overflow: hidden; }
-.person-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.people-grid p { margin: 0; }
-.person-name { font-weight: 500; }
-.person-role, .person-interests, .person-links { font-size: 0.875rem; }
-.person-interests { margin-top: 0.25rem !important; }
-.archive .alumni-list { list-style: none; margin: 0; padding: 0; }
-.archive .alumni-list > li { margin: 0 0 0.5rem; }
-@media screen and (max-width: 900px) { .archive .people-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media screen and (max-width: 600px) { .archive .people-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; } }
+/* Member names in author lists link to Members without looking like body links. */
+.publication-entry .person-link, .publication-meta .person-link, .seminar-meta .person-link { color: inherit; }
 
-/* Seminars: date | title + presenter | file */
+/* ---- Signal motif: one sampled-signal mark in the masthead, axis ticks under section titles ---- */
+.signal-mark { display: inline-block; width: 34px; height: 16px; margin-right: 0.5rem; vertical-align: -2px; color: var(--global-link-color); }
+.archive h2 + hr, .section-head + hr {
+  height: 5px; margin: 0 0 1rem; border: 0;
+  background:
+    linear-gradient(var(--global-border-color), var(--global-border-color)) top left / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, var(--global-border-color) 0 1px, transparent 1px 8px) top left / 41px 5px no-repeat;
+}
+.seminar-date, .list-date, .news-date { font-variant-numeric: tabular-nums; }
+
+/* ---- Section tabs (Members, Research) ---- */
+.subnav { margin: -0.5rem 0 2.5rem; }
+.subnav ul { display: flex; flex-wrap: wrap; gap: 0 1.75rem; list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--global-border-color); }
+.archive .subnav li { margin: 0; }
+.subnav a { display: inline-block; padding: 0 0 0.5rem; margin-bottom: -1px; color: var(--global-text-color); border-bottom: 1px solid transparent; }
+.subnav a:hover { text-decoration: none !important; color: var(--global-link-color); }
+.subnav a[aria-current="page"] { font-weight: 500; color: var(--global-link-color); border-bottom-color: var(--global-link-color); }
+
+/* ---- Home ---- */
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.section-head h2 { margin: 0 0 0.75rem; }
+.section-head a { font-size: 0.875rem; white-space: nowrap; }
+.archive .area-list { list-style: none; margin: 0; padding: 0; }
+.archive .area-list > li { margin: 0 0 2rem; }
+.archive .area-list--compact > li { margin: 0 0 0.375rem; }
+.archive .area-list .area-title { margin: 0 0 0.375rem; font-size: 1.125rem; font-weight: 400; }
+.area-list p { margin: 0 0 0.25rem; max-width: 46rem; }
+.read-more, .back-link { font-size: 0.875rem; }
+.back-link { margin: 0 0 1rem !important; }
+
+/* ---- Seminars: date | title, presenter, one-line summary | PDF ---- */
 .archive .seminar-list { list-style: none; margin: 0; padding: 0; }
-.archive .seminar-entry { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto; column-gap: 1rem; margin: 0 0 1rem; }
+.archive .seminar-entry { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr) auto; column-gap: 1rem; margin: 0 0 1.125rem; }
 .seminar-date { font-size: 0.875rem; padding-top: 0.0625rem; }
 .seminar-body p { margin: 0; }
 .seminar-title { font-weight: 500; }
+.seminar-title a { color: inherit; }
+.seminar-meta, .seminar-summary { font-size: 0.875rem; }
 .seminar-file { font-size: 0.875rem; white-space: nowrap; }
-@media screen and (max-width: 600px) {
-  .archive .seminar-entry { grid-template-columns: minmax(0, 1fr); }
-  .seminar-file { margin-top: 0.125rem; }
-}
-/* Member names in author lists link to People without looking like body links. */
-.publication-entry p a[href*="/people/"], .publication-meta a[href*="/people/"] { color: inherit; }
+
+/* ---- Members > Professor ---- */
+.archive .profile { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 2rem; align-items: start; }
+.profile .person-photo { margin: 0; }
+.archive .profile-name { margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 500; }
+.profile-body p { margin: 0 0 0.125rem; }
+.profile-contact { display: grid; grid-template-columns: max-content 1fr; gap: 0.125rem 1rem; margin: 0.75rem 0; font-size: 0.875rem; }
+.profile-contact dt { font-weight: 500; }
+.profile-contact dd { margin: 0; }
+.archive .plain-list { list-style: none; margin: 0 0 1rem; padding: 0; }
+.archive .plain-list > li { margin: 0 0 0.5rem; padding-left: 7.5rem; text-indent: -7.5rem; }
+.list-date { display: inline-block; width: 7rem; margin-right: 0.5rem; text-indent: 0; font-size: 0.875rem; }
+.archive .plain-list > li:not(:has(.list-date)) { padding-left: 0; text-indent: 0; }
+.archive section h3 { margin-top: 1.25rem; }
+
+/* ---- Members > Our Team: photo with name, role and one line beside it ---- */
+.archive .team-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 2.5rem; }
+.archive .team-grid > li { margin: 0; }
+.team-member { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.person-photo { aspect-ratio: 3 / 4; background: var(--global-border-color); overflow: hidden; }
+.person-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.team-text p { margin: 0; }
+.person-name { font-weight: 500; }
+.person-role, .person-links { font-size: 0.875rem; }
+.person-bio { margin-top: 0.5rem !important; }
+.archive .alumni-list { list-style: none; margin: 0; padding: 0; }
+.archive .alumni-list > li { margin: 0 0 0.5rem; }
+
+/* ---- Upload form ---- */
+.upload-form { display: grid; gap: 1rem; max-width: 32rem; }
+.upload-form label { display: grid; gap: 0.25rem; font-size: 0.875rem; font-weight: 500; }
+.upload-form input, .upload-form select { width: 100%; margin: 0; font: inherit; font-weight: 320; }
+.upload-form button { justify-self: start; padding: 0.375rem 1rem; font: inherit; font-weight: 500; }
+.upload-form[aria-disabled="true"] { opacity: 0.5; }
+.upload-status { font-size: 0.875rem; }
+
+/* ---- Footer ---- */
+.footer-grid { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.footer-lab { font-weight: 500; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 0 1.25rem; font-size: 0.875rem; }
+.footer-copy { font-size: 0.8125rem; }

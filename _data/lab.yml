@@ -8,3 +8,4 @@ email: ""                   # 공식 연락처만. 비워 두면 표시하지 �
 location: ""                # 예: 건물·호실. 비워 두면 표시하지 않음
 logo: ""                    # 확정된 로고 파일 경로 (예: /images/sai-logo.svg)
 github_org: "Signal-Augmented-Intelligence"
+upload_endpoint: ""         # 세미나 업로드 페이지(/upload/)가 보내는 Apps Script 웹 앱 주소. 비우면 업로드 페이지가 비활성화됨 (tools/upload-relay/)

@@ -1,7 +1,6 @@
-_site/
-.sass-cache/
-.jekyll-cache/
-.bundle/
-/vendor/
 node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
 .DS_Store

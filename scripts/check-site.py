@@ -1,6 +1,6 @@
 """Checks for the SAI Lab site (guideline.md section 8).
 
-Run after `jekyll build`. Checks rendered routes, internal links and anchors, and
+Run after `npm run build` (static export in out/). Checks rendered routes, internal links and anchors, and
 personal-information patterns on rendered pages. Data files are not validated here.
 """
 from html.parser import HTMLParser
@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
 import re
 
-ROOT = Path('_site')
+ROOT = Path('out')
 ORIGIN = 'https://lab.invalid'
 ROUTES = ('index.html', 'members/professor/index.html', 'members/our-team/index.html',
           'members/alumni/index.html', 'research/index.html', 'research/publications/index.html',

@@ -1,0 +1,8 @@
+.list { display: grid; gap: 12px; max-width: 48rem; }
+.row { display: grid; grid-template-columns: 152px minmax(0, 1fr); column-gap: 24px; }
+.date { color: var(--muted); font-size: var(--text-sm); padding-top: 1px; }
+.note { display: block; color: var(--muted); font-size: var(--text-sm); }
+
+@media (max-width: 640px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+}

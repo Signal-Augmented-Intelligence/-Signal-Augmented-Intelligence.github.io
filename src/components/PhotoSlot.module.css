@@ -1,0 +1,2 @@
+.slot { aspect-ratio: 3 / 4; overflow: hidden; background: var(--surface); border: 1px solid var(--rule); }
+.slot img { width: 100%; height: 100%; object-fit: cover; }

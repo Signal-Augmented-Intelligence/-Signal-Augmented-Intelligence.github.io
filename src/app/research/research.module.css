@@ -1,0 +1,18 @@
+.area { display: grid; grid-template-columns: var(--label-col) minmax(0, 1fr); column-gap: 40px; }
+.area + .area { margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--rule); }
+.count { padding-top: 6px; color: var(--muted); font-size: var(--text-sm); }
+.title { font-size: var(--text-xl); font-weight: 650; line-height: 1.35; letter-spacing: -0.01em; }
+.title a { color: var(--ink); }
+.title a:hover { color: var(--accent); }
+.summary { max-width: 42rem; margin-top: 10px; font-size: var(--text-lg); line-height: 1.65; }
+.more { margin-top: 14px; font-size: var(--text-sm); font-weight: 500; }
+
+.figure { margin-bottom: 48px; }
+.figure img { max-width: 720px; width: 100%; }
+.figure figcaption { margin-top: 10px; color: var(--muted); font-size: var(--text-sm); }
+
+@media (max-width: 960px) {
+  .area { grid-template-columns: minmax(0, 1fr); }
+  .count { order: 2; padding-top: 10px; }
+  .area + .area { margin-top: 28px; padding-top: 28px; }
+}

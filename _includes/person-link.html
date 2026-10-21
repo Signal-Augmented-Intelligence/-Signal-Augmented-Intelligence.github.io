@@ -1,2 +1,0 @@
-{%- assign who = site.data.people | where: 'name', include.name | first -%}
-{%- if who -%}{%- if who.group == 'faculty' -%}{%- assign href = '/members/professor/' -%}{%- elsif who.group == 'alumni' -%}{%- assign href = '/members/alumni/#' | append: who.id -%}{%- else -%}{%- assign href = '/members/our-team/#' | append: who.id -%}{%- endif -%}<a class="person-link" href="{{ href | relative_url }}">{{ include.name }}</a>{%- else -%}{{ include.name }}{%- endif -%}

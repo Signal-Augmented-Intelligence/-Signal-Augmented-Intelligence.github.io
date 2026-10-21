@@ -1,0 +1,19 @@
+.team { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.member { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: 24px; align-items: start; scroll-margin-top: calc(var(--header-h) + 24px); }
+.name { font-weight: 600; }
+.nameKo { color: var(--muted); }
+.role { margin-top: 6px; font-size: var(--text-sm); color: var(--muted); }
+.bio { margin-top: 12px; }
+.link { margin-top: 8px; font-size: var(--text-sm); font-weight: 500; }
+
+.alumni { display: grid; max-width: 52rem; }
+.alumni > li { display: grid; grid-template-columns: 220px 120px minmax(0, 1fr); column-gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.alumni > li:first-child { border-top: 1px solid var(--rule); }
+
+@media (max-width: 960px) {
+  .team { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+}
+@media (max-width: 640px) {
+  .member { grid-template-columns: 96px minmax(0, 1fr); column-gap: 18px; }
+  .alumni > li { grid-template-columns: minmax(0, 1fr); }
+}

@@ -1,0 +1,14 @@
+.section { display: grid; grid-template-columns: var(--label-col) minmax(0, 1fr); column-gap: 40px; }
+.section + .section { margin-top: 56px; }
+/* Divider between consecutive sections, spanning both columns but not the page gutters. */
+.section + .section::before { content: ''; grid-column: 1 / -1; border-top: 1px solid var(--rule); margin-bottom: 40px; }
+.head { align-self: start; position: sticky; top: calc(var(--header-h) + 24px); }
+.title { font-size: var(--text-lg); font-weight: 650; line-height: 1.4; }
+.aside { margin-top: 8px; font-size: var(--text-sm); }
+.body { min-width: 0; }
+
+@media (max-width: 960px) {
+  .section { grid-template-columns: minmax(0, 1fr); }
+  .head { position: static; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .aside { margin-top: 0; }
+}

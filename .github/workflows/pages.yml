@@ -15,20 +15,22 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
+      - uses: actions/setup-node@v4
         with:
-          ruby-version: '3.3'
-          bundler-cache: true
-      - name: Build Academic Pages
-        run: bundle exec jekyll build --strict_front_matter
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build static site
+        run: npm run build
         env:
-          JEKYLL_ENV: production
+          NEXT_TELEMETRY_DISABLED: 1
       - name: Check local links and personal information
-        run: python3 scripts/check-site.py
+        run: npm run check
       - uses: actions/upload-pages-artifact@v4
         if: github.event_name != 'pull_request'
         with:
-          path: _site
+          path: out
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build

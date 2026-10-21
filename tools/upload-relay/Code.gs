@@ -2,7 +2,7 @@
  * SAI Lab seminar upload relay (Google Apps Script web app).
  *
  * Receives the form on /upload/, then opens a pull request on the site repository that
- * adds the PDF to files/seminars/ and one entry to _data/seminars.yml.
+ * adds the PDF to public/files/seminars/ and one entry to content/seminars.yml.
  * Nothing reaches the site until the site manager merges the pull request.
  *
  * Script properties (Project Settings > Script properties):
@@ -33,12 +33,12 @@ function doPost(e) {
     var fileName = '';
     if (d.file) {
       fileName = d.date + '-' + d.presenter + '-' + stamp.slice(9) + '.pdf';
-      github(token, 'put', '/contents/files/seminars/' + fileName, {
+      github(token, 'put', '/contents/public/files/seminars/' + fileName, {
         message: 'Add seminar slides: ' + clean(d.title), content: d.file, branch: branch
       });
     }
 
-    var current = github(token, 'get', '/contents/_data/seminars.yml?ref=' + encodeURIComponent(branch));
+    var current = github(token, 'get', '/contents/content/seminars.yml?ref=' + encodeURIComponent(branch));
     var text = Utilities.newBlob(Utilities.base64Decode(current.content.replace(/\n/g, ''))).getDataAsString('UTF-8');
     text = text.replace(/^\[\]\s*$/m, '');
     if (text.slice(-1) !== '\n') text += '\n';
@@ -48,7 +48,7 @@ function doPost(e) {
       + '  summary: ' + JSON.stringify(clean(d.summary)) + '\n'
       + '  file: ' + JSON.stringify(fileName) + '\n'
       + '  highlight: false\n';
-    github(token, 'put', '/contents/_data/seminars.yml', {
+    github(token, 'put', '/contents/content/seminars.yml', {
       message: 'Add seminar: ' + clean(d.title),
       content: Utilities.base64Encode(text, Utilities.Charset.UTF_8),
       sha: current.sha, branch: branch

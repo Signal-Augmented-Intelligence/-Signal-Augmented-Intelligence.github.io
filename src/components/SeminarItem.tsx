@@ -1,0 +1,24 @@
+import { type Person, SEMINAR_TYPES, type Seminar, seminarFileUrl } from '@/lib/content';
+import { formatDate } from '@/lib/format';
+import { PersonName } from './PersonName';
+import styles from './Items.module.css';
+
+/** One seminar row: date | title, presenter and one-line summary | PDF. */
+export function SeminarItem({ seminar, people, showTerm = false }: { seminar: Seminar; people: Person[]; showTerm?: boolean }) {
+  const file = seminarFileUrl(seminar);
+  const meta = [SEMINAR_TYPES[seminar.type], showTerm ? seminar.term : ''].filter(Boolean);
+  return (
+    <li className={styles.seminar}>
+      <span className={`${styles.date} num`}>{formatDate(seminar.date, showTerm ? 'full' : 'day')}</span>
+      <div>
+        <p className={styles.title}>{file ? <a href={file}>{seminar.title}</a> : seminar.title}</p>
+        <p className={styles.meta}>
+          <PersonName name={seminar.presenter} people={people} />
+          {meta.length > 0 && <span className={styles.metaExtra}>{meta.join(', ')}</span>}
+        </p>
+        {seminar.summary && <p className={styles.summary}>{seminar.summary}</p>}
+      </div>
+      <span className={styles.file}>{file && <a href={file} aria-label={`PDF: ${seminar.title}`}>PDF</a>}</span>
+    </li>
+  );
+}

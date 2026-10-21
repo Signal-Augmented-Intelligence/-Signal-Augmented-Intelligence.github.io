@@ -1,0 +1,26 @@
+/* Shared list rows: publications and seminars. */
+.list { display: grid; gap: 28px; }
+
+.item { max-width: 46rem; }
+.title { font-size: var(--text-md); font-weight: 600; line-height: 1.5; }
+.title a { color: var(--ink); }
+.title a:hover { color: var(--accent); }
+.authors, .meta { margin-top: 2px; color: var(--muted); font-size: var(--text-sm); }
+.authors :global(.person-link) { color: inherit; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 0.2em; }
+.authors :global(.person-link):hover { color: var(--ink); }
+.note { margin-top: 2px; font-size: var(--text-sm); }
+.links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 6px; font-size: var(--text-sm); font-weight: 500; }
+
+.seminar { display: grid; grid-template-columns: 112px minmax(0, 1fr) 56px; column-gap: 24px; align-items: baseline; }
+.seminar + .seminar { padding-top: 24px; border-top: 1px solid var(--rule); }
+.date { color: var(--muted); font-size: var(--text-sm); }
+.meta :global(.person-link) { color: inherit; }
+.meta :global(.person-link):hover { color: var(--ink); }
+.metaExtra::before { content: ', '; }
+.summary { margin-top: 6px; max-width: 40rem; }
+.file { justify-self: end; font-size: var(--text-sm); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .seminar { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+  .date { grid-column: 1 / -1; }
+}

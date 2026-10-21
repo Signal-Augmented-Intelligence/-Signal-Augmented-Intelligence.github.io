@@ -1,5 +1,0 @@
-{%- assign s = include.s -%}
-{%- if s.term and s.term != "" -%}{{ s.term }}{%- else -%}
-{%- assign y = s.date | date: '%Y' | plus: 0 -%}{%- assign m = s.date | date: '%-m' | plus: 0 -%}
-{%- if m >= 9 -%}{{ y }} Fall{%- elsif m >= 3 -%}{{ y }} Spring{%- else -%}{{ y | minus: 1 }} Winter{%- endif -%}
-{%- endif -%}

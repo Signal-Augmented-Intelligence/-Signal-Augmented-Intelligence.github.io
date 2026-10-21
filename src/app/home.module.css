@@ -1,0 +1,29 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  column-gap: 64px;
+  align-items: end;
+  padding-top: 96px;
+  margin-bottom: 72px;
+}
+.name { font-size: var(--text-hero); font-weight: 700; line-height: 1; letter-spacing: -0.035em; }
+.fullName { margin-top: 14px; font-size: var(--text-xl); font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
+.intro { max-width: 38rem; margin-top: 28px; font-size: var(--text-lg); line-height: 1.7; }
+.facts { display: grid; gap: 14px; padding-left: 24px; border-left: 1px solid var(--rule); font-size: var(--text-sm); }
+.facts dt { color: var(--muted); }
+.facts dd { font-weight: 500; }
+.plot { grid-column: 1 / -1; display: block; height: auto; margin-top: 56px; }
+
+.areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.areas > li { padding-top: 18px; border-top: 2px solid var(--ink); }
+.areaTitle { font-size: var(--text-md); font-weight: 600; line-height: 1.45; }
+.areaTitle a { color: var(--ink); }
+.areaTitle a:hover { color: var(--accent); }
+.areaSummary { margin-top: 10px; color: var(--muted); font-size: var(--text-sm); line-height: 1.65; }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-top: 56px; margin-bottom: 48px; }
+  .facts { margin-top: 32px; padding-left: 0; border-left: 0; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .plot { margin-top: 36px; }
+  .areas { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+}

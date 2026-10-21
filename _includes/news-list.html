@@ -1,6 +1,0 @@
-{% assign limit = include.limit | default: 1000 %}
-<ul class="news-list">
-{% for item in site.data.news limit: limit %}
-  <li><span class="news-date">{% include fmt-date.html date=item.date %}</span>{{ item.text }}{% if item.link %} <a href="{{ item.link | relative_url }}">Details</a>{% endif %}</li>
-{% endfor %}
-</ul>

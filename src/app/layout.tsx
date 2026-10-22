@@ -11,8 +11,11 @@ import { SITE_URL } from '@/lib/site';
 
 const lab = getLab();
 
-/** Runs before paint: opens Home as a night sky once per session on wide screens (see components/Hero.tsx). */
-const HERO_SCRIPT = "try{var d=document.documentElement;if(location.pathname==='/'&&!sessionStorage.getItem('sai-hero-seen')&&matchMedia('(min-width: 961px)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.hero='night'}}catch(e){}";
+/**
+ * Runs before paint on every full page load. On Home: marks the page (dark header) and, on wide screens with motion
+ * allowed, starts the night-sky phase of the hero (see components/Hero.tsx).
+ */
+const HERO_SCRIPT = "try{var d=document.documentElement;if(location.pathname==='/'){d.dataset.home='true';if(matchMedia('(min-width: 961px)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.hero='night'}}}catch(e){}";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

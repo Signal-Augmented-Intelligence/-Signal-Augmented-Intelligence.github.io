@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect } from 'react';
-import { METEORS, NIGHT_MS, STARS } from './heroSky';
+import { useEffect, useState } from 'react';
+import { METEORS, NIGHT_MS, SLIDES, SLIDE_MS } from './heroSky';
 import styles from './Hero.module.css';
 
 /** Renders "e^{jωn}" with a real superscript. */
@@ -11,38 +10,57 @@ function Formula({ text }: { text: string }) {
   return <>{parts.map((part, i) => (i % 2 === 1 ? <sup key={i}>{part}</sup> : part))}</>;
 }
 
-type Props = {
-  name: string;
-  fullName: string;
-  nameKo: string;
-  quote: string[];
-  poemTitle: string;
-  advisor: string;
-  affiliation: string;
-  location: string;
-};
+type Props = { name: string; fullName: string; nameKo: string; quote: string[]; poemTitle: string };
 
 /**
- * Home first screen. On the first visit of a session (wide screens, motion allowed) the page opens as a night sky
- * with falling formulas, then fades to the normal page after NIGHT_MS. The inline script in the root layout
- * sets html[data-hero="night"] before paint; this component ends that phase.
+ * Home first screen: a full-width photo hero of the lab.
+ * On every full page load (refresh or typed URL, wide screens, motion allowed) it opens as a night sky with
+ * falling formulas, then the sky fades away to the photos after NIGHT_MS. The inline script in the root layout
+ * sets html[data-hero="night"] before paint; returning to Home through the menu skips the night phase.
  */
-export function Hero({ name, fullName, nameKo, quote, poemTitle, advisor, affiliation, location }: Props) {
+export function Hero({ name, fullName, nameKo, quote, poemTitle }: Props) {
+  const [slide, setSlide] = useState(0);
+  const [night, setNight] = useState(true);
+
   useEffect(() => {
     const root = document.documentElement;
-    if (root.dataset.hero !== 'night') return;
-    try { sessionStorage.setItem('sai-hero-seen', '1'); } catch {}
-    const timer = window.setTimeout(() => { root.dataset.hero = 'day'; }, NIGHT_MS);
+    root.dataset.home = 'true';
+    const isNight = root.dataset.hero === 'night';
+    setNight(isNight);
+    const timer = isNight ? window.setTimeout(() => { root.dataset.hero = 'day'; setNight(false); }, NIGHT_MS) : undefined;
     return () => {
       window.clearTimeout(timer);
       root.dataset.hero = 'day';
+      delete root.dataset.home;
     };
   }, []);
 
+  useEffect(() => {
+    if (night || SLIDES.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => setSlide((s) => (s + 1) % SLIDES.length), SLIDE_MS);
+    return () => window.clearInterval(timer);
+  }, [night, slide]);
+
   return (
     <section className={styles.hero} aria-label={name}>
+      <div className={styles.slides} aria-hidden="true">
+        {SLIDES.map((src, i) => (
+          <img key={src} src={src} alt="" className={styles.slide} data-active={i === slide} loading={i === 0 ? 'eager' : 'lazy'} />
+        ))}
+      </div>
+      <div className={styles.shade} aria-hidden="true" />
       <div className={styles.sky} aria-hidden="true" />
-      <div className={`container ${styles.grid}`}>
+
+      <div className={`container ${styles.inner}`}>
+        <div className={styles.field} aria-hidden="true">
+          {METEORS.map((m) => (
+            <span key={m.text} className={styles.meteor} style={{ left: m.left, top: m.top, fontSize: m.size, animationDuration: `${m.duration}s`, animationDelay: `${m.delay}s` }}>
+              <Formula text={m.text} />
+            </span>
+          ))}
+        </div>
+
         <div className={styles.text}>
           <h1 className={styles.name}>{name}</h1>
           <p className={styles.fullName}>{fullName}{nameKo && <span lang="ko"> | {nameKo}</span>}</p>
@@ -51,25 +69,16 @@ export function Hero({ name, fullName, nameKo, quote, poemTitle, advisor, affili
               {quote.map((line) => <p key={line}>{line}</p>)}
             </blockquote>
           )}
-          {poemTitle && <p className={styles.poemLink} lang="ko"><a href="#poem">「{poemTitle}」 전문 읽기</a></p>}
+          {poemTitle && <a href="#poem" className={styles.poemLink} lang="ko">「{poemTitle}」 전문 읽기</a>}
         </div>
 
-        <div className={styles.field} aria-hidden="true">
-          {STARS.map((s) => (
-            <span key={s.text} className={styles.star} style={{ left: s.left, top: s.top, fontSize: s.size, opacity: s.opacity }}><Formula text={s.text} /></span>
-          ))}
-          <div className={styles.meteors}>
-            {METEORS.map((m) => (
-              <span key={m.text} className={styles.meteor} style={{ left: m.left, top: m.top, fontSize: m.size, animationDuration: `${m.duration}s`, animationDelay: `${m.delay}s` }}><Formula text={m.text} /></span>
+        {SLIDES.length > 1 && (
+          <div className={styles.dots}>
+            {SLIDES.map((src, i) => (
+              <button key={src} type="button" className={styles.dot} aria-label={`Photo ${i + 1}`} aria-pressed={i === slide} onClick={() => setSlide(i)} />
             ))}
           </div>
-        </div>
-
-        <dl className={styles.facts}>
-          <div><dt>Advisor</dt><dd><Link href="/members/professor/">{advisor}</Link></dd></div>
-          <div><dt>Affiliation</dt><dd>{affiliation}</dd></div>
-          {location && <div><dt>Location</dt><dd>{location}</dd></div>}
-        </dl>
+        )}
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-.footer { margin-top: 120px; background: var(--surface); border-top: 1px solid var(--rule); font-size: var(--text-sm); }
+.footer { margin-top: 96px; background: var(--surface); border-top: 1px solid var(--rule); font-size: var(--text-sm); }
 .inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; padding-top: 48px; padding-bottom: 32px; }
 .lab { font-size: var(--text-md); font-weight: 650; margin-bottom: 4px; }
 .links { display: grid; grid-template-columns: repeat(2, auto); gap: 8px 48px; }

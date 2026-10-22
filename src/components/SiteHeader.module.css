@@ -33,8 +33,9 @@
   .link[aria-current='page']::after { bottom: -1px; }
 }
 
-/* Home night phase (see Hero.tsx): the header sits on the same sky, then fades back. */
-.header, .name, .link { transition: background-color 1.5s ease, border-color 1.5s ease, color 1.5s ease; }
-:global(html[data-hero='night']) .header { background: #0d1830; border-bottom-color: rgba(255, 255, 255, 0.12); }
-:global(html[data-hero='night']) .brand, :global(html[data-hero='night']) .link { color: #ffffff; }
-:global(html[data-hero='night']) .mark { color: #a9c1ff; }
+/* Home (see Hero.tsx): the header sits dark on the photo hero, like the rest of the first screen. */
+.header, .name, .link { transition: background-color 1s ease, border-color 1s ease, color 1s ease; }
+:global(html[data-home='true']) .header { background: #0d1830; border-bottom-color: rgba(255, 255, 255, 0.1); backdrop-filter: none; }
+:global(html[data-home='true']) .brand, :global(html[data-home='true']) .link { color: #ffffff; }
+:global(html[data-home='true']) .link[aria-current='page'] { color: #a9c1ff; }
+:global(html[data-home='true']) .mark { color: #a9c1ff; }

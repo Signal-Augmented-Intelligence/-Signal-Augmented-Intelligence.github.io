@@ -1,75 +1,59 @@
-/* Day colours are the page tokens; html[data-hero='night'] swaps them while the night sky is up. */
+/*
+ * Home photo hero. Layers, back to front: lab photos, a navy shade for legible text, the night sky
+ * (only while html[data-hero='night']), falling formulas, text.
+ */
 .hero {
-  --h-ink: var(--ink);
-  --h-muted: var(--muted);
-  --h-line: var(--rule);
-  --h-link: var(--accent);
-  --h-formula: var(--muted);
   position: relative;
-  margin-bottom: 128px;
-  color: var(--h-ink);
-  transition: color 1.5s ease;
-}
-:global(html[data-hero='night']) .hero {
-  --h-ink: #ffffff;
-  --h-muted: #b7c4de;
-  --h-line: rgba(169, 193, 255, 0.45);
-  --h-link: #a9c1ff;
-  --h-formula: #c9d6f2;
-}
-
-/* The sky spans the full width behind the header and hero, and fades out at the end of the night phase. */
-.sky {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(var(--header-h) * -1);
-  bottom: -64px;
+  overflow: hidden;
+  height: clamp(560px, 76vh, 760px);
   background: #0d1830;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1.5s ease;
+  color: #ffffff;
 }
+.slides, .shade, .sky { position: absolute; inset: 0; }
+.slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.4s ease; }
+.slide[data-active='true'] { opacity: 1; }
+.shade { background: linear-gradient(90deg, rgba(13, 24, 48, 0.86) 0%, rgba(13, 24, 48, 0.62) 45%, rgba(13, 24, 48, 0.35) 100%); }
+.sky { background: #0d1830; opacity: 0; transition: opacity 1.8s ease; }
 :global(html[data-hero='night']) .sky { opacity: 1; }
 
-.grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: 40px;
-  padding-top: 96px;
+.inner { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+.text { position: relative; max-width: 620px; }
+.name { font-size: 5.5rem; font-weight: 600; line-height: 0.95; letter-spacing: -0.045em; }
+.fullName { margin-top: 16px; font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.82); }
+.quote { margin: 40px 0 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 1.1875rem; line-height: 1.85; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.92); }
+.poemLink {
+  display: inline-block;
+  margin-top: 36px;
+  padding: 11px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
-.text { grid-row: 1 / 3; }
-.name { font-size: 6rem; font-weight: 600; line-height: 0.95; letter-spacing: -0.045em; }
-.fullName { margin-top: 18px; font-size: 1.375rem; font-weight: 400; letter-spacing: -0.005em; color: var(--h-muted); transition: color 1.5s ease; }
-.quote {
-  margin: 52px 0 0;
-  padding-left: 20px;
-  border-left: 1px solid var(--h-line);
-  font-family: 'Pretendard Variable', Pretendard, sans-serif;
-  font-size: 1.1875rem;
-  line-height: 1.9;
-  letter-spacing: -0.01em;
-  transition: border-color 1.5s ease;
-}
-.poemLink { margin-top: 28px; font-size: var(--text-sm); font-weight: 500; }
-.poemLink a { color: var(--h-link); transition: color 1.5s ease; }
+.poemLink:hover { background: rgba(255, 255, 255, 0.12); border-color: #ffffff; text-decoration: none; }
 
-/* Formula field beside the lab name. */
-.field { position: relative; height: 412px; overflow: hidden; }
-.star, .meteor {
+.dots { position: absolute; left: var(--gutter); bottom: 48px; display: flex; gap: 10px; opacity: 1; transition: opacity 1s ease; }
+:global(html[data-hero='night']) .dots { opacity: 0; }
+.dot { width: 28px; height: 3px; padding: 0; border: 0; border-radius: 2px; background: rgba(255, 255, 255, 0.4); cursor: pointer; }
+.dot[aria-pressed='true'] { width: 44px; background: #ffffff; }
+.dot:focus-visible { outline-offset: 6px; }
+
+/* Falling formulas, right of the text, only during the night phase. */
+.field { position: absolute; right: var(--gutter); top: 13%; width: 60%; height: 64%; overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 1.2s ease, visibility 0s linear 1.2s; }
+:global(html[data-hero='night']) .field { opacity: 1; visibility: visible; transition: opacity 1.2s ease; }
+.meteor {
   position: absolute;
   white-space: nowrap;
   font-family: 'STIX Two Text', 'Times New Roman', serif;
   font-style: italic;
   line-height: 1;
+  color: #e8eeff;
+  opacity: 0;
+  animation: fall linear infinite;
 }
-.star sup, .meteor sup { font-size: 0.68em; line-height: 0; }
-.star { color: var(--h-formula); transition: color 1.5s ease; }
-.meteors { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity 1.2s ease, visibility 0s linear 1.2s; }
-:global(html[data-hero='night']) .meteors { opacity: 1; visibility: visible; transition: opacity 1.2s ease; }
-.meteor { color: #e8eeff; opacity: 0; animation: fall linear infinite; }
+.meteor sup { font-size: 0.68em; line-height: 0; }
 .meteor::after {
   content: '';
   position: absolute;
@@ -88,24 +72,9 @@
   45%, 100% { transform: translate(-200px, 200px); opacity: 0; }
 }
 
-.facts {
-  justify-self: end;
-  width: 260px;
-  display: grid;
-  gap: 14px;
-  padding-left: 24px;
-  border-left: 1px solid var(--h-line);
-  font-size: var(--text-sm);
-  transition: border-color 1.5s ease;
-}
-.facts dt { color: var(--h-muted); transition: color 1.5s ease; }
-.facts dd { font-weight: 500; }
-.facts a { color: var(--h-link); transition: color 1.5s ease; }
-
 @media (max-width: 960px) {
-  .grid { grid-template-columns: minmax(0, 1fr); padding-top: 56px; }
-  .text { grid-row: auto; }
+  .hero { height: auto; min-height: 520px; }
+  .inner { padding-top: 72px; padding-bottom: 96px; }
   .name { font-size: var(--text-hero); }
   .field { display: none; }
-  .facts { justify-self: start; width: auto; margin-top: 40px; }
 }

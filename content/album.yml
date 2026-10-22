@@ -1,0 +1,13 @@
+# Lab album. One entry per event; newest first on the page regardless of order here.
+# Photos go in public/images/album/<folder>/ (landscape, long side about 1600px, <= 500 KB each).
+# The Album menu appears once at least one entry has a photo.
+#
+# - date: 2026-11-05                  # YYYY-MM-DD (or YYYY-MM)
+#   title: "2026 가을 세미나"
+#   folder: 2026-11-seminar           # folder name under public/images/album/
+#   photos:
+#     - file: 01.jpg
+#       alt: "세미나 발표 장면"          # one short description per photo
+#     - file: 02.jpg
+#       alt: ""
+[]

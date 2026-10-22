@@ -85,7 +85,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 
 ## 4. 메뉴와 페이지
 
-상위 메뉴: **Members, Research, Seminars** (+ `content/lab.yml`에 공식 연락처가 들어가면 **Contact**). 메뉴와 탭 구성은 `src/lib/site.ts`. News는 상위 메뉴에 두지 않고 푸터 바로가기에만 둡니다.
+상위 메뉴: **Members, Research, Seminars** (+ 앨범 사진이 생기면 **Album**, `content/lab.yml`에 공식 연락처가 들어가면 **Contact**). 메뉴와 탭 구성은 `src/lib/site.ts`. News는 상위 메뉴에 두지 않고 푸터 바로가기에만 둡니다.
 
 | 주소 | 페이지 | 파일 (`src/app/` 기준) |
 | --- | --- | --- |
@@ -99,6 +99,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | `/publications/<논문>/` | 논문 상세 | `publications/[slug]/` + `content/publications/*.md` |
 | `/seminars/` | Seminars | `seminars/` + `content/seminars.yml` |
 | `/news/` | News | `news/` + `content/news.yml` |
+| `/album/` | Album (사진이 생기면 메뉴에 나타남) | `album/` + `content/album.yml` |
 | `/contact/` | Contact | `contact/` |
 | `/upload/` | 세미나 업로드 (메뉴·검색 노출 없음) | `upload/` |
 
@@ -134,6 +135,12 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 - 항목: 날짜 / **제목**(PDF가 있으면 제목도 PDF 링크) / 발표자 · 종류 / 개요 한 문장 / 오른쪽 `PDF`
 - 학기는 날짜로 자동 계산: 3–8월 Spring, 9–12월 Fall, 1–2월 전년도 Winter (`term`으로 직접 지정 가능)
 
+### Album
+- 행사(세미나, MT, 학회 등)마다 섹션 하나: 왼쪽 칸에 행사 이름과 날짜, 오른쪽에 사진 3열. 최신 행사가 위.
+- 사진을 누르면 크게 보이고 이전/다음(좌우 방향키)으로 넘깁니다.
+- 사진이 하나도 없으면 상위 메뉴와 푸터에서 Album이 숨겨집니다.
+- 사진: 가로 사진, 긴 변 1600px 안팎, 1장 500KB 이하. 사람이 나오면 게시 동의를 받은 것만.
+
 ### News
 날짜 + 한 문장 + 근거 링크. 대학 뉴스보다 외부 언론 링크 우선.
 
@@ -153,6 +160,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | `public/images/people/` | 구성원 사진 |
 | `content/news.yml` | 소식 |
 | `content/poem.yml` | 연구실 시 (첫 화면 시구, Home 아래 전문) |
+| `content/album.yml`, `public/images/album/` | 연구실 앨범 (행사 1건당 항목 1개, 사진은 행사별 폴더) |
 
 ### people.yml
 ```yaml

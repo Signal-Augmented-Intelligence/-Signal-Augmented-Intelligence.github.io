@@ -1,11 +1,13 @@
 /** Menus and tabs. Page content lives in content/; this file only decides structure. */
-export type NavItem = { title: string; href: string; match?: string[]; requiresContact?: boolean };
+/** `requires`: shown only when the lab has official contact details / at least one album with photos. */
+export type NavItem = { title: string; href: string; match?: string[]; requires?: 'contact' | 'album' };
 
 export const MAIN_NAV: NavItem[] = [
   { title: 'Members', href: '/members/professor/', match: ['/members/'] },
   { title: 'Research', href: '/research/', match: ['/research/', '/publications/'] },
   { title: 'Seminars', href: '/seminars/', match: ['/seminars/'] },
-  { title: 'Contact', href: '/contact/', match: ['/contact/'], requiresContact: true },
+  { title: 'Album', href: '/album/', match: ['/album/'], requires: 'album' },
+  { title: 'Contact', href: '/contact/', match: ['/contact/'], requires: 'contact' },
 ];
 
 export const MEMBERS_TABS: NavItem[] = [
@@ -24,7 +26,8 @@ export const FOOTER_LINKS: NavItem[] = [
   { title: 'Publications', href: '/research/publications/' },
   { title: 'Seminars', href: '/seminars/' },
   { title: 'News', href: '/news/' },
-  { title: 'Contact', href: '/contact/', requiresContact: true },
+  { title: 'Album', href: '/album/', requires: 'album' },
+  { title: 'Contact', href: '/contact/', requires: 'contact' },
 ];
 
 /** Our Team sections, in display order. Faculty is on Professor, alumni on Alumni. */

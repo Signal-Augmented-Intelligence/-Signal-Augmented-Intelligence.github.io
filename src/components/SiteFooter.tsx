@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import { getLab, hasContact } from '@/lib/content';
+import { getLab } from '@/lib/content';
+import { visibleNav } from '@/lib/nav';
 import { FOOTER_LINKS } from '@/lib/site';
 import styles from './SiteFooter.module.css';
 
 export function SiteFooter() {
   const lab = getLab();
-  const links = FOOTER_LINKS.filter((i) => !i.requiresContact || hasContact(lab));
+  const links = visibleNav(FOOTER_LINKS);
   return (
     <footer className={styles.footer}>
       <div className={`container ${styles.inner}`}>

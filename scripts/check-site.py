@@ -12,7 +12,7 @@ ROOT = Path('out')
 ORIGIN = 'https://lab.invalid'
 ROUTES = ('index.html', 'members/professor/index.html', 'members/our-team/index.html',
           'members/alumni/index.html', 'research/index.html', 'research/publications/index.html',
-          'seminars/index.html', 'news/index.html', 'contact/index.html', 'upload/index.html', '404.html')
+          'seminars/index.html', 'news/index.html', 'album/index.html', 'contact/index.html', 'upload/index.html', '404.html')
 # Personal-information patterns that must never appear on a rendered page.
 PRIVATE = {
     'phone number': re.compile(r'\b01[016789][- .]?\d{3,4}[- .]?\d{4}\b'),

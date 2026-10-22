@@ -291,3 +291,18 @@ export function getPoem(): Poem {
   const index = Math.min(Math.max(Number(raw.hero ?? 1), 1), Math.max(stanzas.length, 1)) - 1;
   return { title: str(raw.title), hero: stanzas[index] ?? [], credit: str(raw.credit), stanzas };
 }
+
+/* ---------- album ---------- */
+export type Album = { date: string; title: string; photos: { src: string; alt: string }[] };
+export function getAlbums(): Album[] {
+  return readYaml<Record<string, unknown>[]>('album.yml', [])
+    .map((a) => {
+      const folder = str(a.folder).replace(/^\/+|\/+$/g, '');
+      const photos = ((a.photos as Record<string, unknown>[] | null) ?? [])
+        .map((p) => ({ src: `/images/album/${folder ? `${folder}/` : ''}${str(p.file)}`, alt: str(p.alt) }))
+        .filter((p) => !p.src.endsWith('/'));
+      return { date: str(a.date), title: str(a.title), photos };
+    })
+    .filter((a) => a.photos.length > 0)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}

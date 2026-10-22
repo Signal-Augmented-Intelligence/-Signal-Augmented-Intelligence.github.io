@@ -23,15 +23,14 @@ type Props = {
 };
 
 /**
- * Home first screen. On the first visit of a session (wide screens, motion allowed) the page opens as a night sky
- * with falling formulas, then fades to the normal page after NIGHT_MS. The inline script in the root layout
+ * Home first screen. On every full page load (refresh or typed URL; wide screens, motion allowed) the page opens as a
+ * night sky with falling formulas, then fades to the normal page after NIGHT_MS. Returning through the menu skips it. The inline script in the root layout
  * sets html[data-hero="night"] before paint; this component ends that phase.
  */
 export function Hero({ name, fullName, nameKo, quote, poemTitle, advisor, affiliation, location }: Props) {
   useEffect(() => {
     const root = document.documentElement;
     if (root.dataset.hero !== 'night') return;
-    try { sessionStorage.setItem('sai-hero-seen', '1'); } catch {}
     const timer = window.setTimeout(() => { root.dataset.hero = 'day'; }, NIGHT_MS);
     return () => {
       window.clearTimeout(timer);

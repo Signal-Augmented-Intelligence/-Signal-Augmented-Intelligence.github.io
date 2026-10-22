@@ -306,3 +306,10 @@ export function getAlbums(): Album[] {
     .filter((a) => a.photos.length > 0)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
+
+/* ---------- home ---------- */
+/** Photo URLs for the Home first-screen carousel (content/home.yml). */
+export function getHomeSlides(): string[] {
+  const raw = readYaml<Record<string, unknown>>('home.yml', {});
+  return ((raw.slides as unknown[] | null) ?? []).map(str).filter(Boolean).map((f) => `/images/home/${f.replace(/^\/+/, '')}`);
+}

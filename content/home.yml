@@ -1,0 +1,9 @@
+# Home first-screen photos (carousel behind the lab name). Shown after the night-sky intro.
+# Files go in public/images/home/ : landscape, 1600 x 900 (16:9) or larger, <= 400 KB each.
+# The left side of each photo sits under white text, so busy left halves read poorly.
+# Empty list: the first screen stays navy with no photos.
+#
+# slides:
+#   - lab-01.jpg
+#   - lab-02.jpg
+slides: []

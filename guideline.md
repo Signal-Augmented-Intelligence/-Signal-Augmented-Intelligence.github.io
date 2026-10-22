@@ -53,8 +53,8 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 - 날짜가 있는 목록은 왼쪽에 날짜 칸을 두고 내용을 맞춥니다 (`DateList`, `SeminarItem`).
 
 ### 신호 모티프와 첫 화면
-- Home 첫 화면 오른쪽에 **흐린 수식 몇 개가 별자리처럼** 놓입니다 (`src/components/heroSky.ts`).
-- 새로고침하거나 주소로 들어올 때마다(넓은 화면, 모션 허용) 첫 화면이 6초 동안 남색 밤하늘이 되고 수식이 유성처럼 떨어진 뒤, 1.5초에 걸쳐 흰 화면으로 돌아옵니다. 사이트 안에서 메뉴로 Home에 돌아오면 처음부터 흰 화면입니다. 시간은 `heroSky.ts`의 `NIGHT_MS`.
+- Home 첫 화면은 화면 폭 가득한 **사진 캐러셀 자리**입니다. 사진은 `content/home.yml`의 `slides`에 적고 파일은 `public/images/home/`에 둡니다 (가로 16:9, 1600×900 이상, 1장 400KB 이하, 6초마다 넘어감). 사진이 없으면 남색 첫 화면입니다. Home에서는 헤더도 남색입니다.
+- 새로고침하거나 주소로 들어올 때마다(넓은 화면, 모션 허용) 처음 6초는 남색 밤하늘에 수식이 유성처럼 떨어지고, 그 뒤 사진 캐러셀로 바뀝니다. 사이트 안에서 메뉴로 Home에 돌아오면 바로 캐러셀입니다. 시간은 `src/components/heroSky.ts`의 `NIGHT_MS`, `SLIDE_MS`.
 - 첫 화면의 시구와 아래 시 전문은 `content/poem.yml` (`hero`: 첫 화면에 보일 연 번호).
 - 헤더의 랩명 옆 작은 신호 표시(`SignalMark.tsx`)는 로고 파일이 정해지면(`content/lab.yml`의 `logo`) 로고로 바뀝니다.
 - 이 밖에 파형 장식, 그라데이션, 움직임은 더하지 않습니다.
@@ -68,12 +68,12 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | muted | #5a6677 | #9aa6b5 | 메타데이터 |
 | rule | #dce2ea | #27313d | 구분선 |
 | accent | #2452c6 | #85a7ff | 링크, 현재 메뉴·탭 |
-| night | #0d1830 | — | Home 첫 방문 때의 밤하늘 |
+| night | #0d1830 | — | Home 첫 화면(밤하늘, 사진 위 덮개, 헤더) |
 
 다크 모드는 기기 설정을 따릅니다. 색은 `src/app/globals.css` 맨 위에서만 정의합니다.
 
 ### 쓰지 않는 것
-이미지 슬라이드, 카드 레이아웃 남발, 둥근 태그 배지, 그림자, 출처 없는 이미지·아이콘, 애니메이션, 모든 제목 위의 대문자 이름표.
+Home 첫 화면 밖의 이미지 슬라이드, 카드 레이아웃 남발, 둥근 태그 배지, 그림자, 출처 없는 이미지·아이콘, 애니메이션, 모든 제목 위의 대문자 이름표.
 
 ### 언어
 - **영어 기본 + 국문 병기.** 메뉴·섹션 제목·날짜·이름표는 영어.
@@ -106,7 +106,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 예전 주소 `/people/`, `/people/seon-man-kim/`은 새 주소로 자동 이동합니다.
 
 ### Home
-랩명 → 시 한 연과 전문 링크, 지도교수·소속, 수식 별자리 → **Highlights** (세미나 중 `highlight: true`이고 PDF가 있는 것, 최신 5건) → Research Areas → Recent Publications 3편 → 시 전문(`#poem`). Highlights가 하나도 없으면 그 섹션은 나오지 않습니다.
+사진 캐러셀 첫 화면(랩명, 시 한 연, 전문 읽기 버튼) → **Highlights** (세미나 중 `highlight: true`이고 PDF가 있는 것, 최신 5건) → Research Areas → Recent Publications 3편 → 시 전문(`#poem`). Highlights가 하나도 없으면 그 섹션은 나오지 않습니다.
 
 ### Members ▸ Professor
 사진(선택) · 이름 · 직위 · 소속 · 연락처 → Biography(입력 시) → Education & Career → Research Areas → Courses Taught(입력 시) → Publications → Intellectual Property → Research Projects → Academic Services(연도별, 날짜 없는 항목은 Other) → Student Awards. 비어 있는 항목은 표시되지 않습니다.
@@ -160,6 +160,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | `public/images/people/` | 구성원 사진 |
 | `content/news.yml` | 소식 |
 | `content/poem.yml` | 연구실 시 (첫 화면 시구, Home 아래 전문) |
+| `content/home.yml`, `public/images/home/` | Home 첫 화면 사진 |
 | `content/album.yml`, `public/images/album/` | 연구실 앨범 (행사 1건당 항목 1개, 사진은 행사별 폴더) |
 
 ### people.yml

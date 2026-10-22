@@ -1,11 +1,11 @@
 /**
- * Formula positions for the home hero, computed once at build time.
+ * Falling-formula positions for the home hero's night phase, computed once at build time.
  * Positions are percentages of the field beside the lab name so the layout scales with the page width.
  */
 const FIELD_W = 850;
 const FIELD_H = 412;
 
-/** Night phase length before the hero fades to the normal page (ms). */
+/** Night phase length before the hero fades to the photo hero (ms). */
 export const NIGHT_MS = 6000;
 
 const FALLING = [
@@ -16,8 +16,6 @@ const FALLING = [
 const ORDER = [0, 8, 4, 2, 6, 1, 7, 3, 5];
 const CYCLE_S = 12;
 
-const STILL = ['z⁻¹', 'e^{jωn}', 'p(y | x)', 'fₛ ≥ 2fₘₐₓ', '‖ s − ŝ ‖²', 'log |X(ω)|²', 'ω', '∇'];
-
 let seed = 7;
 function rand() {
   seed = (seed * 16807) % 2147483647;
@@ -25,7 +23,7 @@ function rand() {
 }
 const pct = (px: number, total: number) => `${((px / total) * 100).toFixed(2)}%`;
 
-export type SkyItem = { text: string; left: string; top: string; size: number; duration?: number; delay?: number; opacity?: number };
+export type SkyItem = { text: string; left: string; top: string; size: number; duration: number; delay: number };
 
 /** Falling formulas: one start point per cell of a jittered 3 x 3 grid, staggered over one cycle. */
 export const METEORS: SkyItem[] = FALLING.map((text, i) => {
@@ -41,15 +39,5 @@ export const METEORS: SkyItem[] = FALLING.map((text, i) => {
   };
 });
 
-/** Faint fixed formulas on a jittered 4 x 2 grid; they stay after the night phase ends. */
-export const STARS: SkyItem[] = STILL.map((text, i) => {
-  const col = i % 4;
-  const row = Math.floor(i / 4);
-  return {
-    text,
-    left: pct(20 + col * 205 + rand() * 90, FIELD_W),
-    top: pct(40 + row * 190 + rand() * 110, FIELD_H),
-    size: 11 + rand() * 3,
-    opacity: 0.12 + rand() * 0.1,
-  };
-});
+/** Photo carousel interval after the night phase (ms). */
+export const SLIDE_MS = 6000;

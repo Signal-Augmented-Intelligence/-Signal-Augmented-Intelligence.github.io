@@ -4,12 +4,11 @@ import itemStyles from '@/components/Items.module.css';
 import { PublicationItem } from '@/components/PublicationItem';
 import { Section } from '@/components/Section';
 import { SeminarItem } from '@/components/SeminarItem';
-import { getLab, getPeople, getPoem, getProfessor, getPublications, getResearchAreas, getSeminars } from '@/lib/content';
+import { getHomeSlides, getLab, getPeople, getPoem, getPublications, getResearchAreas, getSeminars } from '@/lib/content';
 import styles from './home.module.css';
 
 export default function HomePage() {
   const lab = getLab();
-  const professor = getProfessor();
   const poem = getPoem();
   const people = getPeople();
   const areas = getResearchAreas();
@@ -24,9 +23,7 @@ export default function HomePage() {
         nameKo={lab.name_ko}
         quote={poem.hero}
         poemTitle={poem.stanzas.length > 0 ? poem.title : ''}
-        advisor={professor.name}
-        affiliation={professor.affiliation || lab.institution}
-        location={lab.location}
+        slides={getHomeSlides()}
       />
 
       {highlights.length > 0 && (

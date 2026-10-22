@@ -8,8 +8,8 @@ Site: https://signal-augmented-intelligence.github.io/ · Organization: https://
 ## Layout
 | What | Where |
 | --- | --- |
-| All page content (lab, professor, members, research areas, publications, seminars, news, poem) | `content/` |
-| Seminar PDFs, member photos | `public/files/seminars/`, `public/images/people/` |
+| All page content (lab, professor, members, research areas, publications, seminars, news, poem, album, home photos) | `content/` |
+| Seminar PDFs, photos (members, album, home) | `public/files/seminars/`, `public/images/{people,album,home}/` |
 | Pages (Next.js App Router) | `src/app/` |
 | Shared components | `src/components/` |
 | Content loaders, menus | `src/lib/content.ts`, `src/lib/site.ts` |

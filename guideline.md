@@ -21,6 +21,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | 사이트 저장소 | `Signal-Augmented-Intelligence/Signal-Augmented-Intelligence.github.io` |
 | 사이트 주소 | `https://signal-augmented-intelligence.github.io/` |
 | 세미나 PDF | 사이트 저장소 `public/files/seminars/` |
+| 세미나 PDF 표지 | 사이트 저장소 `public/images/seminars/` (선택) |
 | 기술 | Next.js(React) 정적 내보내기, GitHub Pages, GitHub Actions, 업로드 중계는 Google Apps Script |
 
 ## 2. 소유와 권한
@@ -150,9 +151,11 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - 상세 페이지: Details(저자, 학회, 종류, 날짜, 상태, 수상, 링크) → 대표 그림(선택) → Overview
 
 ### Seminars
-- **임시 구성**: 학기별 섹션, 학기 안 최신순. 분야별 묶음 + 검색 위주로 별도 세션에서 다시 설계합니다 (프로젝트 문서 `SAI-Lab-Seminars-페이지-설계.md`).
-- 항목: 날짜 / **제목**(PDF가 있으면 제목도 PDF 링크) / 발표자 · 종류 / 개요 한 문장 / 오른쪽 `PDF`
-- 학기는 날짜로 자동 계산: 3–8월 Spring, 9–12월 Fall, 1–2월 전년도 Winter (`term`으로 직접 지정 가능)
+- 검색창이 첫 요소입니다. 제목·개요·발표자·분야를 브라우저에서 검색하고 검색어와 선택 분야를 주소에 남깁니다.
+- 왼쪽 Areas는 `content/seminars.yml`의 비어 있지 않은 `area` 값을 모아 자동으로 만듭니다. 새 분야도 업로드할 때 입력할 수 있습니다.
+- 오른쪽은 게시물에 입력한 `date`의 최신순 목록입니다. 날짜는 자동 등재·병합 시각이 아닙니다.
+- 항목: 입력 날짜 / **제목**(PDF가 있으면 제목도 PDF 링크) / 분야 / 오른쪽 PDF 표지 이미지 자리와 `PDF` 링크. 발표자와 개요는 목록에 표시하지 않습니다.
+- 표지는 선택입니다. 없으면 빈 칸만 남고, PDF가 없으면 링크가 나오지 않습니다.
 
 ### Album
 - 행사(세미나, MT, 학회 등)마다 섹션 하나: 제목에 행사 이름, 오른쪽에 날짜, 아래 사진 3열. 최신 행사가 위.
@@ -176,6 +179,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 | `content/publications/*.md` | 논문 1편당 파일 1개 |
 | `content/seminars.yml` | 세미나 |
 | `public/files/seminars/` | 세미나 PDF |
+| `public/images/seminars/` | 세미나 PDF 표지 이미지 (선택) |
 | `public/images/people/` | 구성원 사진 |
 | `content/news.yml` | 소식 |
 | `content/poem.yml` | 연구실 시 (첫 화면 시구, Home 아래 전문) |
@@ -231,16 +235,19 @@ excerpt: "한 문장 요약"
 
 ### seminars.yml
 ```yaml
-- date: 2026-10-21                     # 따옴표 없이 YYYY-MM-DD
+- date: 2026-10-21                     # 게시물에 입력한 날짜. 따옴표 없이 YYYY-MM-DD
   presenter: so-yeong-park             # people.yml id (외부 발표자는 이름을 그대로 써도 됨)
   title: "Decoding parameters for Korean ASR"
   summary: "한 문장 개요"
+  area: "Speech Recognition"           # 선택: Seminars의 Areas에 자동 표시
   type: research                       # 선택: research / paper-review / tutorial / invited
   topics: [korean-asr]                 # 선택: content/research/ 파일 이름
   file: "2026-10-21-so-yeong-park.pdf" # 선택: public/files/seminars/ 안의 PDF. 비우면 제목만 표시
+  cover: "2026-10-21-so-yeong-park.jpg" # 선택: public/images/seminars/ 안의 표지 이미지
   highlight: false                     # 관리자가 지정. true면 Home Highlights에 표시
 ```
 - **필수는 날짜·발표자·제목·개요 한 문장**뿐입니다. 나머지는 없어도 됩니다.
+- `area`는 연구 주제 `topics`와 별개입니다. 새 이름을 입력할 수 있지만 기존 분야와 표기를 맞춰 주세요.
 - 올리는 기준은 **올린다 / 안 올린다** 하나입니다. PDF가 있으면 링크, 없으면 제목만 나옵니다.
 - `highlight`는 발표자가 아니라 관리자(또는 교수님)가 정합니다. PDF가 있는 항목만 Home에 나옵니다.
 
@@ -248,12 +255,12 @@ excerpt: "한 문장 요약"
 
 ### 방법 1 — 업로드 페이지 (GitHub 계정 없이)
 1. 사이트의 `/upload/` 주소를 엽니다 (랩 안에서만 공유).
-2. 업로드 코드, 발표일, 발표자, 제목, 개요 한 문장, PDF(선택, 20 MB 이하)를 넣고 제출합니다.
+2. 업로드 코드, 게시물 날짜, 발표자, 제목, 개요 한 문장, 분야(선택), PDF(선택, 20 MB 이하), PDF 표지 이미지(선택, 2 MB 이하)를 넣고 제출합니다. 표지는 PDF가 있을 때만 올립니다.
 3. 자동으로 Pull Request가 만들어집니다. 관리자가 내용을 확인하고 필요하면 `highlight: true`로 바꾼 뒤 병합합니다.
 4. 병합 후 몇 분 뒤 Seminars 페이지에 반영됩니다. 잘못 올렸으면 관리자가 Pull Request를 닫으면 끝입니다.
 
 ### 방법 2 — GitHub 웹 편집
-`public/files/seminars/`에 PDF 업로드("Add file → Upload files") → `content/seminars.yml`에 한 항목 추가 → Pull Request.
+`public/files/seminars/`에 PDF를 업로드하고, 표지가 있으면 `public/images/seminars/`에 이미지도 업로드("Add file → Upload files") → `content/seminars.yml`에 한 항목 추가 → Pull Request.
 
 ### 업로드 중계 설정 (관리자, 처음 한 번)
 업로드 페이지는 정적 사이트라 파일을 직접 받을 수 없어서, Google Apps Script가 받아 Pull Request로 바꿔 줍니다. 코드는 `tools/upload-relay/Code.gs`.
@@ -338,8 +345,6 @@ GitHub 웹에서 데이터 파일 열기 → 연필 아이콘 → 수정 → "Pr
 | --- | --- |
 | 저작권 검토 | 논문 리뷰 슬라이드의 타인 그림, 자료 라이선스 표기, 한 번 공개한 파일은 회수 불가 |
 | 모바일 | 기본 반응형은 적용됨. 모바일 세부 간격·글자 크기 다듬기 |
-| 검색 | 자료가 쌓이면 제목·발표자·주제 검색 |
-| 세미나 주제별 보기 | 자료가 쌓이면 학기별 옆에 주제별 탭 |
 | PDF 보관 위치 | 저장소 용량이 1 GB에 가까워지면 Releases나 별도 저장소로 이전 |
 | 비공개 자료 | 내부 전용 자료가 필요해지면 그때 구분 추가 |
 | PDF 정리 | 메타데이터 제거, 용량 압축 |

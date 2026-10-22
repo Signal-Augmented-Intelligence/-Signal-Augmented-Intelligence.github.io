@@ -24,14 +24,12 @@ export function Hero({ name, fullName, nameKo, quote, poemTitle, slides }: Props
 
   useEffect(() => {
     const root = document.documentElement;
-    root.dataset.home = 'true';
     const isNight = root.dataset.hero === 'night';
     setNight(isNight);
     const timer = isNight ? window.setTimeout(() => { root.dataset.hero = 'day'; setNight(false); }, NIGHT_MS) : undefined;
     return () => {
       window.clearTimeout(timer);
       root.dataset.hero = 'day';
-      delete root.dataset.home;
     };
   }, []);
 

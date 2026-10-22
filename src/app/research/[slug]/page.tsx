@@ -33,16 +33,18 @@ export default async function ResearchAreaPage({ params }: Params) {
 
   return (
     <>
-      <PageHeader title={area.title} back={<Link href="/research/">Back to Research Areas</Link>} />
+      <PageHeader title={area.title} lede={area.summary} back={<Link href="/research/">Back to Research Areas</Link>} />
       {area.figure && (
-        <figure className={`container ${styles.figure}`}>
+        <figure className={`container ${styles.detailFigure}`}>
           <img src={area.figure} alt={area.figure_alt} />
           {area.figure_caption && <figcaption>{area.figure_caption}</figcaption>}
         </figure>
       )}
-      <Section id="overview" title="Overview">
-        {area.html ? <div className="prose" dangerouslySetInnerHTML={{ __html: area.html }} /> : <p className="prose">{area.summary}</p>}
-      </Section>
+      {area.html && (
+        <Section id="overview" title="Overview">
+          <div className="prose" dangerouslySetInnerHTML={{ __html: area.html }} />
+        </Section>
+      )}
       {publications.length > 0 && (
         <Section id="related-publications" title="Related Publications">
           <ol className={itemStyles.list}>{publications.map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}</ol>

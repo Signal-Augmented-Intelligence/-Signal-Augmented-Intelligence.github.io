@@ -3,20 +3,25 @@ import type { NavItem } from '@/lib/site';
 import { NavLinks } from './NavLinks';
 import styles from './PageHeader.module.css';
 
-/** Page title, optional one-line description, and optional section tabs. */
+/** Navy page banner (title, one-line description, optional back link) and an optional tab bar under it. */
 export function PageHeader({ title, lede, tabs, back }: { title: string; lede?: ReactNode; tabs?: NavItem[]; back?: ReactNode }) {
   return (
-    <div className={styles.wrap}>
-      <div className="container">
-        {back && <p className={styles.back}>{back}</p>}
-        <h1 className={styles.title}>{title}</h1>
-        {lede && <p className={styles.lede}>{lede}</p>}
-        {tabs && (
-          <nav aria-label={`${title} sections`}>
-            <NavLinks items={tabs} className={styles.tabs} linkClassName={styles.tab} />
-          </nav>
-        )}
+    <>
+      <div className={styles.banner}>
+        <div className="container">
+          {back && <p className={styles.back}>{back}</p>}
+          <h1 className={styles.title}>{title}</h1>
+          {lede && <p className={styles.lede}>{lede}</p>}
+        </div>
       </div>
-    </div>
+      {tabs && (
+        <nav className={styles.tabBar} aria-label={`${title} sections`}>
+          <div className="container">
+            <NavLinks items={tabs} className={styles.tabs} linkClassName={styles.tab} />
+          </div>
+        </nav>
+      )}
+      <div className={styles.gap} />
+    </>
   );
 }

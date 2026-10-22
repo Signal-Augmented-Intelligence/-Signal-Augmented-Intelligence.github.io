@@ -13,7 +13,7 @@ export default function SeminarsPage() {
   const terms = [...new Set(seminars.map((s) => s.term))];
   return (
     <>
-      <PageHeader title="Seminars" />
+      <PageHeader title="Seminars" lede="Slides from lab seminars" />
       {terms.length === 0 && <p className="container muted">No seminars have been posted yet.</p>}
       {terms.map((term) => (
         <Section key={term} id={term.toLowerCase().replace(/\s+/g, '-')} title={term}>

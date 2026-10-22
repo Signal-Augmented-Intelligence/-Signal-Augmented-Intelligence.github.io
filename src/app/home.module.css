@@ -1,5 +1,5 @@
 .areas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-.areas > li { padding-top: 18px; border-top: 2px solid var(--ink); }
+.areas > li { padding-top: 4px; }
 .areaTitle { font-size: var(--text-md); font-weight: 600; line-height: 1.45; }
 .areaTitle a { color: var(--ink); }
 .areaTitle a:hover { color: var(--accent); }

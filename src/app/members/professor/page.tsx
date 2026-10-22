@@ -5,7 +5,7 @@ import { PhotoSlot } from '@/components/PhotoSlot';
 import { Section } from '@/components/Section';
 import { getProfessor } from '@/lib/content';
 import { formatDate } from '@/lib/format';
-import { MEMBERS_TABS } from '@/lib/site';
+import { MEMBERS_LEDE, MEMBERS_TABS } from '@/lib/site';
 import styles from './professor.module.css';
 
 export const metadata: Metadata = { title: 'Professor', description: 'Prof. Seon Man Kim, advisor of SAI Lab, Hanshin University.' };
@@ -18,10 +18,10 @@ export default function ProfessorPage() {
 
   return (
     <>
-      <PageHeader title="Members" tabs={MEMBERS_TABS} />
+      <PageHeader title="Members" lede={MEMBERS_LEDE} tabs={MEMBERS_TABS} />
 
       <div className={`container ${styles.profile}`}>
-        <PhotoSlot photo={p.photo} alt={p.name} />
+        <PhotoSlot photo={p.photo} alt={p.name} className={styles.photo} />
         <div>
           <h2 className={styles.name}>{p.name} <span lang="ko" className={styles.nameKo}>{p.name_ko}</span></h2>
           <p className={styles.position}>{p.position}</p>

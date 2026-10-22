@@ -34,23 +34,41 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 
 ## 3. 디자인 기준
 
-메뉴와 하위 페이지 구성, 여백감은 [KAIST Smart Sound Lab](https://sound.kaist.ac.kr/)을 참고했습니다. 새 장식을 더하지 말고 아래 결을 유지합니다.
+레퍼런스는 [KAIST Smart Sound Lab](https://sound.kaist.ac.kr/)입니다. 깔끔하고, 공대생스럽지 않고, 한눈에 들어오는 결을 따릅니다. 화면을 바꿀 때는 먼저 레퍼런스의 같은 페이지를 열어 보고 결이 맞는지 확인합니다. 새 장식을 더하지 않습니다.
+
+### 페이지 틀 (모든 페이지 공통)
+- **헤더**: 남색. 랩명은 왼쪽, 메뉴는 오른쪽. 현재 메뉴는 밝은 파랑 글자.
+- **페이지 띠**: 헤더 아래 남색 띠에 큰 페이지 제목(48px)과 한 줄 설명 (`PageHeader`). 한 줄 설명은 무엇이 있는 페이지인지만 담담하게.
+- **탭 줄**: 하위 페이지가 있으면 띠 아래 흰 탭 줄(Professor / Our Team / Alumni, Areas / Publications). 스크롤해도 헤더 아래 붙어 있음. 현재 탭은 파랑 글자 + 밑줄.
+- **섹션**: 제목(24px) + 오른쪽 "View all" 같은 링크, 그 아래 진한 선 한 줄, 그 아래 내용 (`Section`). 왼쪽 제목 칸 2단 구성은 쓰지 않습니다.
+- 콘텐츠 최대 폭 1160px, 좌측 정렬.
 
 ### 글자
 | 요소 | 값 |
 | --- | --- |
 | 글꼴 | 영문 Instrument Sans, 한글 Pretendard, 수식 STIX Two Text 이탤릭. 모두 npm 패키지로 사이트에 포함 |
 | 본문 | 16px, line-height 1.6 |
-| 페이지 제목 | 36px, weight 650 |
-| Home 랩명 | 96px, weight 600, 자간 -0.045em |
-| 섹션 제목 | 18px, weight 650 |
-| 항목 제목 (논문·세미나) | 16px, weight 600 |
-| 메타데이터 (날짜·저자·학회) | 14px, 보조색. 날짜 숫자는 고정폭 |
+| 페이지 제목 (띠) | 48px, weight 600 |
+| Home 랩명 | 88px, weight 600, 자간 -0.045em |
+| 섹션 제목 | 24px, weight 600 |
+| 항목 제목 (논문·세미나) | 17px, weight 600 |
+| 메타데이터 (날짜·저자·학회) | 14px, 보조색. 학회·저널 이름은 이탤릭. 날짜 숫자는 고정폭 |
 
-### 정렬
-- 콘텐츠 최대 폭 1160px, 좌측 정렬.
-- 모든 페이지가 같은 **2단 격자**를 씁니다: 왼쪽 220px에 섹션 제목, 오른쪽에 내용 (`src/components/Section.tsx`). 섹션 사이에는 가는 구분선.
-- 날짜가 있는 목록은 왼쪽에 날짜 칸을 두고 내용을 맞춥니다 (`DateList`, `SeminarItem`).
+### 태그·분류 표시 규칙
+의도: 정보는 글자의 굵기와 위치로 구분하고, 색과 모양으로 꾸미지 않는다. 화면이 담백하게 읽히고, 강조색이 "누를 수 있는 것"과 "지금 위치"만 뜻하게 하려는 것입니다.
+
+1. 종류(Journal article, Conference poster), 상태(Accepted …), 수상(Paper Encouragement Award), 분야 같은 **분류 표시는 본문색 굵은 글자**로만 씁니다. 배경색, 테두리, 둥근 배지(pill), 종류별 색 구분을 쓰지 않습니다.
+2. 여러 개가 붙으면 한 줄에 간격을 두고 나란히 둡니다. 가운뎃점(·)이나 쉼표로 잇지 않아도 됩니다.
+3. **링크**(DOI, KCI record, PDF, Website, 교수 프로필 등)도 같은 줄에 **글자 링크**로 둡니다. 버튼 모양으로 감싸지 않습니다.
+4. **필터와 탭**(Publications의 All / Journal Articles …)도 글자로 두고, 선택된 것만 파랑 글자 + 밑줄로 표시합니다.
+5. 강조색(파랑)은 링크, 현재 메뉴·탭·선택된 필터, 연도 같은 목록의 이정표에만 씁니다.
+6. 예외는 실제 버튼 하나뿐입니다: Home 첫 화면의 "전문 읽기", 업로드 페이지의 제출 버튼처럼 동작을 일으키는 것.
+7. 새 페이지(Seminars 개편 포함)도 이 규칙을 따릅니다.
+
+### 카드와 사진
+- 카드는 Research Areas(대표 그림 + 제목 + 설명)처럼 **한 묶음을 그림과 함께 보여 줄 때만** 씁니다. 가는 테두리, 모서리 12px, 그림자 없음.
+- 사람 사진은 3:4, 모서리 8px(교수님 사진 10px). 없으면 같은 크기의 옅은 빈 칸.
+- 목록(논문, 세미나, 이력)은 카드가 아니라 줄 단위 목록 + 줄 사이 가는 선.
 
 ### 신호 모티프와 첫 화면
 - Home 첫 화면은 화면 폭 가득한 **사진 캐러셀 자리**입니다. 사진은 `content/home.yml`의 `slides`에 적고 파일은 `public/images/home/`에 둡니다 (가로 16:9, 1600×900 이상, 1장 400KB 이하, 6초마다 넘어감). 사진이 없으면 남색 첫 화면입니다. Home에서는 헤더도 남색입니다.
@@ -63,17 +81,18 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 | 이름 | 라이트 | 다크 | 용도 |
 | --- | --- | --- | --- |
 | paper | #ffffff | #0f141b | 배경 |
-| surface | #f4f6f9 | #161d26 | 푸터, 빈 사진 칸 |
+| surface | #f4f6f9 | #161d26 | 푸터, 빈 사진·그림 칸, 교수님 연구 분야 칸 |
 | ink | #152030 | #e6ebf2 | 본문 |
 | muted | #5a6677 | #9aa6b5 | 메타데이터 |
 | rule | #dce2ea | #27313d | 구분선 |
 | accent | #2452c6 | #85a7ff | 링크, 현재 메뉴·탭 |
-| night | #0d1830 | — | Home 첫 화면(밤하늘, 사진 위 덮개, 헤더) |
+| night | #0d1830 | — | 헤더, 페이지 띠, Home 첫 화면 |
+| night-accent | #a9c1ff | — | 남색 위의 링크·현재 메뉴 |
 
 다크 모드는 기기 설정을 따릅니다. 색은 `src/app/globals.css` 맨 위에서만 정의합니다.
 
 ### 쓰지 않는 것
-Home 첫 화면 밖의 이미지 슬라이드, 카드 레이아웃 남발, 둥근 태그 배지, 그림자, 출처 없는 이미지·아이콘, 애니메이션, 모든 제목 위의 대문자 이름표.
+Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그·둥근 배지, 그림자, 출처 없는 이미지·아이콘, Home 첫 화면 밖의 애니메이션, 제목 위의 대문자 이름표, 왼쪽 제목 칸 2단 구성.
 
 ### 언어
 - **영어 기본 + 국문 병기.** 메뉴·섹션 제목·날짜·이름표는 영어.
@@ -81,7 +100,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 레이아웃 남발, 둥�
 - 원래 국문인 고유명사(과제명, 학회명, 위원회명)와 영어로 옮기면 길거나 어색한 제목은 **국문 그대로** 씁니다.
 
 ### 화면 범위
-**PC 화면이 기준**입니다. 960px 이하에서는 2단 격자가 1단으로, 640px 이하에서는 헤더·목록이 좁은 화면용으로 바뀝니다. 모바일 세부 다듬기는 나중에 합니다 (11장).
+**PC 화면이 기준**입니다. 960px 이하에서는 카드·사진 그리드 열 수가 줄고, 640px 이하에서는 헤더·목록이 좁은 화면용으로 바뀝니다. 모바일 세부 다듬기는 나중에 합니다 (11장).
 
 ## 4. 메뉴와 페이지
 
@@ -109,11 +128,11 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 레이아웃 남발, 둥�
 사진 캐러셀 첫 화면(랩명, 시 한 연, 전문 읽기 버튼) → **Highlights** (세미나 중 `highlight: true`이고 PDF가 있는 것, 최신 5건) → Research Areas → Recent Publications 3편 → 시 전문(`#poem`). Highlights가 하나도 없으면 그 섹션은 나오지 않습니다.
 
 ### Members ▸ Professor
-사진(선택) · 이름 · 직위 · 소속 · 연락처 → Biography(입력 시) → Education & Career → Research Areas → Courses Taught(입력 시) → Publications → Intellectual Property → Research Projects → Academic Services(연도별, 날짜 없는 항목은 Other) → Student Awards. 비어 있는 항목은 표시되지 않습니다.
+사진(왼쪽, 260px) + 이름 · 직위 · 소속 · 분야 · 연락처 · 프로필 링크 → Biography(입력 시) → Education & Career → Research Areas → Courses Taught(입력 시) → Publications → Intellectual Property → Research Projects → Academic Services(연도별, 날짜 없는 항목은 Other) → Student Awards. 비어 있는 항목은 표시되지 않습니다.
 
 ### Members ▸ Our Team
 - 섹션: **Ph.D. Students → M.S. Students → Undergraduate Researchers** (사람이 있는 섹션만 표시)
-- 한 사람: **사진 칸 + 옆에 영문 이름 / 국문 이름 / 역할 / 한 줄 소개 / (선택) Website 링크**, PC에서 한 줄에 두 명. 개인 페이지는 따로 없습니다.
+- "Our Team" 섹션 안에 구분별 소제목, 그 아래 **4열 사진 그리드**. 한 사람: 사진 / 영문 이름 / 국문 이름 / 한 줄 소개 / (선택) Website 링크. 개인 페이지는 따로 없습니다.
 - 사진 칸: 3:4 세로, 모두 같은 크기. 사진이 없으면 같은 크기의 옅은 빈 칸만 둡니다 (아이콘·이니셜 넣지 않음).
 - 파일: `public/images/people/<id>.jpg`, 긴 변 800px, 200KB 이하. 본인이 제공하고 게시에 동의한 것만.
 
@@ -121,22 +140,22 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 레이아웃 남발, 둥�
 사진 없이 한 줄: 이름, 국문 이름, 현재 소속 (진로는 본인 동의 시에만).
 
 ### Research ▸ Areas / 주제 상세
-- 목록: 왼쪽에 관련 논문 수, 오른쪽에 제목 + 한 줄 설명 + Read more
-- 상세: Back to Research Areas → 제목 → 대표 그림(선택) → Overview → Related Publications → Related Seminars(세미나의 `topics`에 이 주제가 있는 것)
+- 목록: 3열 카드. 위쪽 대표 그림(없으면 빈 칸), 제목, 한 줄 설명, Read more와 관련 논문 수
+- 상세: 띠에 Back to Research Areas · 제목 · 한 줄 설명 → 대표 그림(선택) → Overview(본문이 있을 때) → Related Publications → Related Seminars(세미나의 `topics`에 이 주제가 있는 것)
 - 주제 분류와 명칭은 교수님 확정 전 임시입니다.
 
 ### Research ▸ Publications
-- 섹션: **Journal Articles → Conference Papers → Conference Posters → Others** (국내/국제 학회는 나누지 않음), 섹션 안 최신순. 종류 목록은 `src/lib/content.ts`의 `PUBLICATION_TYPES`
-- 항목: 제목(상세 링크) / 저자(구성원 이름은 Members로 자동 링크, 굵게 하지 않음) / 학회·저널, 날짜 / 상태·수상 / 링크 한 줄
+- 위에 종류 필터(All, Journal Articles, Conference Papers, Conference Posters, Others; 개수 표시, 글자 버튼), 왼쪽에 연도 목록, 오른쪽에 연도별 목록(큰 파랑 연도 제목, 최신순). 국내/국제는 나누지 않음. 종류 목록은 `src/lib/content.ts`의 `PUBLICATION_TYPES`
+- 항목: 제목(상세 링크) / 저자(구성원 이름은 Members로 자동 링크) / 학회·저널(이탤릭), 날짜 / 종류·상태·수상(굵은 글자)과 링크 한 줄 — 3장 태그 규칙
 - 상세 페이지: Details(저자, 학회, 종류, 날짜, 상태, 수상, 링크) → 대표 그림(선택) → Overview
 
 ### Seminars
-- 학기별 섹션(왼쪽 칸에 학기), 학기 안 최신순
+- **임시 구성**: 학기별 섹션, 학기 안 최신순. 분야별 묶음 + 검색 위주로 별도 세션에서 다시 설계합니다 (프로젝트 문서 `SAI-Lab-Seminars-페이지-설계.md`).
 - 항목: 날짜 / **제목**(PDF가 있으면 제목도 PDF 링크) / 발표자 · 종류 / 개요 한 문장 / 오른쪽 `PDF`
 - 학기는 날짜로 자동 계산: 3–8월 Spring, 9–12월 Fall, 1–2월 전년도 Winter (`term`으로 직접 지정 가능)
 
 ### Album
-- 행사(세미나, MT, 학회 등)마다 섹션 하나: 왼쪽 칸에 행사 이름과 날짜, 오른쪽에 사진 3열. 최신 행사가 위.
+- 행사(세미나, MT, 학회 등)마다 섹션 하나: 제목에 행사 이름, 오른쪽에 날짜, 아래 사진 3열. 최신 행사가 위.
 - 사진을 누르면 크게 보이고 이전/다음(좌우 방향키)으로 넘깁니다.
 - 사진이 하나도 없으면 상위 메뉴와 푸터에서 Album이 숨겨집니다.
 - 사진: 가로 사진, 긴 변 1600px 안팎, 1장 500KB 이하. 사람이 나오면 게시 동의를 받은 것만.

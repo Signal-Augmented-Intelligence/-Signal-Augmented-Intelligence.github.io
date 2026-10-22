@@ -1,10 +1,7 @@
 import type { ReactNode } from 'react';
 import styles from './Section.module.css';
 
-/**
- * A content block with its heading in a left label column (PC) and content on the right.
- * `aside` sits under the heading, e.g. a "View all" link.
- */
+/** A content block: heading with an optional link on the right, a dark rule, then the content. */
 export function Section({ id, title, aside, children }: { id?: string; title: string; aside?: ReactNode; children: ReactNode }) {
   return (
     <section id={id} className={`container ${styles.section}`}>

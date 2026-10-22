@@ -7,6 +7,8 @@
   --rule: #dce2ea;
   --accent: #2452c6;
   --accent-soft: #eaf0fc;
+  --night: #0d1830;         /* header, page banners, Home first screen */
+  --night-accent: #a9c1ff;  /* links and current item on navy */
 
   /* Latin: Instrument Sans. Hangul falls through to Pretendard. Formulas: STIX Two Text italic. */
   --font: 'Instrument Sans Variable', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
@@ -20,7 +22,6 @@
 
   --container: 1160px;
   --gutter: 40px;
-  --label-col: 220px;
   --header-h: 72px;
 }
 
@@ -37,7 +38,7 @@
 }
 
 @media (max-width: 960px) {
-  :root { --gutter: 24px; --label-col: 0px; --text-hero: 3.25rem; --text-2xl: 1.875rem; }
+  :root { --gutter: 24px; --text-hero: 3.25rem; --text-2xl: 1.875rem; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -61,6 +62,7 @@ body {
 h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 img { display: block; max-width: 100%; height: auto; }
+[hidden] { display: none !important; }
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 0.18em; }

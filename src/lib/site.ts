@@ -10,6 +10,10 @@ export const MAIN_NAV: NavItem[] = [
   { title: 'Contact', href: '/contact/', match: ['/contact/'], requires: 'contact' },
 ];
 
+/** One-line descriptions under each section's page banner. */
+export const MEMBERS_LEDE = 'People of SAI Lab, Hanshin University';
+export const RESEARCH_LEDE = 'Research areas and publications of SAI Lab';
+
 export const MEMBERS_TABS: NavItem[] = [
   { title: 'Professor', href: '/members/professor/' },
   { title: 'Our Team', href: '/members/our-team/' },

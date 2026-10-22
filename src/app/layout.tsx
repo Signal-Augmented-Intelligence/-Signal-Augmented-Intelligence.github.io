@@ -12,10 +12,10 @@ import { SITE_URL } from '@/lib/site';
 const lab = getLab();
 
 /**
- * Runs before paint on every full page load. On Home: marks the page (dark header) and, on wide screens with motion
- * allowed, starts the night-sky phase of the hero (see components/Hero.tsx). Menu navigation does not rerun it.
+ * Runs before paint on every full page load. On Home with a wide screen and motion allowed, starts the night-sky
+ * phase of the hero (see components/Hero.tsx). Menu navigation does not rerun it.
  */
-const HERO_SCRIPT = "try{var d=document.documentElement;if(location.pathname==='/'){d.dataset.home='true';if(matchMedia('(min-width: 961px)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.hero='night'}}}catch(e){}";
+const HERO_SCRIPT = "try{var d=document.documentElement;if(location.pathname==='/'&&matchMedia('(min-width: 961px)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.hero='night'}}catch(e){}";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

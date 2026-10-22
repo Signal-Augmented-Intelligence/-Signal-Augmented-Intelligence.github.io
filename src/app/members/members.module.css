@@ -1,19 +1,20 @@
-.team { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
-.member { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: 24px; align-items: start; scroll-margin-top: calc(var(--header-h) + 24px); }
-.name { font-weight: 600; }
-.nameKo { color: var(--muted); }
-.role { margin-top: 6px; font-size: var(--text-sm); color: var(--muted); }
-.bio { margin-top: 12px; }
-.link { margin-top: 8px; font-size: var(--text-sm); font-weight: 500; }
+.group + .group { margin-top: 48px; }
+.groupTitle { margin-bottom: 24px; color: var(--muted); font-size: 0.9375rem; font-weight: 600; }
+.team { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 32px; }
+.member { scroll-margin-top: calc(var(--header-h) + 84px); }
+.name { margin-top: 16px; font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.01em; }
+.nameKo { margin-top: 2px; color: var(--muted); font-size: var(--text-sm); }
+.bio { margin-top: 10px; font-size: var(--text-sm); line-height: 1.55; }
+.link { margin-top: 10px; font-size: 0.8125rem; font-weight: 600; }
 
-.alumni { display: grid; max-width: 52rem; }
-.alumni > li { display: grid; grid-template-columns: 220px 120px minmax(0, 1fr); column-gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.alumni > li:first-child { border-top: 1px solid var(--rule); }
+.alumni { display: grid; }
+.alumni > li { display: grid; grid-template-columns: 240px 120px minmax(0, 1fr); column-gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.alumni .name { margin: 0; font-size: var(--text-md); }
 
 @media (max-width: 960px) {
-  .team { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .team { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
-  .member { grid-template-columns: 96px minmax(0, 1fr); column-gap: 18px; }
+  .team { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 16px; }
   .alumni > li { grid-template-columns: minmax(0, 1fr); }
 }

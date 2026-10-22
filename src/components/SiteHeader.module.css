@@ -1,41 +1,24 @@
+/* Navy header on every page; it continues into the navy page banner (PageHeader) or the Home first screen. */
 .header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  backdrop-filter: saturate(1.4) blur(8px);
-  border-bottom: 1px solid var(--rule);
+  background: var(--night);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 .inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header-h); }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: #ffffff; }
 .brand:hover { text-decoration: none; }
-.mark { color: var(--accent); }
+.mark { color: var(--night-accent); }
 .logo { height: 24px; width: auto; }
-.name { font-size: var(--text-lg); font-weight: 650; letter-spacing: -0.01em; }
-.nav { display: flex; gap: 36px; }
-.link { position: relative; display: block; padding: 6px 0; color: var(--ink); font-weight: 500; }
-.link:hover { color: var(--accent); text-decoration: none; }
-.link[aria-current='page'] { color: var(--accent); }
-.link[aria-current='page']::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc((var(--header-h) - 36px) / -2 - 1px);
-  height: 2px;
-  background: var(--accent);
-}
+.name { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.01em; }
+.nav { display: flex; gap: 40px; }
+.link { display: block; padding: 6px 0; color: #ffffff; font-size: 0.9375rem; font-weight: 500; }
+.link:hover { color: var(--night-accent); text-decoration: none; }
+.link[aria-current='page'] { color: var(--night-accent); }
 
 @media (max-width: 640px) {
-  .inner { height: auto; padding-top: 14px; padding-bottom: 0; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .inner { height: auto; padding-top: 14px; padding-bottom: 10px; flex-direction: column; align-items: flex-start; gap: 6px; }
   .nav { gap: 24px; }
-  .link { padding: 6px 0 12px; }
-  .link[aria-current='page']::after { bottom: -1px; }
 }
-
-/* Home (see Hero.tsx): the header sits dark on the first screen. */
-.header, .name, .link { transition: background-color 1s ease, border-color 1s ease, color 1s ease; }
-:global(html[data-home='true']) .header { background: #0d1830; border-bottom-color: rgba(255, 255, 255, 0.1); backdrop-filter: none; }
-:global(html[data-home='true']) .brand, :global(html[data-home='true']) .link { color: #ffffff; }
-:global(html[data-home='true']) .link[aria-current='page'] { color: #a9c1ff; }
-:global(html[data-home='true']) .mark { color: #a9c1ff; }

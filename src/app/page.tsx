@@ -1,15 +1,16 @@
 import Link from 'next/link';
+import { Hero } from '@/components/Hero';
+import itemStyles from '@/components/Items.module.css';
 import { PublicationItem } from '@/components/PublicationItem';
 import { Section } from '@/components/Section';
 import { SeminarItem } from '@/components/SeminarItem';
-import { SignalPlot } from '@/components/SignalPlot';
-import itemStyles from '@/components/Items.module.css';
-import { getLab, getPeople, getProfessor, getPublications, getResearchAreas, getSeminars } from '@/lib/content';
+import { getLab, getPeople, getPoem, getProfessor, getPublications, getResearchAreas, getSeminars } from '@/lib/content';
 import styles from './home.module.css';
 
 export default function HomePage() {
   const lab = getLab();
   const professor = getProfessor();
+  const poem = getPoem();
   const people = getPeople();
   const areas = getResearchAreas();
   const publications = getPublications().slice(0, 3);
@@ -17,19 +18,16 @@ export default function HomePage() {
 
   return (
     <>
-      <div className={`container ${styles.hero}`}>
-        <div className={styles.heroText}>
-          <h1 className={styles.name}>{lab.name}</h1>
-          <p className={styles.fullName}>{lab.full_name}{lab.name_ko && <span lang="ko"> | {lab.name_ko}</span>}</p>
-          <p className={styles.intro}>{lab.intro}</p>
-        </div>
-        <dl className={styles.facts}>
-          <div><dt>Advisor</dt><dd><Link href="/members/professor/">{professor.name}</Link></dd></div>
-          <div><dt>Affiliation</dt><dd>{professor.affiliation || lab.institution}</dd></div>
-          {lab.location && <div><dt>Location</dt><dd>{lab.location}</dd></div>}
-        </dl>
-        <SignalPlot className={styles.plot} />
-      </div>
+      <Hero
+        name={lab.name}
+        fullName={lab.full_name}
+        nameKo={lab.name_ko}
+        quote={poem.hero}
+        poemTitle={poem.stanzas.length > 0 ? poem.title : ''}
+        advisor={professor.name}
+        affiliation={professor.affiliation || lab.institution}
+        location={lab.location}
+      />
 
       {highlights.length > 0 && (
         <Section id="highlights" title="Highlights" aside={<Link href="/seminars/">View all seminars</Link>}>
@@ -55,6 +53,17 @@ export default function HomePage() {
           {publications.map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}
         </ol>
       </Section>
+
+      {poem.stanzas.length > 0 && (
+        <Section id="poem" title={poem.title}>
+          <div className={styles.poem} lang="ko">
+            {poem.stanzas.map((stanza, i) => (
+              <div key={i}>{stanza.map((line) => <p key={line}>{line}</p>)}</div>
+            ))}
+            {poem.credit && <p className={styles.credit}>{poem.credit}</p>}
+          </div>
+        </Section>
+      )}
     </>
   );
 }

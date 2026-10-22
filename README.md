@@ -8,7 +8,7 @@ Site: https://signal-augmented-intelligence.github.io/ · Organization: https://
 ## Layout
 | What | Where |
 | --- | --- |
-| All page content (lab, professor, members, research areas, publications, seminars, news) | `content/` |
+| All page content (lab, professor, members, research areas, publications, seminars, news, poem) | `content/` |
 | Seminar PDFs, member photos | `public/files/seminars/`, `public/images/people/` |
 | Pages (Next.js App Router) | `src/app/` |
 | Shared components | `src/components/` |
@@ -30,4 +30,4 @@ GitHub Actions (`.github/workflows/pages.yml`) builds every push and pull reques
 to GitHub Pages (Settings → Pages → Source: GitHub Actions). `draft: true` in `content/lab.yml` keeps the site out
 of search engines and adds a footer note.
 
-Pretendard is used under the SIL Open Font License (via the `pretendard` npm package).
+Fonts (SIL Open Font License, via npm): Instrument Sans, Pretendard, STIX Two Text.

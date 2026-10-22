@@ -32,3 +32,9 @@
   .link { padding: 6px 0 12px; }
   .link[aria-current='page']::after { bottom: -1px; }
 }
+
+/* Home night phase (see Hero.tsx): the header sits on the same sky, then fades back. */
+.header, .name, .link { transition: background-color 1.5s ease, border-color 1.5s ease, color 1.5s ease; }
+:global(html[data-hero='night']) .header { background: #0d1830; border-bottom-color: rgba(255, 255, 255, 0.12); }
+:global(html[data-hero='night']) .brand, :global(html[data-hero='night']) .link { color: #ffffff; }
+:global(html[data-hero='night']) .mark { color: #a9c1ff; }

@@ -282,3 +282,12 @@ export function getNews(): NewsItem[] {
     .map((n) => ({ date: str(n.date), text: str(n.text), link: str(n.link) }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
+
+/* ---------- poem ---------- */
+export type Poem = { title: string; hero: string[]; credit: string; stanzas: string[][] };
+export function getPoem(): Poem {
+  const raw = readYaml<Record<string, unknown>>('poem.yml', {});
+  const stanzas = ((raw.stanzas as unknown[][] | null) ?? []).map((s) => s.map(str));
+  const index = Math.min(Math.max(Number(raw.hero ?? 1), 1), Math.max(stanzas.length, 1)) - 1;
+  return { title: str(raw.title), hero: stanzas[index] ?? [], credit: str(raw.credit), stanzas };
+}

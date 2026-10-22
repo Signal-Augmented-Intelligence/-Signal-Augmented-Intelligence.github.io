@@ -8,7 +8,8 @@
   --accent: #2452c6;
   --accent-soft: #eaf0fc;
 
-  --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
+  /* Latin: Instrument Sans. Hangul falls through to Pretendard. Formulas: STIX Two Text italic. */
+  --font: 'Instrument Sans Variable', 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Segoe UI', sans-serif;
   --text-xs: 0.8125rem;   /* 13 */
   --text-sm: 0.875rem;    /* 14 */
   --text-md: 1rem;        /* 16 */

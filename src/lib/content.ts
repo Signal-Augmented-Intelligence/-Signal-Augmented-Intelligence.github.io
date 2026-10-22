@@ -239,35 +239,30 @@ export const SEMINAR_TYPES: Record<string, string> = {
 };
 export type Seminar = {
   date: string;
-  term: string;
   presenter: string;
   title: string;
   summary: string;
+  area: string;
   type: string;
   topics: string[];
   file: string;
+  cover: string;
   highlight: boolean;
 };
-/** Mar–Aug: Spring, Sep–Dec: Fall, Jan–Feb: Winter of the previous year. */
-export function termOf(date: string): string {
-  const [y, m] = date.split('-').map(Number);
-  if (m >= 9) return `${y} Fall`;
-  if (m >= 3) return `${y} Spring`;
-  return `${y - 1} Winter`;
-}
 export function getSeminars(): Seminar[] {
   return readYaml<Record<string, unknown>[]>('seminars.yml', [])
     .map((s) => {
       const date = str(s.date).slice(0, 10);
       return {
         date,
-        term: str(s.term) || termOf(date),
         presenter: str(s.presenter),
         title: str(s.title),
         summary: str(s.summary),
+        area: str(s.area).trim(),
         type: str(s.type),
         topics: ((s.topics as string[] | null) ?? []).map(str),
         file: str(s.file),
+        cover: str(s.cover),
         highlight: s.highlight === true,
       };
     })

@@ -52,7 +52,7 @@ export default async function ResearchAreaPage({ params }: Params) {
       )}
       {seminars.length > 0 && (
         <Section id="related-seminars" title="Related Seminars">
-          <ol className={itemStyles.list}>{seminars.map((s) => <SeminarItem key={s.date + s.title} seminar={s} people={people} showTerm />)}</ol>
+          <ol className={itemStyles.list}>{seminars.map((s) => <SeminarItem key={s.date + s.title} seminar={s} people={people} />)}</ol>
         </Section>
       )}
     </>

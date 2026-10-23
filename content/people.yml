@@ -4,6 +4,7 @@
 #   faculty is shown on Members > Professor (details in content/professor.yml), the rest on Our Team / Alumni.
 # bio: one line next to the photo, written by the member (English or 국문).
 # photo: file name in public/images/people/ (3:4, long side 800px, <= 200 KB). Leave empty for a grey placeholder.
+# aliases: other English spellings printed in papers (optional), so those author names link too.
 # after: alumni only — current position, one line (with the person's consent).
 - id: seon-man-kim
   name: "Seon Man Kim"
@@ -27,15 +28,16 @@
   photo: ""
   url: "https://green4849.github.io/"
   after: ""
-- id: hyeon-jae-shin
-  name: "Hyeon Jae Shin"
+- id: hyun-jae-shin
+  name: "Hyun Jae Shin"
+  aliases: ["Hyeon Jae Shin"]   # ICTCA 2025, IEIE 2026 papers
   name_ko: "신현재"
   group: ms
   role: "M.S. Student"
   since:
   until:
   bio: ""
-  photo: "hyeon-jae-shin.jpg"
+  photo: "hyun-jae-shin.jpg"
   url: ""
   after: ""
 - id: na-kyung-lee

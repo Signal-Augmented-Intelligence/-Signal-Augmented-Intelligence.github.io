@@ -48,7 +48,7 @@ export default async function ResearchAreaPage({ params }: Params) {
       )}
       {publications.length > 0 && (
         <Section id="related-publications" title="Related Publications">
-          <ol className={itemStyles.list}>{publications.map((p) => <PublicationItem key={p.url} pub={p} />)}</ol>
+          <ol className={itemStyles.list}>{publications.map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}</ol>
         </Section>
       )}
       {seminars.length > 0 && (

@@ -75,6 +75,8 @@ export type Person = {
   photo: string;
   url: string;
   after: string;
+  /** Other spellings of the English name used in papers. */
+  aliases: string[];
 };
 export function getPeople(): Person[] {
   return readYaml<Record<string, unknown>[]>('people.yml', []).map((p) => ({
@@ -87,6 +89,7 @@ export function getPeople(): Person[] {
     photo: str(p.photo),
     url: str(p.url),
     after: str(p.after),
+    aliases: ((p.aliases as string[] | null) ?? []).map(str),
   }));
 }
 /** Where a member's name links to (author lists, seminar presenters). */

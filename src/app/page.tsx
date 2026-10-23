@@ -47,7 +47,7 @@ export default function HomePage() {
 
       <Section id="recent-publications" title="Recent Publications" aside={<Link href="/research/publications/">All publications</Link>}>
         <ol className={itemStyles.list}>
-          {publications.map((p) => <PublicationItem key={p.url} pub={p} />)}
+          {publications.map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}
         </ol>
       </Section>
 

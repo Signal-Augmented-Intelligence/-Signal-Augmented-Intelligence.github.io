@@ -1,5 +1,6 @@
 /* Design tokens and base styles. Component styles live next to each component (*.module.css). */
 :root {
+  color-scheme: light;
   --paper: #ffffff;
   --surface: #f4f6f9;
   --ink: #152030;
@@ -23,18 +24,6 @@
   --container: 1160px;
   --gutter: 40px;
   --header-h: 72px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #0f141b;
-    --surface: #161d26;
-    --ink: #e6ebf2;
-    --muted: #9aa6b5;
-    --rule: #27313d;
-    --accent: #85a7ff;
-    --accent-soft: #1a2640;
-  }
 }
 
 @media (max-width: 960px) {

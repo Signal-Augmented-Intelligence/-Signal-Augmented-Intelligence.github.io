@@ -1,0 +1,8 @@
+/* 공개 사이트 헤더(SiteHeader.module.css)에 더하는 부분만 둡니다. */
+.divider { width: 1px; height: 18px; margin: 0 4px; background: rgba(255, 255, 255, 0.3); }
+.area { font-size: 1.0625rem; font-weight: 500; color: rgba(255, 255, 255, 0.85); }
+
+/* 좁은 화면에서도 링크를 오른쪽 한 줄에 둡니다 (공개 사이트처럼 메뉴가 여럿이 아니라서). */
+@media (max-width: 640px) {
+  .inner { height: var(--header-h); padding-top: 0; padding-bottom: 0; flex-direction: row; align-items: center; }
+}

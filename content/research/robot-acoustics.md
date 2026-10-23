@@ -7,4 +7,6 @@ figure_alt: ""
 figure_caption: ""
 publications:       # 관련 논문 permalink
   - /publications/quadruped-footstep-denoising/
+  - /publications/quadruped-ego-noise-database/
+  - /publications/quadruped-speech-enhancement/
 ---

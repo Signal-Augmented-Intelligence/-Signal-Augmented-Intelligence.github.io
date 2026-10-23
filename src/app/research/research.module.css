@@ -18,3 +18,9 @@
 @media (max-width: 960px) {
   .cards { grid-template-columns: minmax(0, 1fr); }
 }
+/* Phones: a figure keeps its shape; an empty figure slot is dropped so the cards stay short. */
+@media (max-width: 640px) {
+  .figure { height: auto; aspect-ratio: 16 / 9; }
+  .figure:empty { display: none; }
+  .cardBody { padding: 22px 20px 22px; }
+}

@@ -47,7 +47,7 @@ export function SeminarsExplorer({ seminars }: { seminars: SeminarEntry[] }) {
   return (
     <div className={styles.explorer}>
       <label className={styles.searchLabel} htmlFor="seminar-search">Search seminars</label>
-      <input id="seminar-search" className={styles.search} type="search" value={query} placeholder="Search by title, summary, presenter or area" onChange={(event) => {
+      <input id="seminar-search" className={styles.search} type="search" value={query} placeholder="Title, summary, presenter or area" onChange={(event) => {
         setQuery(event.target.value);
         updateUrl(event.target.value, area);
       }} />

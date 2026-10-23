@@ -27,3 +27,36 @@
   photo: ""
   url: "https://green4849.github.io/"
   after: ""
+- id: hyun-jae-shin
+  name: "Hyun Jae Shin"
+  name_ko: "신현재"
+  group: ms
+  role: "M.S. Student"
+  since:
+  until:
+  bio: ""
+  photo: "hyun-jae-shin.jpg"
+  url: ""
+  after: ""
+- id: na-kyung-lee
+  name: "Na Kyung Lee"
+  name_ko: "이나경"
+  group: undergrad
+  role: "Undergraduate Researcher"
+  since:
+  until:
+  bio: ""
+  photo: "na-kyung-lee.jpg"
+  url: ""
+  after: ""
+- id: tae-yeon-kim
+  name: "Tae Yeon Kim"
+  name_ko: "김태연"
+  group: undergrad
+  role: "Undergraduate Researcher"
+  since:
+  until:
+  bio: ""
+  photo: "tae-yeon-kim.jpg"
+  url: ""
+  after: ""

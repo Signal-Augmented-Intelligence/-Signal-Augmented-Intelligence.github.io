@@ -1,7 +1,7 @@
 # The lab poem. Shown in full at the bottom of Home (#poem); `hero` picks the stanza shown in the first screen.
 title: "신호 증강지능"
 hero: 5            # 1-based stanza number
-credit: ""         # 출처 표기 (비우면 표시하지 않음)
+credit: "- SAI Lab, augmented by Claude"   # 전문 끝에만 표시 (첫 화면에는 표시하지 않음). 비우면 표시하지 않음
 stanzas:
   - - "세상의 작은 떨림에 마음을 두어,"
     - "어둠에 잠긴 기척을 찾고,"

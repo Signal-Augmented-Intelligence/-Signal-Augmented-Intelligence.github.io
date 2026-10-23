@@ -4,16 +4,17 @@
 .list > li:first-child { padding-top: 0; }
 
 .item { max-width: 52rem; }
-.title { font-size: 1.0625rem; font-weight: 600; line-height: 1.45; letter-spacing: -0.01em; }
+/* Publications: no rule between entries, just space (reference: KAIST Smart Sound Lab). */
+.list > .item { padding: 0; border-bottom: 0; }
+.list > .item + .item { margin-top: 26px; }
+.title { font-size: 1rem; font-weight: 600; line-height: 1.45; letter-spacing: -0.01em; }
 .title a { color: var(--ink); }
 .title a:hover { color: var(--accent); }
-.authors { margin-top: 6px; font-size: var(--text-sm); color: #3d4757; }
+.authors { margin-top: 4px; font-size: var(--text-sm); color: #3d4757; }
 .authors :global(.person-link) { color: inherit; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 0.2em; }
 .authors :global(.person-link):hover { color: var(--ink); }
-.venue { margin-top: 2px; color: var(--muted); font-size: var(--text-sm); font-style: italic; }
-.venue :global(.num) { font-style: normal; }
-.labels { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 10px; font-size: 0.8125rem; font-weight: 600; }
-.labels:empty { display: none; }
+.venue { margin-top: 2px; color: var(--muted); font-size: var(--text-xs); }
+.link { margin-left: 14px; font-weight: 600; font-style: normal; }
 
 .seminar { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; column-gap: 24px; align-items: baseline; }
 .date { color: var(--muted); font-size: 0.9375rem; }

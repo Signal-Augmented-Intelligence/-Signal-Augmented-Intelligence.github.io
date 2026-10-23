@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/PageHeader';
-import { PersonName } from '@/components/PersonName';
 import { Section } from '@/components/Section';
-import { getPeople, getPublications, PUBLICATION_TYPES } from '@/lib/content';
+import { getPublications, PUBLICATION_TYPES } from '@/lib/content';
 import { formatDate } from '@/lib/format';
 import styles from './publication.module.css';
 
@@ -26,7 +24,6 @@ export default async function PublicationPage({ params }: Params) {
   const { slug } = await params;
   const pub = getPublications().find((p) => p.slug === slug);
   if (!pub) notFound();
-  const people = getPeople();
   const type = PUBLICATION_TYPES.find((t) => t.id === pub.type);
 
   return (
@@ -35,12 +32,11 @@ export default async function PublicationPage({ params }: Params) {
       <Section id="details" title="Details">
         <dl className={styles.details}>
           <dt>Authors</dt>
-          <dd>{pub.authors.map((a, i) => <Fragment key={a + i}>{i > 0 && ', '}<PersonName name={a} people={people} /></Fragment>)}</dd>
+          <dd>{pub.authors.join(', ')}</dd>
           <dt>Venue</dt><dd>{pub.venue}</dd>
           <dt>Type</dt><dd>{type?.label ?? pub.type}</dd>
           <dt>Date</dt><dd className="num">{formatDate(pub.pub_date)}</dd>
           {pub.status && <><dt>Status</dt><dd>{pub.status}</dd></>}
-          {pub.award && <><dt>Award</dt><dd>{pub.award}</dd></>}
           {pub.links.length > 0 && <><dt>Links</dt><dd className={styles.links}>{pub.links.map((l) => <a key={l.url} href={l.url}>{l.label}</a>)}</dd></>}
         </dl>
       </Section>

@@ -4,7 +4,7 @@ title_ko: "다중 한국어 음성 코퍼스에서의 Qwen3-ASR 평가 및 추�
 type: journal
 authors: ["So Yeong Park", "Seon Man Kim"]
 venue: "The Journal of the Acoustical Society of Korea, 45(5), 582–590"
-pub_date: "2026"
+pub_date: "2026-09"
 status: "Accepted Aug 25, 2026"
 award: ""
 links:

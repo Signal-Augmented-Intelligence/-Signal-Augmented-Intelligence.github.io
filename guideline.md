@@ -58,7 +58,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 ### 태그·분류 표시 규칙
 의도: 정보는 글자의 굵기와 위치로 구분하고, 색과 모양으로 꾸미지 않는다. 화면이 담백하게 읽히고, 강조색이 "누를 수 있는 것"과 "지금 위치"만 뜻하게 하려는 것입니다.
 
-1. 종류(Journal article, Conference poster), 상태(Accepted …), 수상(Paper Encouragement Award), 분야 같은 **분류 표시는 본문색 굵은 글자**로만 씁니다. 배경색, 테두리, 둥근 배지(pill), 종류별 색 구분을 쓰지 않습니다.
+1. 종류(Journal article, Conference poster), 상태(Accepted …), 분야 같은 **분류 표시는 본문색 굵은 글자**로만 씁니다. 배경색, 테두리, 둥근 배지(pill), 종류별 색 구분을 쓰지 않습니다.
 2. 여러 개가 붙으면 한 줄에 간격을 두고 나란히 둡니다. 가운뎃점(·)이나 쉼표로 잇지 않아도 됩니다.
 3. **링크**(DOI, KCI record, PDF, Website, 교수 프로필 등)도 같은 줄에 **글자 링크**로 둡니다. 버튼 모양으로 감싸지 않습니다.
 4. **필터와 탭**(Publications의 All / Journal Articles …)도 글자로 두고, 선택된 것만 파랑 글자 + 밑줄로 표시합니다.
@@ -147,8 +147,10 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 
 ### Research ▸ Publications
 - 위에 종류 필터(All, Journal Articles, Conference Papers, Conference Posters, Others; 개수 표시, 글자 버튼), 왼쪽에 연도 목록, 오른쪽에 연도별 목록(큰 파랑 연도 제목, 최신순). 국내/국제는 나누지 않음. 종류 목록은 `src/lib/content.ts`의 `PUBLICATION_TYPES`
-- 항목: 제목(상세 링크) / 저자(구성원 이름은 Members로 자동 링크) / 학회·저널(이탤릭), 날짜 / 종류·상태·수상(굵은 글자)과 링크 한 줄 — 3장 태그 규칙
-- 상세 페이지: Details(저자, 학회, 종류, 날짜, 상태, 수상, 링크) → 대표 그림(선택) → Overview
+- 항목: 제목(상세 링크) / 저자(링크 없는 글자) / 학회·저널(이탤릭), 날짜 / 종류·상태(굵은 글자)와 링크 한 줄 — 3장 태그 규칙
+- 수상은 논문 목록과 상세 페이지에 표시하지 않습니다.
+- 같은 해 안에서는 날짜순(최신 먼저)입니다. 연도만 적은 논문은 그해 아래쪽에 놓이므로, 월을 알면 `"2026-09"`처럼 적습니다. 연구 분야 상세 페이지의 Related Publications도 최신순입니다.
+- 상세 페이지: Details(저자, 학회, 종류, 날짜, 상태, 링크) → 대표 그림(선택) → Overview
 
 ### Seminars
 - 검색창이 첫 요소입니다. 제목·개요·발표자·분야를 브라우저에서 검색하고 검색어와 선택 분야를 주소에 남깁니다.
@@ -175,7 +177,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 | --- | --- |
 | `content/lab.yml` | 랩명, 소속, 지도교수, 소개 문구, 공식 이메일·위치(비우면 표시 안 함, Contact 메뉴도 숨김), 로고, 업로드 중계 주소, `draft` |
 | `content/professor.yml` | 교수님 페이지 전체. 출처와 확인일은 파일 맨 위 주석에 |
-| `content/people.yml` | 구성원 (교수님 포함 — 논문 저자 자동 링크용) |
+| `content/people.yml` | 구성원 (교수님 포함 — 세미나 발표자 연결·업로드 발표자 목록용) |
 | `content/research/*.md` | 연구 주제 1개당 파일 1개 |
 | `content/publications/*.md` | 논문 1편당 파일 1개 |
 | `content/seminars.yml` | 세미나 |
@@ -189,7 +191,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 
 ### people.yml
 ```yaml
-- id: so-yeong-park            # 영문 소문자-하이픈. 바꾸지 않음 (논문·세미나가 이 id로 연결됨)
+- id: so-yeong-park            # 영문 소문자-하이픈. 바꾸지 않음 (세미나가 이 id로 연결됨)
   name: "So Yeong Park"
   name_ko: "박소영"
   group: undergrad             # faculty / phd / ms / undergrad / alumni
@@ -222,11 +224,11 @@ Overview 본문 (비우면 summary를 씀)
 title: "…"
 title_ko: ""                   # 국문 제목 있으면
 type: journal                  # journal / conference-paper / conference-poster / other
-authors: ["So Yeong Park", "Seon Man Kim"]   # 출판된 순서 그대로. people.yml의 name과 같으면 자동 링크
+authors: ["So Yeong Park", "Seon Man Kim"]   # 출판된 순서 그대로. 링크 없이 글자로 표시
 venue: "…"
 pub_date: "2026-06-19"         # 아는 만큼만: "2026", "2026-08"도 가능
 status: ""                     # 예: "Accepted Aug 25, 2026"
-award: ""
+award: ""                      # 기록용. 사이트에는 표시하지 않음
 links: []                      # - label: "DOI"  /  url: "https://…"
 permalink: "/publications/짧은이름/"   # 한 번 정하면 바꾸지 않음
 excerpt: "한 문장 요약"

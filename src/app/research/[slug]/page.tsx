@@ -28,7 +28,8 @@ export default async function ResearchAreaPage({ params }: Params) {
   if (!area) notFound();
   const people = getPeople();
   const all = getPublications();
-  const publications = area.publications.map((u) => all.find((p) => p.url === u)).filter((p) => p !== undefined);
+  const publications = area.publications.map((u) => all.find((p) => p.url === u)).filter((p) => p !== undefined)
+    .sort((a, b) => b.pub_date.localeCompare(a.pub_date));
   const seminars = getSeminars().filter((s) => s.topics.includes(area.slug));
 
   return (
@@ -47,7 +48,7 @@ export default async function ResearchAreaPage({ params }: Params) {
       )}
       {publications.length > 0 && (
         <Section id="related-publications" title="Related Publications">
-          <ol className={itemStyles.list}>{publications.map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}</ol>
+          <ol className={itemStyles.list}>{publications.map((p) => <PublicationItem key={p.url} pub={p} />)}</ol>
         </Section>
       )}
       {seminars.length > 0 && (

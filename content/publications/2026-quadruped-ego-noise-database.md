@@ -2,7 +2,7 @@
 title: "Construction of an Ego-Noise Database and Time-Frequency Analysis for Acoustic Situation Awareness in Quadruped Robots"
 title_ko: "사족보행 로봇의 청각 기반 상황 인지를 위한 자가소음 데이터베이스 구축 및 시간-주파수 특성 분석"
 type: conference-paper
-authors: ["Hyun Jae Shin", "Juhyun Pyo", "Chang-Min Ahn", "Murim Kim", "Seon Man Kim"]
+authors: ["Hyeon Jae Shin", "Juhyun Pyo", "Chang-Min Ahn", "Murim Kim", "Seon Man Kim"]
 venue: "Korean Association of Data Science Summer Conference"
 pub_date: "2026"
 status: ""

@@ -25,18 +25,48 @@ const pct = (px: number, total: number) => `${((px / total) * 100).toFixed(2)}%`
 
 export type SkyItem = { text: string; left: string; top: string; size: number; duration: number; delay: number };
 
-/** Falling formulas: one start point per cell of a jittered 3 x 3 grid, staggered over one cycle. */
+const FALL_X = -200;       // keyframes "fall": total travel
+const FALL_Y = 200;
+const VISIBLE = 0.45;      // share of the cycle a formula is on screen
+const GAP = 14;            // minimum space kept between two formulas (px)
+
+type Placed = { x: number; y: number; w: number; h: number; delay: number };
+
+/** Box of a formula at time t (s), or null while it is hidden. */
+function boxAt(m: Placed, t: number) {
+  const phase = ((((t - m.delay) % CYCLE_S) + CYCLE_S) % CYCLE_S) / CYCLE_S;
+  if (phase >= VISIBLE) return null;
+  const k = phase / VISIBLE;
+  return { x: m.x + FALL_X * k, y: m.y + FALL_Y * k, w: m.w, h: m.h };
+}
+
+/** True when the two formulas ever come closer than GAP while both are on screen. */
+function collides(a: Placed, b: Placed) {
+  for (let t = 0; t < CYCLE_S; t += 0.05) {
+    const p = boxAt(a, t);
+    const q = boxAt(b, t);
+    if (p && q && p.x < q.x + q.w + GAP && q.x < p.x + p.w + GAP && p.y < q.y + q.h + GAP && q.y < p.y + p.h + GAP) return true;
+  }
+  return false;
+}
+
+/**
+ * Falling formulas, staggered over one cycle. Start points are drawn at random (fixed seed)
+ * and redrawn until no two formulas overlap at any moment of the cycle.
+ */
+const placed: Placed[] = [];
 export const METEORS: SkyItem[] = FALLING.map((text, i) => {
-  const col = i % 3;
-  const row = Math.floor(i / 3);
-  return {
-    text,
-    left: pct(250 + col * 130 + rand() * 60, FIELD_W),
-    top: pct(6 + row * 64 + rand() * 30, FIELD_H),
-    size: 15 + rand() * 3,
-    duration: CYCLE_S,
-    delay: -(ORDER.indexOf(i) / FALLING.length) * CYCLE_S - rand() * 0.6,
-  };
+  const size = 15 + rand() * 3;
+  const w = text.length * size * 0.55 + 40;   // text plus the start of its trail
+  const h = size * 1.3;
+  const delay = -(ORDER.indexOf(i) / FALLING.length) * CYCLE_S;
+  let m: Placed = { x: 0, y: 0, w, h, delay };
+  for (let tries = 0; tries < 2000; tries++) {
+    m = { x: 260 + rand() * 360, y: 8 + rand() * 190, w, h, delay };
+    if (!placed.some((o) => collides(m, o))) break;
+  }
+  placed.push(m);
+  return { text, left: pct(m.x, FIELD_W), top: pct(m.y, FIELD_H), size, duration: CYCLE_S, delay };
 });
 
 /** Photo carousel interval after the night phase (ms). */

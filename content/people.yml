@@ -27,15 +27,15 @@
   photo: ""
   url: "https://green4849.github.io/"
   after: ""
-- id: hyun-jae-shin
-  name: "Hyun Jae Shin"
+- id: hyeon-jae-shin
+  name: "Hyeon Jae Shin"
   name_ko: "신현재"
   group: ms
   role: "M.S. Student"
   since:
   until:
   bio: ""
-  photo: "hyun-jae-shin.jpg"
+  photo: "hyeon-jae-shin.jpg"
   url: ""
   after: ""
 - id: na-kyung-lee

@@ -5,10 +5,12 @@ import type { Seminar } from '@/lib/content';
 import styles from './seminars.module.css';
 
 const normalize = (value: string) => value.normalize('NFKC').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
-const fileUrl = (seminar: Seminar) => seminar.file ? `/files/seminars/${seminar.file}` : '';
-const coverUrl = (seminar: Seminar) => seminar.cover ? `/images/seminars/${seminar.cover}` : '';
+const fileUrl = (seminar: SeminarEntry) => seminar.file ? `/files/seminars/${seminar.file}` : '';
+const coverUrl = (seminar: SeminarEntry) => seminar.cover ? `/images/seminars/${seminar.cover}` : '';
 
-export function SeminarsExplorer({ seminars }: { seminars: Seminar[] }) {
+type SeminarEntry = Seminar & { presenterNames: string };
+
+export function SeminarsExplorer({ seminars }: { seminars: SeminarEntry[] }) {
   const [query, setQuery] = useState('');
   const [area, setArea] = useState('');
   const areas = useMemo(() => {
@@ -38,14 +40,14 @@ export function SeminarsExplorer({ seminars }: { seminars: Seminar[] }) {
   const words = normalize(query).split(' ').filter(Boolean);
   const filtered = seminars.filter((seminar) => {
     if (area && seminar.area !== area) return false;
-    const searchable = normalize([seminar.title, seminar.summary, seminar.presenter, seminar.area].join(' '));
+    const searchable = normalize([seminar.title, seminar.summary, seminar.presenter, seminar.presenterNames, seminar.area].join(' '));
     return words.every((word) => searchable.includes(word));
   });
 
   return (
     <div className={styles.explorer}>
       <label className={styles.searchLabel} htmlFor="seminar-search">Search seminars</label>
-      <input id="seminar-search" className={styles.search} type="search" value={query} placeholder="Search title or area" onChange={(event) => {
+      <input id="seminar-search" className={styles.search} type="search" value={query} placeholder="Search by title, summary, presenter or area" onChange={(event) => {
         setQuery(event.target.value);
         updateUrl(event.target.value, area);
       }} />
@@ -81,9 +83,11 @@ export function SeminarsExplorer({ seminars }: { seminars: Seminar[] }) {
                       {seminar.area && <p className={styles.areaLabel}>{seminar.area}</p>}
                     </div>
                     <div className={styles.coverGroup}>
-                      {file ? <a href={file} className={styles.cover} aria-label={`Open PDF: ${seminar.title}`}>
-                        {cover && <img src={cover} alt="" loading="lazy" />}
-                      </a> : <div className={styles.cover} aria-hidden="true" />}
+                      {cover && file && (
+                        <a href={file} className={styles.cover} aria-label={`Open PDF: ${seminar.title}`}>
+                          <img src={cover} alt="" loading="lazy" />
+                        </a>
+                      )}
                       {file && <a className={styles.pdf} href={file} aria-label={`PDF: ${seminar.title}`}>PDF</a>}
                     </div>
                   </li>

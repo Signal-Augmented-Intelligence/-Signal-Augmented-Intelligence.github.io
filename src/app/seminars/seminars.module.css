@@ -21,7 +21,8 @@
 .coverGroup { width: 90px; }
 .cover { display: flex; align-items: center; justify-content: center; width: 90px; height: 116px; border: 1px solid var(--rule); background: var(--surface); }
 .cover img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.pdf { display: block; margin-top: 7px; font-size: var(--text-sm); font-weight: 600; text-align: right; }
+.pdf { display: block; font-size: var(--text-sm); font-weight: 600; text-align: right; }
+.cover + .pdf { margin-top: 7px; }
 .empty { padding: 24px 0; color: var(--muted); font-size: var(--text-sm); }
 @media (max-width: 760px) {
   .layout { grid-template-columns: 1fr; gap: 34px; }

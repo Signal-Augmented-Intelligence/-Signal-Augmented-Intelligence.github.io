@@ -11,4 +11,11 @@
 #   file: "2026-10-21-so-yeong-park.pdf"   # optional: PDF in public/files/seminars/. Empty = title only
 #   cover: "2026-10-21-so-yeong-park.jpg" # optional: PDF first-page image in public/images/seminars/
 #   highlight: false                 # set by the site manager: true shows it on the home page
-[]
+- date: 2026-10-23
+  presenter: so-yeong-park
+  title: "Relay test"
+  summary: "Upload relay test."
+  area: "Qwen3-ASR"
+  file: "2026-10-23-so-yeong-park-192220.pdf"
+  cover: ""
+  highlight: false

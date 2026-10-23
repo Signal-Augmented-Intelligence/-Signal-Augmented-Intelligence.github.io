@@ -291,7 +291,11 @@ export function getPoem(): Poem {
 }
 
 /* ---------- album ---------- */
-export type Album = { date: string; title: string; photos: { src: string; alt: string }[] };
+/**
+ * One event in the album. `slug` is its folder name and its page address (/album/<slug>/).
+ * `cover` is the photo shown on the album list (the `cover` file in album.yml, or the first photo).
+ */
+export type Album = { slug: string; date: string; title: string; cover: { src: string; alt: string }; photos: { src: string; alt: string }[] };
 export function getAlbums(): Album[] {
   return readYaml<Record<string, unknown>[]>('album.yml', [])
     .map((a) => {
@@ -299,9 +303,11 @@ export function getAlbums(): Album[] {
       const photos = ((a.photos as Record<string, unknown>[] | null) ?? [])
         .map((p) => ({ src: `/images/album/${folder ? `${folder}/` : ''}${str(p.file)}`, alt: str(p.alt) }))
         .filter((p) => !p.src.endsWith('/'));
-      return { date: str(a.date), title: str(a.title), photos };
+      const coverFile = str(a.cover);
+      const cover = photos.find((p) => coverFile && p.src.endsWith(`/${coverFile}`)) ?? photos[0];
+      return { slug: folder, date: str(a.date), title: str(a.title), cover, photos };
     })
-    .filter((a) => a.photos.length > 0)
+    .filter((a) => a.photos.length > 0 && a.slug !== '')
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 

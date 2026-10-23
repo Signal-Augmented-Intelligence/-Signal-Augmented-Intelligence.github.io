@@ -4,7 +4,8 @@
 #
 # - date: 2026-11-05                  # YYYY-MM-DD (or YYYY-MM)
 #   title: "2026 가을 세미나"
-#   folder: 2026-11-seminar           # folder name under public/images/album/
+#   folder: 2026-11-seminar           # folder name under public/images/album/ (also the page address /album/<folder>/; do not change)
+#   cover: 02.jpg                     # optional: the photo shown on the album list. Empty = the first photo
 #   photos:
 #     - file: 01.jpg
 #       alt: "세미나 발표 장면"          # one short description per photo
@@ -13,6 +14,7 @@
 - date: 2026-10-17
   title: "2026 한국음성학회·조선대학교 인문데이터과학연구소 가을 공동학술대회"
   folder: 2026-10-ssp-fall
+  cover: 02.jpg
   photos:
     - file: 01.jpg
       alt: "구두 발표 장면"
@@ -31,6 +33,7 @@
 - date: 2026-06-23
   title: "2026 대한전자공학회 하계종합학술대회, 제주"
   folder: 2026-06-ieie-summer
+  cover: 01.jpg
   photos:
     - file: 01.jpg
       alt: "학술대회 안내판 앞 단체 사진"
@@ -59,6 +62,7 @@
 - date: 2025-08
   title: "ICTCA 2025, 부산"
   folder: 2025-08-ictca
+  cover: 01.jpg
   photos:
     - file: 01.jpg
       alt: "포스터 앞에 선 발표자"

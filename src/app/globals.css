@@ -64,6 +64,7 @@ a:hover { text-decoration: underline; text-underline-offset: 0.18em; }
 
 .muted { color: var(--muted); }
 .num { font-variant-numeric: tabular-nums; }
+.nowrap { white-space: nowrap; }
 
 /* Body copy from markdown (publication and research descriptions). */
 .prose { max-width: 42rem; font-size: var(--text-lg); line-height: 1.7; }

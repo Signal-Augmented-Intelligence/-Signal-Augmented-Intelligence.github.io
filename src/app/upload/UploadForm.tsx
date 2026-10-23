@@ -1,6 +1,6 @@
 'use client';
 
-import { type FormEvent, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 import styles from './upload.module.css';
 
 const MAX_BYTES = 20 * 1024 * 1024;
@@ -18,9 +18,25 @@ function toBase64(file: File): Promise<string> {
   });
 }
 
+/** File input with a Korean button and the chosen file name (the browser's own button text follows its language). */
+function FileField({ name, accept, label, hint }: { name: string; accept: string; label: string; hint: string }) {
+  const [fileName, setFileName] = useState('');
+  return (
+    <div className={styles.field}>
+      <span>{label} <small>{hint}</small></span>
+      <label className={styles.file}>
+        <input type="file" name={name} accept={accept} onChange={(e: ChangeEvent<HTMLInputElement>) => setFileName(e.target.files?.[0]?.name ?? '')} />
+        <span className={styles.fileButton}>파일 선택</span>
+        <span className={styles.fileName}>{fileName || '선택한 파일 없음'}</span>
+      </label>
+    </div>
+  );
+}
+
 /** Sends the form to the Apps Script relay, which opens a pull request for the site manager. */
 export function UploadForm({ endpoint, presenters, areas }: { endpoint: string; presenters: { id: string; label: string }[]; areas: string[] }) {
   const [status, setStatus] = useState<Status>({ kind: 'idle', message: '' });
+  const [guest, setGuest] = useState(false);
   const disabled = !endpoint || status.kind === 'sending';
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -43,6 +59,7 @@ export function UploadForm({ endpoint, presenters, areas }: { endpoint: string; 
         code: String(data.get('code') ?? ''),
         date: String(data.get('date') ?? ''),
         presenter: String(data.get('presenter') ?? ''),
+        presenter_name: String(data.get('presenter_name') ?? '').trim(),
         title: String(data.get('title') ?? '').trim(),
         summary: String(data.get('summary') ?? '').trim(),
         area: String(data.get('area') ?? '').trim(),
@@ -54,6 +71,7 @@ export function UploadForm({ endpoint, presenters, areas }: { endpoint: string; 
       const reply = (await response.json()) as { ok: boolean; url?: string; error?: string };
       if (!reply.ok) return setStatus({ kind: 'error', message: reply.error ?? '제출하지 못했습니다.' });
       form.reset();
+      setGuest(false);
       setStatus({ kind: 'done', message: '접수되었습니다. 관리자 확인 후 반영됩니다.', url: reply.url });
     } catch (error) {
       setStatus({ kind: 'error', message: `제출하지 못했습니다: ${(error as Error).message}` });
@@ -63,23 +81,31 @@ export function UploadForm({ endpoint, presenters, areas }: { endpoint: string; 
   return (
     <form className={styles.form} onSubmit={onSubmit} lang="ko" aria-disabled={!endpoint}>
       {!endpoint && <p className={styles.notice}>업로드 주소가 아직 설정되지 않았습니다. 관리자에게 문의해 주세요.</p>}
+      <p className={styles.legend}>(선택) 표시가 없는 칸은 모두 적어야 합니다.</p>
       <label className={styles.field}>
         <span>업로드 코드</span>
         <input type="password" name="code" required autoComplete="off" />
       </label>
       <div className={styles.row}>
         <label className={styles.field}>
-          <span>게시물 날짜</span>
+          <span>세미나 날짜</span>
           <input type="date" name="date" required />
         </label>
         <label className={styles.field}>
           <span>발표자</span>
-          <select name="presenter" required defaultValue="">
+          <select name="presenter" required defaultValue="" onChange={(e) => setGuest(e.target.value === 'guest')}>
             <option value="" disabled>선택</option>
             {presenters.map((p) => <option key={p.id} value={p.id}>{p.label}</option>)}
+            <option value="guest">외부 발표자 (이름 직접 입력)</option>
           </select>
         </label>
       </div>
+      {guest && (
+        <label className={styles.field}>
+          <span>외부 발표자 이름 <small>(예: Gildong Hong, 소속)</small></span>
+          <input type="text" name="presenter_name" required maxLength={80} />
+        </label>
+      )}
       <label className={styles.field}>
         <span>제목</span>
         <input type="text" name="title" required maxLength={200} />
@@ -93,14 +119,8 @@ export function UploadForm({ endpoint, presenters, areas }: { endpoint: string; 
         <input type="text" name="area" list="seminar-areas" maxLength={80} />
         <datalist id="seminar-areas">{areas.map((area) => <option key={area} value={area} />)}</datalist>
       </label>
-      <label className={styles.field}>
-        <span>PDF <small>(선택, 20 MB 이하)</small></span>
-        <input type="file" name="file" accept="application/pdf,.pdf" />
-      </label>
-      <label className={styles.field}>
-        <span>PDF 표지 이미지 <small>(선택, JPG·PNG·WebP, 2 MB 이하)</small></span>
-        <input type="file" name="cover" accept="image/jpeg,image/png,image/webp" />
-      </label>
+      <FileField name="file" accept="application/pdf,.pdf" label="PDF" hint="(선택, 20 MB 이하)" />
+      <FileField name="cover" accept="image/jpeg,image/png,image/webp" label="PDF 표지 이미지" hint="(선택, JPG·PNG·WebP, 2 MB 이하)" />
       <div className={styles.actions}>
         <button type="submit" disabled={disabled}>{status.kind === 'sending' ? '보내는 중' : '제출'}</button>
         <p role="status" aria-live="polite" className={status.kind === 'error' ? styles.error : styles.status}>

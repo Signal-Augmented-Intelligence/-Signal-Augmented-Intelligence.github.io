@@ -19,8 +19,11 @@ function doPost(e) {
     var d = JSON.parse(e.postData.contents);
     var props = PropertiesService.getScriptProperties();
     if (!d.code || d.code !== props.getProperty('UPLOAD_CODE')) return reply({ ok: false, error: '업로드 코드가 맞지 않습니다.' });
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(d.date || '')) return reply({ ok: false, error: '게시물 날짜를 확인해 주세요.' });
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d.date || '')) return reply({ ok: false, error: '세미나 날짜를 확인해 주세요.' });
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(d.presenter || '')) return reply({ ok: false, error: '발표자를 선택해 주세요.' });
+    // 'guest' = a speaker outside people.yml; the name typed on the form is stored as is.
+    var guestName = d.presenter === 'guest' ? clean(d.presenter_name) : '';
+    if (d.presenter === 'guest' && (!guestName || guestName.length > 80)) return reply({ ok: false, error: '외부 발표자 이름을 적어 주세요 (80자 이하).' });
     if (!clean(d.title)) return reply({ ok: false, error: '제목을 적어 주세요.' });
     if (!clean(d.summary)) return reply({ ok: false, error: '개요 한 문장을 적어 주세요.' });
     if (clean(d.area).length > 80) return reply({ ok: false, error: '분야는 80자 이하로 적어 주세요.' });
@@ -54,7 +57,7 @@ function doPost(e) {
     text = text.replace(/^\[\]\s*$/m, '');
     if (text.slice(-1) !== '\n') text += '\n';
     text += '- date: ' + d.date + '\n'
-      + '  presenter: ' + d.presenter + '\n'
+      + '  presenter: ' + (guestName ? JSON.stringify(guestName) : d.presenter) + '\n'
       + '  title: ' + JSON.stringify(clean(d.title)) + '\n'
       + '  summary: ' + JSON.stringify(clean(d.summary)) + '\n'
       + '  area: ' + JSON.stringify(clean(d.area)) + '\n'
@@ -70,7 +73,7 @@ function doPost(e) {
     var pr = github(token, 'post', '/pulls', {
       title: 'Seminar: ' + clean(d.title), head: branch, base: BASE,
       body: 'Submitted from the upload page.\n\n'
-        + '- Post date: ' + d.date + '\n- Presenter: ' + d.presenter + '\n- Area: ' + (clean(d.area) || 'none') + '\n- PDF: ' + (fileName || 'none') + '\n- Cover: ' + (coverName || 'none') + '\n'
+        + '- Seminar date: ' + d.date + '\n- Presenter: ' + (guestName || d.presenter) + '\n- Area: ' + (clean(d.area) || 'none') + '\n- PDF: ' + (fileName || 'none') + '\n- Cover: ' + (coverName || 'none') + '\n'
         + '- Submitted at: ' + Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd HH:mm') + ' KST\n\n'
         + 'Before merging: check the title and summary, then set `highlight: true` if it should appear on the home page.'
     });

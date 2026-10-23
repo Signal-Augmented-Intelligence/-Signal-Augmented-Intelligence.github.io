@@ -31,11 +31,11 @@ export default async function PublicationPage({ params }: Params) {
 
   return (
     <>
-      <PageHeader title={pub.title} lede={pub.title_ko ? <span lang="ko">{pub.title_ko}</span> : undefined} back={<Link href="/research/publications/">Back to Publications</Link>} />
+      <PageHeader title={pub.title} lede={pub.title_ko ? <span lang="ko">{pub.title_ko}</span> : undefined} back={<Link href="/research/publications/">Back to Publications</Link>} long />
       <Section id="details" title="Details">
         <dl className={styles.details}>
           <dt>Authors</dt>
-          <dd>{pub.authors.map((a, i) => <Fragment key={a + i}>{i > 0 && ', '}<PersonName name={a} people={people} linkFaculty={false} /></Fragment>)}</dd>
+          <dd>{pub.authors.map((a, i) => <Fragment key={a + i}>{i > 0 && ', '}<span className="nowrap"><PersonName name={a} people={people} linkFaculty={false} /></span></Fragment>)}</dd>
           <dt>Venue</dt><dd>{pub.venue}</dd>
           <dt>Type</dt><dd>{type?.label ?? pub.type}</dd>
           <dt>Date</dt><dd className="num">{formatDate(pub.pub_date)}</dd>

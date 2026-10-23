@@ -2,6 +2,7 @@
 .back { margin-bottom: 18px; font-size: var(--text-sm); }
 .back a { color: var(--night-accent); }
 .title { max-width: 56rem; font-size: 3rem; font-weight: 600; line-height: 1.1; letter-spacing: -0.03em; }
+.titleLong { max-width: 52rem; font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.02em; }
 .lede { max-width: 44rem; margin-top: 14px; font-size: 1.0625rem; color: rgba(255, 255, 255, 0.72); }
 
 .tabBar { position: sticky; top: var(--header-h); z-index: 9; background: var(--paper); border-bottom: 1px solid var(--rule); }
@@ -15,6 +16,7 @@
 @media (max-width: 640px) {
   .banner { padding: 40px 0 48px; }
   .title { font-size: 2.25rem; }
+  .titleLong { font-size: 1.625rem; }
   .tabs { gap: 24px; overflow-x: auto; }
   .gap { height: 48px; }
 }

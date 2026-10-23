@@ -1,4 +1,7 @@
 # Each item cites a publication record already listed on this site.
+- date: 2026-08-24
+  text: "A paper on single-channel real-time speech enhancement for quadruped robots under measured ego-noise was accepted in The Journal of the Acoustical Society of Korea."
+  link: /publications/quadruped-speech-enhancement/
 - date: 2026-08-25
   text: "A paper evaluating Qwen3-ASR on multiple Korean speech corpora was accepted in The Journal of the Acoustical Society of Korea."
   link: /publications/qwen3-asr-evaluation/

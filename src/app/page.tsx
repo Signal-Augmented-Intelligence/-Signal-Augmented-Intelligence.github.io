@@ -21,6 +21,7 @@ export default function HomePage() {
         name={lab.name}
         fullName={lab.full_name}
         nameKo={lab.name_ko}
+        institution={lab.institution}
         quote={poem.hero}
         poemTitle={poem.stanzas.length > 0 ? poem.title : ''}
         slides={getHomeSlides()}

@@ -6,7 +6,7 @@ import { getPeople, getPublications } from '@/lib/content';
 import { RESEARCH_LEDE, RESEARCH_TABS } from '@/lib/site';
 import styles from './publications.module.css';
 
-export const metadata: Metadata = { title: 'Publications', description: 'Journal articles, conference papers, and conference posters from SAI Lab.' };
+export const metadata: Metadata = { title: 'Publications', description: 'Publications of SAI Lab, Hanshin University.' };
 
 export default function PublicationsPage() {
   const people = getPeople();

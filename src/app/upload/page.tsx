@@ -3,7 +3,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { getLab, getPeople, getSeminars } from '@/lib/content';
 import { UploadForm } from './UploadForm';
 
-export const metadata: Metadata = { title: 'Seminar Upload', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Seminar Upload', description: 'Seminar upload for SAI Lab members.', robots: { index: false, follow: false } };
 
 export default function UploadPage() {
   const lab = getLab();

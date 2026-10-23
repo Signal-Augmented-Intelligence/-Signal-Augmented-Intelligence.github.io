@@ -15,7 +15,7 @@ export function PublicationItem({ pub, people }: { pub: Publication; people: Per
       <p className={styles.title}><Link href={pub.url}>{pub.title}</Link></p>
       <p className={styles.authors}>
         {pub.authors.map((a, i) => (
-          <Fragment key={a + i}>{i > 0 && ', '}<PersonName name={a} people={people} linkFaculty={false} /></Fragment>
+          <Fragment key={a + i}>{i > 0 && ', '}<span className="nowrap"><PersonName name={a} people={people} linkFaculty={false} /></span></Fragment>
         ))}
       </p>
       <p className={styles.venue}>

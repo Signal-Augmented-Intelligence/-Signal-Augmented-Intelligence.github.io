@@ -22,6 +22,14 @@ export const metadata: Metadata = {
   title: { default: `${lab.name} — ${lab.full_name}`, template: `%s | ${lab.name}` },
   description: `${lab.name} (${lab.full_name}) at ${lab.institution}. ${lab.intro}`,
   robots: lab.draft ? { index: false, follow: false } : undefined,
+  // Link previews (KakaoTalk, Slack, …). The image is app/opengraph-image.png; the icons are app/icon.svg and app/apple-icon.png.
+  openGraph: {
+    type: 'website',
+    siteName: lab.name,
+    title: `${lab.name} — ${lab.full_name}`,
+    description: `${lab.full_name}, ${lab.institution}`,
+    locale: 'en_US',
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

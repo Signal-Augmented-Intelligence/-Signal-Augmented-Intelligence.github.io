@@ -8,5 +8,5 @@ intro: "SAI Lab works on learning-based processing of speech and acoustic signal
 email: ""                   # 공식 연락처만. 비워 두면 표시하지 않음 (Contact 메뉴도 숨김)
 location: ""                # 예: 건물·호실. 비워 두면 표시하지 않음
 logo: ""                    # 확정된 로고 파일 경로 (예: /images/sai-logo.svg). 비우면 신호 표시 + 랩명
-upload_endpoint: ""         # 세미나 업로드 페이지(/upload/)가 보내는 Apps Script 웹 앱 주소. 비우면 업로드 비활성화 (tools/upload-relay/)
+upload_endpoint: "https://script.google.com/macros/s/AKfycbxWD7JjnBuxIB9ziWtBAzBmrgZRn-HunrBDuPwePkg6RkubLVzex7H2MtONA_ZqzaqlnQ/exec"  # 세미나 업로드 페이지(/upload/)가 보내는 Apps Script 웹 앱 주소
 draft: true                 # true: 검색엔진 노출 차단(noindex) + 푸터에 내부 검토 문구. 공개 승인 후 false

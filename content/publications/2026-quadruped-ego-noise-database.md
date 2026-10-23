@@ -8,6 +8,7 @@ pub_date: "2026"
 status: ""
 award: ""
 links: []
+pdf: "2026-quadruped-ego-noise-database.pdf"
 permalink: "/publications/quadruped-ego-noise-database/"
 excerpt: "An ego-noise database of a quadruped robot and an analysis of its time-frequency characteristics by condition."
 ---

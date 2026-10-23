@@ -115,7 +115,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 | `/members/alumni/` | Members ▸ Alumni | `members/alumni/` |
 | `/research/` | Research ▸ Areas | `research/page.tsx` + `content/research/*.md` |
 | `/research/<주제>/` | 주제 상세 | `research/[slug]/` |
-| `/research/publications/` | Research ▸ Publications (`/publications/`도 여기로) | `research/publications/` |
+| `/research/publications/` | Research ▸ Publications (`/publications/`도 여기로. 논문별 페이지는 없음) | `research/publications/` |
 | `/publications/<논문>/` | 논문 상세 | `publications/[slug]/` + `content/publications/*.md` |
 | `/seminars/` | Seminars | `seminars/` + `content/seminars.yml` |
 | `/news/` | News | `news/` + `content/news.yml` |
@@ -141,16 +141,17 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 사진 없이 한 줄: 이름, 국문 이름, 현재 소속 (진로는 본인 동의 시에만).
 
 ### Research ▸ Areas / 주제 상세
-- 목록: 3열 카드. 위쪽 대표 그림(없으면 빈 칸), 제목, 한 줄 설명, Read more와 관련 논문 수
+- 목록: 3열 카드. 위쪽 대표 그림(없으면 그림 칸 없이 글만), 제목, 한 줄 설명, Read more와 관련 논문 수
 - 상세: 띠에 Back to Research Areas · 제목 · 한 줄 설명 → 대표 그림(선택) → Overview(본문이 있을 때) → Related Publications → Related Seminars(세미나의 `topics`에 이 주제가 있는 것)
 - 주제 분류와 명칭은 교수님 확정 전 임시입니다.
 
 ### Research ▸ Publications
-- 종류(학술지·학회 논문·포스터)는 데이터에만 두고 화면에서는 나누지 않습니다. 왼쪽에 연도 목록, 오른쪽에 연도별 목록(큰 파랑 연도 제목, 최신순). 종류 목록은 `src/lib/content.ts`의 `PUBLICATION_TYPES`이며 상세 페이지에만 표시됩니다.
-- 항목은 세 줄입니다: 제목(상세 링크) / 저자(학생 구성원 이름은 Members로 링크, 교수님 이름은 링크 없음) / 학회·저널(이탤릭), 날짜, 링크(DOI 등 글자 링크). 항목 사이에는 줄 없이 간격만 둡니다 (레퍼런스: KAIST Smart Sound Lab).
-- 종류·상태·수상은 목록에 표시하지 않습니다. 종류·상태는 상세 페이지에만 나옵니다.
+- 종류(학술지·학회 논문·포스터)는 데이터에만 두고 화면에서는 나누지 않습니다. 왼쪽에 연도 목록, 오른쪽에 연도별 목록(큰 파랑 연도 제목, 최신순). 종류 목록은 `src/lib/content.ts`의 `PUBLICATION_TYPES`입니다.
+- 항목은 세 줄입니다: 제목 / 저자(학생 구성원 이름은 Members로 링크, 교수님 이름은 링크 없음) / 학회·저널(이탤릭), 날짜, 제목이 여는 곳(DOI·KCI·PDF 글자 링크). 항목 사이에는 줄 없이 간격만 둡니다 (레퍼런스: KAIST Smart Sound Lab).
+- **논문별 페이지는 만들지 않습니다.** 제목은 게재된 논문(`links`의 첫 항목: DOI, KCI 등)으로 바로 가고, 게재 기록이 없는 학회 논문은 PDF(`pdf`)로 바로 갑니다. 둘 다 없으면 제목은 링크 없는 글자입니다.
+- 학회 논문 PDF는 `public/files/publications/`에 둡니다. 학술 DB(earticle, DBpia, KISS 등)에서 내려받아 "Download by …" 표시가 찍힌 파일은 올리지 않고, 저자가 가진 원본을 씁니다. 올리기 전에 PDF 문서 정보(작성자·프로그램 등)를 지웁니다.
+- 종류·상태·수상은 화면에 표시하지 않고 데이터에만 둡니다.
 - 같은 해 안에서는 날짜순(최신 먼저)입니다. 연도만 적은 논문은 그해 아래쪽에 놓이므로, 월을 알면 `"2026-09"`처럼 적습니다. 연구 분야 상세 페이지의 Related Publications도 최신순입니다.
-- 상세 페이지: Details(저자, 학회, 종류, 날짜, 상태, 링크) → 대표 그림(선택) → Overview
 
 ### Seminars
 - 검색창이 첫 요소입니다. 제목·개요·발표자·분야를 브라우저에서 검색하고 검색어와 선택 분야를 주소에 남깁니다.
@@ -184,6 +185,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 | `content/publications/*.md` | 논문 1편당 파일 1개 |
 | `content/seminars.yml` | 세미나 |
 | `public/files/seminars/` | 세미나 PDF |
+| `public/files/publications/` | 게재 기록이 없는 학회 논문 PDF |
 | `public/images/seminars/` | 세미나 PDF 표지 이미지 (선택) |
 | `public/images/people/` | 구성원 사진 |
 | `content/news.yml` | 소식 |
@@ -232,11 +234,12 @@ venue: "…"
 pub_date: "2026-06-19"         # 아는 만큼만: "2026", "2026-08"도 가능
 status: ""                     # 예: "Accepted Aug 25, 2026"
 award: ""                      # 기록용. 사이트에는 표시하지 않음
-links: []                      # - label: "DOI"  /  url: "https://…"
-permalink: "/publications/짧은이름/"   # 한 번 정하면 바꾸지 않음
+links: []                      # 게재 논문: - label: "DOI"  /  url: "https://doi.org/…"  (첫 항목이 제목 링크)
+pdf: ""                        # 게재 기록이 없는 학회 논문: public/files/publications/ 안의 PDF 파일 이름
+permalink: "/publications/짧은이름/"   # 페이지 주소가 아니라 이 논문의 id (Research·News가 이 값으로 가리킴). 한 번 정하면 바꾸지 않음
 excerpt: "한 문장 요약"
 ---
-개요 2–3문장.
+개요 2–3문장 (기록용. 논문별 페이지가 없어 사이트에는 표시하지 않음).
 ```
 
 ### seminars.yml

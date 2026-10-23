@@ -332,7 +332,7 @@ GitHub 웹에서 데이터 파일 열기 → 연필 아이콘 → 수정 → "Pr
 | GitHub 조직·사이트 저장소 | 생성 완료. 교수님 Owner 초대 확인 필요 |
 | 사이트 구조 | 3차 구현: Next.js로 화면 전면 교체. Members(Professor/Our Team/Alumni), Research(Areas/Publications), Seminars, News(푸터), Contact(연락처 입력 시), 업로드 페이지 |
 | 세미나 항목 | 아직 없음 ("No seminars have been posted yet." 표시) |
-| 업로드 중계 | Apps Script 웹 앱 배포 완료, `upload_endpoint` 연결. 잘못된 코드 요청에 대한 응답을 API와 로컬 업로드 화면에서 확인. 유효한 코드로 실제 PR을 만드는 시험은 아직 필요. 현재 개인 Google 계정으로 임시 운영 중이며, 랩 공식 계정으로 이전할 때 새 배포 주소로 교체해야 함. GitHub 토큰 만료일은 2027-01-21. |
+| 업로드 중계 | Apps Script 웹 앱 배포 완료, `upload_endpoint` 연결. 잘못된 코드 응답과 유효한 코드로 PDF를 포함한 PR 생성까지 확인. 테스트 자료는 사이트에서 제거. 현재 개인 Google 계정으로 임시 운영 중이며, 랩 공식 계정으로 이전할 때 새 배포 주소로 교체해야 함. GitHub 토큰 만료일은 2027-01-21. |
 | 랩 대표색·로고 | 로고 정비 중 (확정 전에는 신호 표시 + "SAI Lab") |
 | 연구 주제 분류·소개 문구 | 교수님 확정 필요 (현재 임시) |
 | 교수님 페이지 | 공개 출처 기준 1차. 약력·경력·담당 과목·사진은 교수님께 받아야 함. 과제 역할·연구비 표기는 교수님 확인 필요 |

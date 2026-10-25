@@ -5,7 +5,7 @@ import styles from './status.module.css';
 /** 관리 서버 API가 생기기 전의 시작 화면. 기능별 준비 상태만 보여 줍니다. */
 const ITEMS = [
   { name: '로그인', status: '준비 중' },
-  { name: '편집 화면', status: '준비 중' },
+  { name: '내용 고치기 (Album, Seminars 등)', status: '준비 중' },
   { name: '공개 반영', status: '준비 중' },
 ];
 

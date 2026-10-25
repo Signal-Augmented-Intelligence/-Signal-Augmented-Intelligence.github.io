@@ -13,7 +13,7 @@ export const MENU: MenuItem[] = [
   { title: 'Home', href: '/home/', ready: false, note: '첫 화면 사진, 시, 랩 정보', group: 'content' },
   { title: 'Members', href: '/members/', ready: false, note: '교수님, 멤버', group: 'content' },
   { title: 'Research', href: '/research/', ready: false, note: '연구 분야, 논문', group: 'content' },
-  { title: 'Seminars', href: '/seminars/', ready: false, note: '세미나 올리기, 세미나 분야', group: 'content' },
+  { title: 'Seminars', href: '/seminars/', ready: true, note: '세미나 올리기, 세미나 분야', group: 'content' },
   { title: 'Album', href: '/album/', ready: false, note: '행사, 사진, 대표 사진', group: 'content' },
   { title: 'News', href: '/news/', ready: false, note: '소식', group: 'content' },
 ];

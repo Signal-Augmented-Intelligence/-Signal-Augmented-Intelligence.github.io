@@ -3,3 +3,13 @@
 .file:focus-within { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
 .button { flex-shrink: 0; padding: 6px 14px; border-radius: 3px; background: var(--surface); color: var(--ink); font-weight: 600; }
 .name { min-width: 0; overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; }
+
+/* FileUpload: 상태 글자(올리는 중·처리 중·크기)와 바꾸기·빼기. 준비된 뒤에는 칸 전체가 파일 고르기가 아닙니다. */
+.upload { display: grid; gap: 10px; justify-items: start; }
+.upload .file { width: 100%; }
+.file[data-state='ready'] { cursor: default; }
+.file[data-state='ready'] input, .file[data-state='busy'] input { pointer-events: none; }
+.chosen { min-width: 0; overflow: hidden; padding-left: 6px; color: var(--ink); text-overflow: ellipsis; white-space: nowrap; }
+.status { flex-shrink: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
+.change { display: flex; gap: 16px; margin-left: auto; flex-shrink: 0; position: relative; z-index: 1; }
+.preview { width: 160px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }

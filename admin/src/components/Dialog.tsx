@@ -7,12 +7,13 @@ import styles from './Dialog.module.css';
  * 팝업 하나로 확인 창과 오류 창을 모두 띄웁니다 (규칙 문서 1부 7장).
  * - confirm: 주 버튼(동작 이름) + "취소". 누른 쪽을 true/false로 돌려줍니다.
  * - error: "닫기" (+ 다시 시도할 수 있으면 "다시 시도"). 다시 시도를 누르면 true.
+ * 내용(body)은 없어도 됩니다 (제목만 있는 오류 창).
  * 성공은 알리지 않습니다.
  */
-type Request = { kind: 'confirm' | 'error'; title: string; body: ReactNode; action?: string; retry?: boolean };
+type Request = { kind: 'confirm' | 'error'; title: string; body?: ReactNode; action?: string; retry?: boolean };
 type Api = {
   confirm: (title: string, body: ReactNode, action: string) => Promise<boolean>;
-  error: (title: string, body: ReactNode, options?: { retry?: boolean }) => Promise<boolean>;
+  error: (title: string, body?: ReactNode, options?: { retry?: boolean }) => Promise<boolean>;
 };
 
 const DialogContext = createContext<Api | null>(null);
@@ -52,7 +53,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
         {request && (
           <>
             <h2 id="dialog-title" className={styles.title}>{request.title}</h2>
-            <div className={styles.body}>{request.body}</div>
+            {request.body && <div className={styles.body}>{request.body}</div>}
             <div className={styles.actions}>
               {request.kind === 'confirm' ? (
                 <>

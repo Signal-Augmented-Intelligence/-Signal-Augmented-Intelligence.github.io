@@ -1,14 +1,14 @@
 import { AdminBanner } from '@admin/components/AdminBanner';
 import { AdminShell } from '@admin/components/AdminShell';
+import { NotFoundPopup } from '@admin/components/NotFoundPopup';
 
-/** 없는 주소: 다른 관리 화면과 같은 띠·메뉴 틀. */
+/** 없는 주소: 첫 화면과 같은 틀 위에 공통 오류 팝업. */
 export default function NotFound() {
   return (
     <>
-      <AdminBanner title="페이지를 찾을 수 없습니다" />
-      <AdminShell>
-        <p>이 주소에는 화면이 없습니다. <a href="/">첫 화면으로</a></p>
-      </AdminShell>
+      <AdminBanner title="관리 화면" />
+      <AdminShell>{null}</AdminShell>
+      <NotFoundPopup />
     </>
   );
 }

@@ -10,10 +10,10 @@ import styles from './Dialog.module.css';
  * 내용(body)은 없어도 됩니다 (제목만 있는 오류 창).
  * 성공은 알리지 않습니다.
  */
-type Request = { kind: 'confirm' | 'error'; title: string; body?: ReactNode; action?: string; retry?: boolean };
+type Request = { kind: 'confirm' | 'error'; title: string; body?: ReactNode; action?: string; retry?: boolean; retryLabel?: string };
 type Api = {
   confirm: (title: string, body: ReactNode, action: string) => Promise<boolean>;
-  error: (title: string, body?: ReactNode, options?: { retry?: boolean }) => Promise<boolean>;
+  error: (title: string, body?: ReactNode, options?: { retry?: boolean; retryLabel?: string }) => Promise<boolean>;
 };
 
 const DialogContext = createContext<Api | null>(null);
@@ -43,7 +43,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
 
   const api = useRef<Api>({
     confirm: (title, body, action) => open({ kind: 'confirm', title, body, action }),
-    error: (title, body, options) => open({ kind: 'error', title, body, retry: options?.retry }),
+    error: (title, body, options) => open({ kind: 'error', title, body, retry: options?.retry, retryLabel: options?.retryLabel }),
   }).current;
 
   return (
@@ -62,7 +62,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
                 </>
               ) : (
                 <>
-                  {request.retry && <button type="button" className="admin-text-button" onClick={() => close(true)}>다시 시도</button>}
+                  {request.retry && <button type="button" className="admin-text-button" onClick={() => close(true)}>{request.retryLabel ?? '다시 시도'}</button>}
                   <button type="button" className="admin-button" onClick={() => close(false)} autoFocus>닫기</button>
                 </>
               )}

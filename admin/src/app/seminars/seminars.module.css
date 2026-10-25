@@ -1,0 +1,24 @@
+/*
+ * Seminars 목록 (규칙 문서 3장 "목록 한 줄"): 왼쪽 이름과 보조 정보, 오른쪽 상태 글자와 동작 글자 버튼, 줄 사이 가는 선.
+ */
+.list { border-top: 1px solid var(--rule); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) 4.5rem 18rem; align-items: center; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.main { min-width: 0; }
+.title { font-weight: 600; line-height: 1.45; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 4px; color: var(--muted); font-size: var(--text-sm); }
+.status { font-size: var(--text-sm); }
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 18px; font-size: var(--text-sm); }
+
+.formRow { padding: 28px 0 32px; border-bottom: 1px solid var(--rule); }
+.list .formRow:first-child, .formRow + .list { border-top: 0; }
+.form { max-width: 36rem; }
+
+.areaAdd { margin-bottom: 20px; font-size: var(--text-sm); }
+.inline { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; font-size: var(--text-sm); }
+.inline input { width: min(20rem, 100%); min-height: 40px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); color: var(--ink); font: inherit; font-size: var(--text-md); }
+.inline input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+
+@media (max-width: 640px) {
+  .row { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; }
+  .actions { grid-column: 1 / -1; justify-content: flex-start; }
+}

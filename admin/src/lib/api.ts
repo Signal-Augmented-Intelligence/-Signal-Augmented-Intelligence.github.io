@@ -64,7 +64,32 @@ async function request<T>(method: Method, path: string, body?: unknown): Promise
   return json as Result<T>;
 }
 
+/**
+ * 파일 하나 올리기 (api.md 5장). fetch는 올라간 비율을 알려 주지 않아서 이것만 XMLHttpRequest를 씁니다.
+ * onProgress에는 0~100을 넘깁니다.
+ */
+function upload<T>(path: string, form: FormData, onProgress?: (percent: number) => void): Promise<Result<T>> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${BASE}${path}`);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Accept', 'application/json');
+    if (csrfToken) xhr.setRequestHeader('X-CSRF-Token', csrfToken);
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable) onProgress?.(Math.round((e.loaded / e.total) * 100)); };
+    xhr.onerror = () => reject(new ApiError('NETWORK', NETWORK_MESSAGE, 0));
+    xhr.onload = () => {
+      let json: unknown = null;
+      try { json = JSON.parse(xhr.responseText); } catch { /* 본문 없음 */ }
+      if (xhr.status >= 200 && xhr.status < 300) return resolve(json as Result<T>);
+      const error = (json as { error?: { code?: ErrorCode; message?: string; fields?: Record<string, string> } } | null)?.error;
+      reject(new ApiError(error?.code ?? 'INTERNAL', error?.message ?? FALLBACK_MESSAGE, xhr.status, error?.fields ?? {}));
+    };
+    xhr.send(form);
+  });
+}
+
 export const api = {
+  upload,
   get: <T>(path: string) => request<T>('GET', path),
   post: <T>(path: string, body?: unknown) => request<T>('POST', path, body),
   patch: <T>(path: string, body: unknown) => request<T>('PATCH', path, body),

@@ -6,8 +6,6 @@ import styles from './status.module.css';
 /** 관리 서버 API가 생기기 전의 첫 화면. 왼쪽 메뉴는 앞으로 만들 화면이고, 아직 누를 수 없습니다. */
 const ITEMS = [
   { name: '로그인', status: '준비 중' },
-  { name: '내용 고치기 (Album, Seminars 등)', status: '준비 중' },
-  { name: '공개 반영', status: '준비 중' },
 ];
 
 export default function AdminHome() {

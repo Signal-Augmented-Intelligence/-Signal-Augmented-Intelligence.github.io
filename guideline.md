@@ -178,6 +178,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - **빌드:** `npm run build:admin` → `admin/out/`. 공개 사이트 빌드(`npm run build` → `out/`)와 섞이지 않습니다. 랩 서버가 이 파일을 관리 서버와 같은 주소로 내보냅니다.
 - **공유:** 공개 사이트의 토큰(`globals.css`)·글꼴·헤더 CSS·`SignalMark`·`PageHeader`·`Section`까지만 같이 씁니다. 공개 사이트의 페이지 컴포넌트(앨범 격자, 논문 목록 등)는 쓰지 않습니다.
 - **메뉴 8개, 메뉴 하나에 화면 하나:** 첫 화면, Home, Members, Research, Seminars, Album, News, 계정. 로그인·비밀번호·세미나 승인·변경 기록은 따로 화면을 두지 않습니다(그 자리 또는 팝업).
+- **메뉴 모양:** PC는 띠 아래 왼쪽 메뉴(현재 화면은 연한 파랑 바탕 + 파랑 글자, 묶음 사이 가는 선, 아직 없는 화면은 보조색 + "준비 중"). 960px 이하는 띠 바로 아래 가로 탭(공개 사이트 탭과 같은 모양)이고 접기 버튼은 두지 않습니다. 코드: `admin/src/components/AdminShell.tsx`, 띠는 `AdminBanner.tsx`(공개 사이트 PageHeader 스타일, 아래 여백 없음).
 - **편집은 그 화면 안에서:** 목록에서 바로 추가·고치기·숨기기·순서 바꾸기. 별도 편집 페이지로 넘어가지 않습니다.
 - **알림:** 성공은 알리지 않고 바뀐 화면을 보여 줍니다. 오류·확인은 팝업 하나(`admin/src/components/Dialog.tsx`). 색·굵기·배지로 상태를 꾸미지 않습니다.
 - **버튼:** 주 버튼은 한 화면에 하나(`admin-button`), 나머지는 글자 버튼(`admin-text-button`). 공용 모양은 `admin/src/components/admin.css`.

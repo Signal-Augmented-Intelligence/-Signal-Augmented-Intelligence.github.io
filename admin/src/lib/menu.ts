@@ -5,15 +5,16 @@
  * `ready`: 그 화면이 만들어졌는지. 만들기 전에는 메뉴에 글자만 보이고 누를 수 없습니다.
  */
 export type Role = 'member' | 'site_manager';
-export type MenuItem = { title: string; href: string; roles: Role[]; ready: boolean; note: string };
+/** `group`: 메뉴를 나누는 묶음. 묶음 사이에 가는 선을 둡니다. */
+export type MenuItem = { title: string; href: string; roles: Role[]; ready: boolean; note: string; group: 'start' | 'content' | 'manage' };
 
 export const MENU: MenuItem[] = [
-  { title: '첫 화면', href: '/', roles: ['member', 'site_manager'], ready: false, note: '마지막 반영·백업, 승인 대기 세미나' },
-  { title: 'Home', href: '/home/', roles: ['site_manager'], ready: false, note: '첫 화면 사진, 시, 랩 정보' },
-  { title: 'Members', href: '/members/', roles: ['site_manager'], ready: false, note: '교수님, 멤버' },
-  { title: 'Research', href: '/research/', roles: ['site_manager'], ready: false, note: '연구 분야, 논문' },
-  { title: 'Seminars', href: '/seminars/', roles: ['member', 'site_manager'], ready: false, note: '세미나 올리기·승인, 세미나 분야' },
-  { title: 'Album', href: '/album/', roles: ['site_manager'], ready: false, note: '행사, 사진, 대표 사진' },
-  { title: 'News', href: '/news/', roles: ['site_manager'], ready: false, note: '소식' },
-  { title: '계정', href: '/accounts/', roles: ['site_manager'], ready: false, note: '멤버·사이트 관리자 계정' },
+  { title: '첫 화면', href: '/', roles: ['member', 'site_manager'], ready: true, note: '마지막 반영·백업, 승인 대기 세미나', group: 'start' },
+  { title: 'Home', href: '/home/', roles: ['site_manager'], ready: false, note: '첫 화면 사진, 시, 랩 정보', group: 'content' },
+  { title: 'Members', href: '/members/', roles: ['site_manager'], ready: false, note: '교수님, 멤버', group: 'content' },
+  { title: 'Research', href: '/research/', roles: ['site_manager'], ready: false, note: '연구 분야, 논문', group: 'content' },
+  { title: 'Seminars', href: '/seminars/', roles: ['member', 'site_manager'], ready: false, note: '세미나 올리기·승인, 세미나 분야', group: 'content' },
+  { title: 'Album', href: '/album/', roles: ['site_manager'], ready: false, note: '행사, 사진, 대표 사진', group: 'content' },
+  { title: 'News', href: '/news/', roles: ['site_manager'], ready: false, note: '소식', group: 'content' },
+  { title: '계정', href: '/accounts/', roles: ['site_manager'], ready: false, note: '멤버·사이트 관리자 계정', group: 'manage' },
 ];

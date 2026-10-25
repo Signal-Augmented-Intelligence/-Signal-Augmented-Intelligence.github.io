@@ -1,0 +1,19 @@
+.shell { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 56px; align-items: start; }
+.side { position: sticky; top: calc(var(--header-h) + 32px); }
+.menu { display: grid; gap: 4px; }
+.menu a, .pending { display: block; padding: 6px 0; font-size: 0.9375rem; }
+.menu a { color: var(--ink); }
+.menu a[aria-current='page'] { color: var(--accent); }
+.pending { color: var(--muted); cursor: default; }
+.fold { display: none; }
+.body { min-width: 0; }
+/* Section 컴포넌트는 container 폭을 가지므로, 틀 안에서는 바깥 여백을 없앱니다. */
+.body :global(.container) { padding: 0; }
+
+@media (max-width: 960px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .side { display: none; }
+  .fold { display: block; border-bottom: 1px solid var(--rule); padding-bottom: 12px; }
+  .fold summary { cursor: pointer; font-weight: 600; }
+  .fold .menu { margin-top: 8px; }
+}

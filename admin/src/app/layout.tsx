@@ -3,8 +3,10 @@ import type { ReactNode } from 'react';
 import '@fontsource-variable/instrument-sans/wght.css';
 import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import '@/app/globals.css';
+import '@admin/components/admin.css';
 import icon from '@/app/icon.svg';
 import { AdminHeader } from '@admin/components/AdminHeader';
+import { DialogProvider } from '@admin/components/Dialog';
 import { SITE_URL } from '@admin/site';
 
 export const metadata: Metadata = {
@@ -19,8 +21,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     <html lang="ko">
       <body>
         <a className="skip-link" href="#main">본문 바로가기</a>
-        <AdminHeader siteUrl={SITE_URL} />
-        <main id="main">{children}</main>
+        <DialogProvider>
+          <AdminHeader siteUrl={SITE_URL} />
+          <main id="main">{children}</main>
+        </DialogProvider>
       </body>
     </html>
   );

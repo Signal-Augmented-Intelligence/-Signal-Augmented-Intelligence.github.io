@@ -1,0 +1,28 @@
+/*
+ * 관리 화면 공용 모양 (규칙 문서 1부 4·5장). 공개 사이트 토큰(globals.css)을 그대로 씁니다.
+ * 주 버튼은 한 화면에 하나, 나머지는 글자 버튼. 색·굵기로 상태를 꾸미지 않습니다.
+ */
+.admin-button {
+  padding: 10px 24px; border: 0; border-radius: 4px; background: var(--accent); color: #ffffff;
+  font: inherit; font-weight: 600; cursor: pointer;
+}
+.admin-button:disabled { opacity: 0.45; cursor: not-allowed; }
+.admin-text-button {
+  padding: 0; border: 0; background: none; color: var(--accent); font: inherit; cursor: pointer;
+}
+.admin-text-button:hover { text-decoration: underline; text-underline-offset: 0.18em; }
+.admin-text-button:disabled { color: var(--muted); cursor: not-allowed; text-decoration: none; }
+
+.admin-form { display: grid; gap: 22px; max-width: 40rem; }
+.admin-form-note { color: var(--muted); font-size: var(--text-sm); }
+.admin-field { display: grid; gap: 8px; font-size: var(--text-sm); font-weight: 600; }
+.admin-field small { color: var(--muted); font-weight: 400; font-size: inherit; }
+.admin-field .admin-hint { color: var(--muted); font-weight: 400; }
+.admin-field input:not([type='file']):not([type='checkbox']), .admin-field select, .admin-field textarea {
+  width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 4px;
+  background: var(--paper); color: var(--ink); font: inherit; font-size: var(--text-md); font-weight: 400;
+}
+.admin-field textarea { min-height: 120px; line-height: 1.6; }
+.admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+.admin-actions { display: flex; align-items: center; gap: 20px; }
+.admin-muted { color: var(--muted); }

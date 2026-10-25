@@ -8,6 +8,7 @@ pub_date: "2025-08"
 status: ""
 award: ""
 links: []
+pdf: "2025-quadruped-footstep-denoising.pdf"
 permalink: "/publications/quadruped-footstep-denoising/"
 excerpt: "Low-latency denoising of self-generated footstep noise in quadruped robots for remote acoustic situational awareness."
 ---

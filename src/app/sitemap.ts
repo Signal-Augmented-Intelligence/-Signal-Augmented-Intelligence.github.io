@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getAlbums, getPublications, getResearchAreas } from '@/lib/content';
+import { getAlbums, getResearchAreas } from '@/lib/content';
 import { SITE_URL } from '@/lib/site';
 
 export const dynamic = 'force-static';
@@ -10,6 +10,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...pages,
     ...(getAlbums().length > 0 ? ['/album/', ...getAlbums().map((a) => `/album/${a.slug}/`)] : []),
     ...getResearchAreas().map((a) => `/research/${a.slug}/`),
-    ...getPublications().map((p) => p.url),
   ].map((path) => ({ url: `${SITE_URL}${path}` }));
 }

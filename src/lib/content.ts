@@ -166,6 +166,7 @@ export const PUBLICATION_TYPES = [
 ] as const;
 export type Publication = {
   slug: string;
+  /** The `permalink`: an id that research areas and news use to point at a paper (not a page). */
   url: string;
   title: string;
   title_ko: string;
@@ -176,6 +177,15 @@ export type Publication = {
   status: string;
   award: string;
   links: { label: string; url: string }[];
+  /** PDF in public/files/publications/ (conference papers that are not in a journal). */
+  pdf: string;
+  /**
+   * Where the title goes: the published article (first entry of `links`, e.g. DOI or KCI) or, without one, the PDF.
+   * Empty: the title is plain text. There are no per-paper pages on this site.
+   */
+  href: string;
+  /** Which link `href` is, shown after the venue (e.g. "DOI", "PDF"). */
+  hrefLabel: string;
   excerpt: string;
   figure: string;
   figure_alt: string;
@@ -196,12 +206,18 @@ export function getPublications(): Publication[] {
       status: str(p.status),
       award: str(p.award),
       links: ((p.links as { label: string; url: string }[] | null) ?? []).map((l) => ({ label: str(l.label), url: str(l.url) })),
+      pdf: str(p.pdf),
       excerpt: str(p.excerpt),
       figure: str(p.figure),
       figure_alt: str(p.figure_alt),
       figure_caption: str(p.figure_caption),
       html: p.html,
     }))
+    .map((p) => {
+      const link = p.links.find((l) => l.url);
+      const pdf = p.pdf ? `/files/publications/${p.pdf}` : '';
+      return { ...p, href: link?.url ?? pdf, hrefLabel: link ? link.label : pdf ? 'PDF' : '' };
+    })
     .sort((a, b) => b.pub_date.localeCompare(a.pub_date));
 }
 

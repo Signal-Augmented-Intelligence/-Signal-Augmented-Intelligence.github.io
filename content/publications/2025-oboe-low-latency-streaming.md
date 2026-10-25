@@ -8,6 +8,7 @@ pub_date: "2025"
 status: ""
 award: ""
 links: []
+pdf: "2025-oboe-low-latency-streaming.pdf"
 permalink: "/publications/oboe-low-latency-streaming/"
 excerpt: "Low-latency audio streaming on Android with Google's OBOE library, for hearing-assistance devices."
 ---

@@ -1,11 +1,14 @@
-import { PageHeader } from '@/components/PageHeader';
+import { AdminBanner } from '@admin/components/AdminBanner';
+import { AdminShell } from '@admin/components/AdminShell';
 
-/** 없는 주소: 같은 틀의 한국어 안내. */
+/** 없는 주소: 다른 관리 화면과 같은 띠·메뉴 틀. */
 export default function NotFound() {
   return (
     <>
-      <PageHeader title="페이지를 찾을 수 없습니다" />
-      <p className="container">이 주소에는 화면이 없습니다. <a href="/">관리 화면 첫 화면</a>으로 이동해 주세요.</p>
+      <AdminBanner title="페이지를 찾을 수 없습니다" />
+      <AdminShell>
+        <p>이 주소에는 화면이 없습니다. <a href="/">첫 화면으로</a></p>
+      </AdminShell>
     </>
   );
 }

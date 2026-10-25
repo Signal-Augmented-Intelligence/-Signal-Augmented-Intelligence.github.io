@@ -5,7 +5,7 @@ import { AdminShell } from '@admin/components/AdminShell';
 export default function AdminHome() {
   return (
     <>
-      <AdminBanner title="관리 화면" lede="사이트에 보이는 내용을 편집하고 공개 사이트에 반영하는 화면입니다." />
+      <AdminBanner title="관리 화면" />
       <AdminShell>{null}</AdminShell>
     </>
   );

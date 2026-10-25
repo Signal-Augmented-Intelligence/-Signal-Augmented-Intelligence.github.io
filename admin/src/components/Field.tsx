@@ -4,15 +4,15 @@ import { type ChangeEvent, type ReactNode, useState } from 'react';
 import styles from './Field.module.css';
 
 /**
- * 입력 칸 묶음. 라벨은 위, 선택 항목은 "(선택)", 안내는 칸 아래 보조색 (규칙 문서 1부 4장).
- * 오류는 칸에 표시하지 않고 오류 팝업으로 알립니다. 팝업을 닫으면 `name`으로 칸을 찾아 커서를 옮깁니다.
+ * 입력 칸 묶음. 라벨은 위, 선택 항목과 제한은 라벨 뒤 괄호에 짧게: "PDF (선택, 20 MB 이하)" (규칙 문서 1부 4장).
+ * 칸 아래 안내 문장은 두지 않습니다(1장 5). 오류는 칸에 표시하지 않고 오류 팝업으로 알립니다.
  */
-export function Field({ label, optional, hint, children }: { label: string; optional?: boolean; hint?: ReactNode; children: ReactNode }) {
+export function Field({ label, optional, limit, children }: { label: string; optional?: boolean; limit?: string; children: ReactNode }) {
+  const note = [optional ? '선택' : '', limit ?? ''].filter(Boolean).join(', ');
   return (
     <label className="admin-field">
-      <span>{label}{optional && <small> (선택)</small>}</span>
+      <span>{label}{note && <small> ({note})</small>}</span>
       {children}
-      {hint && <span className="admin-hint">{hint}</span>}
     </label>
   );
 }

@@ -14,10 +14,8 @@
 .admin-text-button:disabled { color: var(--muted); cursor: not-allowed; text-decoration: none; }
 
 .admin-form { display: grid; gap: 22px; max-width: 40rem; }
-.admin-form-note { color: var(--muted); font-size: var(--text-sm); }
 .admin-field { display: grid; gap: 8px; font-size: var(--text-sm); font-weight: 600; }
 .admin-field small { color: var(--muted); font-weight: 400; font-size: inherit; }
-.admin-field .admin-hint { color: var(--muted); font-weight: 400; }
 .admin-field input:not([type='file']):not([type='checkbox']), .admin-field select, .admin-field textarea {
   width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 4px;
   background: var(--paper); color: var(--ink); font: inherit; font-size: var(--text-md); font-weight: 400;

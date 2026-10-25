@@ -4,3 +4,6 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .DS_Store
+
+# 관리 화면 API 문서는 로컬에서만 관리
+admin/docs/

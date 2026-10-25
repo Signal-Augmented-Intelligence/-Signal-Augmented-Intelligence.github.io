@@ -8,7 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = ['/', '/members/professor/', '/members/our-team/', '/members/alumni/', '/research/', '/research/publications/', '/seminars/', '/news/'];
   return [
     ...pages,
-    ...(getAlbums().length > 0 ? ['/album/'] : []),
+    ...(getAlbums().length > 0 ? ['/album/', ...getAlbums().map((a) => `/album/${a.slug}/`)] : []),
     ...getResearchAreas().map((a) => `/research/${a.slug}/`),
     ...getPublications().map((p) => p.url),
   ].map((path) => ({ url: `${SITE_URL}${path}` }));

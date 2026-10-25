@@ -119,7 +119,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 | `/publications/<논문>/` | 논문 상세 | `publications/[slug]/` + `content/publications/*.md` |
 | `/seminars/` | Seminars | `seminars/` + `content/seminars.yml` |
 | `/news/` | News | `news/` + `content/news.yml` |
-| `/album/` | Album (사진이 생기면 메뉴에 나타남) | `album/` + `content/album.yml` |
+| `/album/`, `/album/<folder>/` | Album 목록(행사별 대표 사진)과 행사별 사진 (사진이 생기면 메뉴에 나타남) | `album/` + `content/album.yml` |
 | `/contact/` | Contact | `contact/` |
 | `/upload/` | 세미나 업로드 (메뉴·검색 노출 없음) | `upload/` |
 
@@ -161,7 +161,9 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - 발표자는 영문·국문 이름으로도 검색됩니다 (`people.yml`의 이름을 붙여 검색).
 
 ### Album
-- 행사(세미나, MT, 학회 등)마다 섹션 하나: 제목에 행사 이름, 오른쪽에 날짜, 아래 사진 3열. 최신 행사가 위.
+- 목록(`/album/`): 행사(세미나, MT, 학회 등)마다 대표 사진 한 장(정사각형), 아래에 행사 이름과 날짜·사진 수. 4열(좁은 화면 2열), 최신 행사가 앞.
+- 대표 사진은 `album.yml`의 `cover`로 고릅니다. 비우면 그 행사의 첫 사진입니다.
+- 대표 사진을 누르면 그 행사의 페이지(`/album/<folder>/`)로 가서 사진 전체를 정사각형 칸으로 촘촘히 보여 줍니다(5열, 좁은 화면 3열).
 - 사진을 누르면 크게 보이고 이전/다음(좌우 방향키)으로 넘깁니다.
 - 사진이 하나도 없으면 상위 메뉴와 푸터에서 Album이 숨겨집니다.
 - 사진: 가로 사진, 긴 변 1600px 안팎, 1장 500KB 이하. 사람이 나오면 게시 동의를 받은 것만.

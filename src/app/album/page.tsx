@@ -1,23 +1,35 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { PageHeader } from '@/components/PageHeader';
-import { Section } from '@/components/Section';
 import { getAlbums } from '@/lib/content';
 import { formatDate } from '@/lib/format';
-import { AlbumGrid } from './AlbumGrid';
+import styles from './album.module.css';
 
 export const metadata: Metadata = { title: 'Album', description: 'Photos from SAI Lab, Hanshin University.' };
 
+/** Album list: one cover photo per event (newest first). A cover opens that event's photos. */
 export default function AlbumPage() {
   const albums = getAlbums();
   return (
     <>
       <PageHeader title="Album" />
-      {albums.length === 0 && <p className="container muted">Photos will be posted here.</p>}
-      {albums.map((a, i) => (
-        <Section key={a.date + a.title} id={`album-${i + 1}`} title={a.title} aside={<span className="muted num">{formatDate(a.date)}</span>}>
-          <AlbumGrid title={a.title} photos={a.photos} />
-        </Section>
-      ))}
+      <div className="container">
+        {albums.length === 0 ? <p className="muted">Photos will be posted here.</p> : (
+          <ul className={styles.albums}>
+            {albums.map((a) => (
+              <li key={a.slug}>
+                <Link href={`/album/${a.slug}/`} className={styles.album}>
+                  <span className={styles.cover}><img src={a.cover.src} alt="" loading="lazy" /></span>
+                  <span className={styles.albumTitle}>{a.title}</span>
+                  <span className={styles.albumMeta}>
+                    <span className="num">{formatDate(a.date)}</span> · <span className="num">{a.photos.length}</span> {a.photos.length === 1 ? 'photo' : 'photos'}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </>
   );
 }

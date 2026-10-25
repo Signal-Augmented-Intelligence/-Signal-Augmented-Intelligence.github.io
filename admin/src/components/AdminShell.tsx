@@ -2,17 +2,16 @@
 
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { MENU, type Role } from '@admin/lib/menu';
+import { MENU } from '@admin/lib/menu';
 import styles from './AdminShell.module.css';
 
 /**
  * 페이지 띠 아래의 틀: 왼쪽 메뉴 + 본문.
  * 960px 이하에서는 메뉴가 띠 아래의 가로 탭(공개 사이트의 탭과 같은 모양)이 됩니다. 접기 버튼은 두지 않습니다.
- * `role`이 없으면(로그인 전·확인 전) 모든 메뉴를 보여 줍니다. 막는 것은 관리 서버가 합니다.
  */
-export function AdminShell({ role, children }: { role?: Role; children: ReactNode }) {
+export function AdminShell({ children }: { children: ReactNode }) {
   const path = usePathname();
-  const items = MENU.filter((m) => !role || m.roles.includes(role));
+  const items = MENU;
   return (
     <div className={styles.frame}>
       <nav className={styles.nav} aria-label="관리 메뉴">

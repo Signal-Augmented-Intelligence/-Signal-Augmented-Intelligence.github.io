@@ -1,6 +1,0 @@
-/* 준비 상태 목록: 이름은 굵은 본문색, 상태는 보조색, 줄 사이는 가는 rule 선. */
-.list { display: grid; }
-.row { display: flex; justify-content: space-between; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
-.row:first-child { padding-top: 0; }
-.name { font-weight: 600; color: var(--ink); }
-.status { color: var(--muted); }

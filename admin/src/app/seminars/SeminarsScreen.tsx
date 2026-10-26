@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Section } from '@/components/Section';
 import { useDialog } from '@admin/components/Dialog';
-import { api, ApiError } from '@admin/lib/api';
+import { api, ApiError, signedOut } from '@admin/lib/api';
 import { errorBody } from '@admin/lib/errors';
 import type { PickerPerson, Seminar, SeminarArea, System } from '@admin/lib/types';
 import { usePublish } from '@admin/lib/usePublish';
@@ -48,6 +48,7 @@ export function SeminarsScreen() {
       ]);
       setLoaded({ system: system.data, seminars: seminars.data, areas: areas.data, people: people.data });
     } catch (err) {
+      if (signedOut(err)) return;
       if (await dialog.error('불러오지 못했습니다', errorBody(err), { retry: true })) void load();
     }
   }, [dialog]);
@@ -69,6 +70,7 @@ export function SeminarsScreen() {
       replace(res.data);
       track(res.data.id, res.publish);
     } catch (err) {
+      if (signedOut(err)) return;
       await dialog.error('저장하지 못했습니다', errorBody(err));
       if (err instanceof ApiError && err.code === 'CONFLICT') void load();
     } finally {

@@ -4,6 +4,8 @@
  * - 바꾸는 요청에는 GET /session에서 받은 CSRF 토큰을 X-CSRF-Token으로 붙입니다.
  * - 성공은 `{ data, publish? }`, 실패는 `{ error: { code, message, fields? } }`를 ApiError로 바꿉니다.
  * - 관리 서버에 연결되지 않으면 code "NETWORK"인 ApiError를 던집니다.
+ * - 401(로그인 필요·만료)이면 setUnauthenticatedHandler로 넘긴 함수를 부르고 ApiError를 던집니다.
+ *   화면은 이 오류를 팝업으로 띄우지 않습니다(signedOut). 그 자리에 로그인 칸이 나옵니다.
  */
 
 const BASE = '/api/v1';
@@ -11,7 +13,8 @@ const BASE = '/api/v1';
 export type ErrorCode =
   | 'VALIDATION_FAILED' | 'UNAUTHENTICATED' | 'NOT_FOUND' | 'CONFLICT'
   | 'FILE_TOO_LARGE' | 'UNSUPPORTED_FILE' | 'STORAGE_UNAVAILABLE' | 'INTERNAL'
-  | 'NETWORK';
+  | 'NETWORK' | 'FILE_FAILED';
+// NETWORK: 관리 서버에 닿지 않음. FILE_FAILED: 파일 처리 결과가 failed (api.md 5장). 둘 다 화면에서만 쓰는 코드입니다.
 
 export class ApiError extends Error {
   constructor(
@@ -37,6 +40,22 @@ export function setCsrfToken(token: string) {
   csrfToken = token;
 }
 
+let onUnauthenticated: () => void = () => {};
+/** 로그인이 풀린 응답(401)을 받으면 부를 함수. Session이 넣습니다. */
+export function setUnauthenticatedHandler(handler: () => void) {
+  onUnauthenticated = handler;
+}
+
+/** 로그인이 풀려서 난 오류인지. 이때는 오류 팝업 대신 로그인 칸이 나오므로 화면은 아무것도 하지 않습니다. */
+export const signedOut = (err: unknown) => err instanceof ApiError && err.code === 'UNAUTHENTICATED';
+
+function toError(json: unknown, status: number): ApiError {
+  const error = (json as { error?: { code?: ErrorCode; message?: string; fields?: Record<string, string> } } | null)?.error;
+  const err = new ApiError(error?.code ?? (status === 401 ? 'UNAUTHENTICATED' : 'INTERNAL'), error?.message ?? FALLBACK_MESSAGE, status, error?.fields ?? {});
+  if (err.code === 'UNAUTHENTICATED') onUnauthenticated();
+  return err;
+}
+
 type Method = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 
 async function request<T>(method: Method, path: string, body?: unknown): Promise<Result<T>> {
@@ -57,10 +76,7 @@ async function request<T>(method: Method, path: string, body?: unknown): Promise
   let json: unknown = null;
   try { json = await response.json(); } catch { /* 본문 없음 */ }
 
-  if (!response.ok) {
-    const error = (json as { error?: { code?: ErrorCode; message?: string; fields?: Record<string, string> } } | null)?.error;
-    throw new ApiError(error?.code ?? 'INTERNAL', error?.message ?? FALLBACK_MESSAGE, response.status, error?.fields ?? {});
-  }
+  if (!response.ok) throw toError(json, response.status);
   return json as Result<T>;
 }
 
@@ -81,8 +97,7 @@ function upload<T>(path: string, form: FormData, onProgress?: (percent: number) 
       let json: unknown = null;
       try { json = JSON.parse(xhr.responseText); } catch { /* 본문 없음 */ }
       if (xhr.status >= 200 && xhr.status < 300) return resolve(json as Result<T>);
-      const error = (json as { error?: { code?: ErrorCode; message?: string; fields?: Record<string, string> } } | null)?.error;
-      reject(new ApiError(error?.code ?? 'INTERNAL', error?.message ?? FALLBACK_MESSAGE, xhr.status, error?.fields ?? {}));
+      reject(toError(json, xhr.status));
     };
     xhr.send(form);
   });

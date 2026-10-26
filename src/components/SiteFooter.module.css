@@ -5,6 +5,8 @@
 .links a { color: var(--ink); }
 .links a:hover { color: var(--accent); }
 .bottom { display: flex; justify-content: space-between; gap: 24px; padding-top: 20px; padding-bottom: 32px; border-top: 1px solid var(--rule); color: var(--muted); font-size: var(--text-xs); }
+.bottom a { color: var(--muted); }
+.bottom a:hover { color: var(--accent); }
 
 @media (max-width: 640px) {
   .footer { margin-top: 80px; }

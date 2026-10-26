@@ -51,9 +51,9 @@ export function usePublish() {
     if (ids.length === 0) return;
     const timer = setInterval(async () => {
       for (const id of ids) {
-        let state: Publish['state'];
+        let result: Publish;
         try {
-          state = (await api.get<Publish>(`/publish/${id}`)).data.state;
+          result = (await api.get<Publish>(`/publish/${id}`)).data;
           misses.current[id] = 0;
         } catch (err) {
           if (signedOut(err)) return;
@@ -66,11 +66,11 @@ export function usePublish() {
           }
           continue;
         }
-        if (state !== 'done' && state !== 'failed') continue;
+        if (result.state !== 'done' && result.state !== 'failed') continue;
         let retried: Publish | null = null;
-        if (state === 'failed' && !failing.current) {
+        if (result.state === 'failed' && !failing.current) {
           failing.current = true;
-          const again = await dialog.error(FAILED, FAILED_BODY, { retry: true, retryLabel: '다시 반영' });
+          const again = await dialog.error(FAILED, result.message ? `${result.message} ${FAILED_BODY}` : FAILED_BODY, { retry: true, retryLabel: '다시 반영' });
           failing.current = false;
           if (again) { try { retried = (await api.post<Publish>('/publish')).data; } catch { /* 다음 저장 때 다시 */ } }
         }

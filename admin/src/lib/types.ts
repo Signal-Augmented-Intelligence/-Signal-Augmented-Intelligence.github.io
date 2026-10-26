@@ -17,6 +17,25 @@ export type PickerPerson = { id: string; name: string; name_ko: string; group: s
 
 export type System = {
   storage: { connected: boolean };
+  last_publish?: LastRun | null;
+  last_backup?: LastRun | null;
   limits: { seminar_pdf_upload_mb: number; seminar_pdf_public_mb: number; photo_mb: number; photo_types: string[] };
   password_rule: string;
 };
+
+/** 앨범 행사 (api.md 6장). 목록에서는 photos 없이 photo_count만 옵니다. */
+export type Album = Common & {
+  slug: string;
+  date: string; // YYYY-MM-DD 또는 YYYY-MM
+  title: string;
+  cover_photo_id: string | null;
+  photo_count: number;
+  photos?: AlbumPhoto[];
+};
+export type AlbumPhoto = Common & { file_id: string; preview_url: string | null; alt: string };
+
+/** 첫 화면 사진 (api.md 7장). note는 관리 화면에서만 보입니다. */
+export type HomeSlide = Common & { file_id: string; preview_url: string | null; note: string };
+
+/** GET /system의 마지막 반영·백업 (api.md 4장). */
+export type LastRun = { id?: string; state: 'queued' | 'running' | 'done' | 'failed'; finished_at: string | null; message?: string | null };

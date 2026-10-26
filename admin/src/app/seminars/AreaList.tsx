@@ -5,6 +5,7 @@ import { useDialog } from '@admin/components/Dialog';
 import { api, ApiError, type Publish, signedOut } from '@admin/lib/api';
 import { errorBody } from '@admin/lib/errors';
 import type { SeminarArea } from '@admin/lib/types';
+import list from '@admin/components/List.module.css';
 import styles from './seminars.module.css';
 
 /**
@@ -92,10 +93,10 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
       {areas.length === 0 ? (
         <p className="admin-muted">아직 등록된 분야가 없습니다.</p>
       ) : (
-        <ul className={styles.list}>
+        <ul className={list.list}>
           {areas.map((a, i) => (
-            <li key={a.id} className={styles.row}>
-              <div className={styles.main}>
+            <li key={a.id} className={list.row}>
+              <div className={list.main}>
                 {renaming?.id === a.id ? (
                   <form className={styles.inline} onSubmit={(e) => rename(e, a)}>
                     <input aria-label="분야 이름" value={renaming.name} onChange={(e) => setRenaming({ id: a.id, name: e.target.value })} autoFocus />
@@ -104,13 +105,13 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
                   </form>
                 ) : (
                   <>
-                    <p className={styles.title}>{a.name}</p>
-                    <p className={styles.meta}><span>세미나 {a.seminar_count}개</span></p>
+                    <p className={list.title}>{a.name}</p>
+                    <p className={list.meta}><span>세미나 {a.seminar_count}개</span></p>
                   </>
                 )}
               </div>
-              <span className={styles.status}>{publishing(a.id) ? '반영 중' : a.hidden ? '숨김' : '공개 중'}</span>
-              <span className={styles.actions}>
+              <span className={list.status}>{publishing(a.id) ? '반영 중' : a.hidden ? '숨김' : '공개 중'}</span>
+              <span className={list.actions}>
                 <button type="button" className="admin-text-button" disabled={busy || i === 0} onClick={() => move(i, -1)}>위로</button>
                 <button type="button" className="admin-text-button" disabled={busy || i === areas.length - 1} onClick={() => move(i, 1)}>아래로</button>
                 <button type="button" className="admin-text-button" disabled={busy || renaming !== null} onClick={() => setRenaming({ id: a.id, name: a.name })}>이름 바꾸기</button>

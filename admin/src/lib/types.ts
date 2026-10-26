@@ -30,6 +30,8 @@ export type Album = Common & {
   title: string;
   cover_photo_id: string | null;
   photo_count: number;
+  /** 목록에서만: 대표 사진(없으면 숨기지 않은 첫 사진)의 미리보기. 보일 사진이 없으면 null. */
+  cover_preview_url?: string | null;
   photos?: AlbumPhoto[];
 };
 export type AlbumPhoto = Common & { file_id: string; preview_url: string | null; alt: string };

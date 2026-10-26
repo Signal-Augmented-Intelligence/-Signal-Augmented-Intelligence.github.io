@@ -14,6 +14,12 @@ import styles from './album.module.css';
  * 대표 사진을 고르지 않았으면(cover_photo_id null) 숨기지 않은 첫 사진이 대표입니다.
  * 숨긴 사진은 대표로 고를 수 없고, 대표 사진을 숨기면 관리 서버가 대표를 첫 사진으로 되돌립니다.
  */
+/** 목록 줄에 넘길 사진 수와 대표 사진 미리보기. */
+function summary(album: Album, photos: AlbumPhoto[]): Album {
+  const cover = photos.find((p) => p.id === album.cover_photo_id) ?? photos.find((p) => !p.hidden);
+  return { ...album, photo_count: photos.length, cover_preview_url: cover?.preview_url ?? null };
+}
+
 const HIDE_BODY = '숨기면 공개 사이트의 앨범에서 보이지 않습니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
 const MB = 1024 * 1024;
 
@@ -32,7 +38,7 @@ export function AlbumPhotos({ albumId, system, onAlbum, track }: {
     try {
       const res = await api.get<Album>(`/albums/${albumId}`);
       setAlbum(res.data);
-      onAlbum({ ...res.data, photo_count: res.data.photos?.length ?? res.data.photo_count });
+      onAlbum(summary(res.data, res.data.photos ?? []));
     } catch (err) {
       if (signedOut(err)) return;
       if (await dialog.error('불러오지 못했습니다', errorBody(err), { retry: true })) void load();
@@ -86,7 +92,7 @@ export function AlbumPhotos({ albumId, system, onAlbum, track }: {
     track(albumId, res.publish);
     const next = { ...album, ...res.data, photos };
     setAlbum(next);
-    onAlbum({ ...next, photo_count: photos.length });
+    onAlbum(summary(next, photos));
   });
 
   const move = (from: number, to: number) => void run(async () => {

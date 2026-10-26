@@ -15,7 +15,7 @@ import styles from './album.module.css';
 
 /**
  * Album 한 화면 (규칙 문서 3-1, api.md 6장).
- * 행사 목록(날짜 최신순), 목록 위에서 행사 추가, 줄의 "사진"으로 그 자리에서 펼쳐 사진을 다루고, "고치기"로 날짜·이름을 고칩니다.
+ * 행사 목록(대표 사진 칸, 날짜 최신순), 목록 위에서 행사 추가, 줄의 "사진"으로 그 자리에서 펼쳐 사진을 다루고, "고치기"로 날짜·이름을 고칩니다.
  * 공개 사이트에는 숨기지 않은 사진이 1장 이상인 행사만 나옵니다.
  */
 const HIDE_BODY = '숨기면 공개 사이트에서 이 행사가 보이지 않습니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
@@ -94,7 +94,8 @@ export function AlbumScreen() {
             </li>
           ) : (
             <Fragment key={a.id}>
-              <li className={list.row}>
+              <li className={`${list.row} ${styles.row}`}>
+                <span className={styles.thumb}>{a.cover_preview_url && <img src={a.cover_preview_url} alt="" />}</span>
                 <div className={list.main}>
                   <p className={list.title}>{a.title}</p>
                   <p className={list.meta}>

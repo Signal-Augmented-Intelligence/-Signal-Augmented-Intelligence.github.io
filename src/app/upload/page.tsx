@@ -16,7 +16,7 @@ export default function UploadPage() {
 
   return (
     <>
-      <PageHeader title="Seminar Upload" lede={<span lang="ko">올린 자료는 관리자 확인 후 Seminars 페이지에 반영됩니다.</span>} />
+      <PageHeader title="Seminar Upload" />
       <div className="container">
         <UploadForm endpoint={lab.upload_endpoint} presenters={presenters} areas={areas} />
       </div>

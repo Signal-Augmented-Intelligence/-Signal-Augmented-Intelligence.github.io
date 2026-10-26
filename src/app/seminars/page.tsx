@@ -17,7 +17,7 @@ function withPresenterNames() {
 export default function SeminarsPage() {
   return (
     <>
-      <PageHeader title="Seminars" lede="Slides from lab seminars" />
+      <PageHeader title="Seminars" />
       <div className="container">
         <SeminarsExplorer seminars={withPresenterNames()} />
       </div>

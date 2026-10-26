@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/PageHeader';
 import { Section } from '@/components/Section';
 import { getPublications, getResearchAreas } from '@/lib/content';
-import { RESEARCH_LEDE, RESEARCH_TABS } from '@/lib/site';
+import { RESEARCH_TABS } from '@/lib/site';
 import styles from './research.module.css';
 
 export const metadata: Metadata = { title: 'Research Areas', description: 'Research areas at SAI Lab, Hanshin University.' };
@@ -13,7 +13,7 @@ export default function ResearchPage() {
   const publications = getPublications();
   return (
     <>
-      <PageHeader title="Research" lede={RESEARCH_LEDE} tabs={RESEARCH_TABS} />
+      <PageHeader title="Research" tabs={RESEARCH_TABS} />
       <Section id="areas" title="Research Areas">
         <ul className={styles.cards}>
           {areas.map((a) => {

@@ -3,7 +3,7 @@ import itemStyles from '@/components/Items.module.css';
 import { PageHeader } from '@/components/PageHeader';
 import { PublicationItem } from '@/components/PublicationItem';
 import { getPeople, getPublications } from '@/lib/content';
-import { RESEARCH_LEDE, RESEARCH_TABS } from '@/lib/site';
+import { RESEARCH_TABS } from '@/lib/site';
 import styles from './publications.module.css';
 
 export const metadata: Metadata = { title: 'Publications', description: 'Publications of SAI Lab, Hanshin University.' };
@@ -15,7 +15,7 @@ export default function PublicationsPage() {
 
   return (
     <>
-      <PageHeader title="Research" lede={RESEARCH_LEDE} tabs={RESEARCH_TABS} />
+      <PageHeader title="Research" tabs={RESEARCH_TABS} />
       <div className="container">
         <div className={styles.layout}>
           <nav className={styles.years} aria-label="Years">

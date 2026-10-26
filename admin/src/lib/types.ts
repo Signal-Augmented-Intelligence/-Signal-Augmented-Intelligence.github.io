@@ -15,6 +15,12 @@ export type Seminar = Common & {
 };
 export type SeminarArea = Common & { name: string; seminar_count: number };
 export type PickerPerson = { id: string; name: string; name_ko: string; group: string };
+export type MemberGroup = 'faculty' | 'phd' | 'ms' | 'undergrad' | 'alumni';
+export type Member = Common & {
+  name: string; name_ko: string; aliases: string[]; group: MemberGroup; role: string;
+  since: string; until: string; bio: string; url: string; after: string;
+  photo_file_id: string | null; photo_preview_url: string | null;
+};
 
 export type System = {
   storage: { connected: boolean };

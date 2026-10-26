@@ -4,7 +4,7 @@ import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { useDialog } from '@admin/components/Dialog';
 import { Field, focusField } from '@admin/components/Field';
 import { FileUpload, type FileValue } from '@admin/components/FileUpload';
-import { api, ApiError, type Publish } from '@admin/lib/api';
+import { api, ApiError, type Publish, signedOut } from '@admin/lib/api';
 import { errorBody, fieldList } from '@admin/lib/errors';
 import { getFile } from '@admin/lib/files';
 import type { Presenter, Seminar } from '@admin/lib/types';
@@ -15,6 +15,8 @@ import styles from './seminars.module.css';
  * 세미나 올리기·고치기 폼 (세미나 업로드 설계 5장). 목록 맨 위(올리기) 또는 그 줄 자리(고치기)에서 펼쳐집니다.
  * 쓰던 내용은 브라우저에 임시 보관하고, 저장하거나 취소하면 지웁니다.
  * 파일이 올라가는 중에 저장을 누르면 버튼이 "저장 중"이 되고, 파일이 준비되면 이어서 저장합니다.
+ * 고치기는 바꾼 칸만 보냅니다(api.md 1장 PATCH). 파일 칸도 바꾸지 않았으면 보내지 않아서, 붙어 있던 파일은 그대로 남습니다.
+ * 파일 칸: 그대로(보내지 않음) / 새 파일(새 id) / 빼기(null).
  */
 const EXTERNAL = '__external';
 
@@ -61,6 +63,12 @@ function fromSeminar(s?: Seminar): Draft {
     pdf: null,
     cover: null,
   };
+}
+
+/** 고치기: 원래 값과 다른 칸만 (발표자처럼 객체인 칸은 내용으로 비교). */
+function changedFields(seminar: Seminar, body: Partial<Seminar>): Partial<Seminar> {
+  return Object.fromEntries(Object.entries(body).filter(([k, v]) =>
+    JSON.stringify(v) !== JSON.stringify(seminar[k as keyof Seminar] ?? null)));
 }
 
 const toFileValue = (f: Awaited<ReturnType<typeof getFile>>): FileValue =>
@@ -131,18 +139,24 @@ export function SeminarForm({ loaded, seminar, onSaved, onCancel, onConflict }: 
       if (warnings.length > 0 && !(await dialog.confirm('이대로 올릴까요?', fieldList(warnings), '올리기'))) return;
 
       const presenter: Presenter = draft.presenter === EXTERNAL ? { name: draft.external.trim() } : { person_id: draft.presenter };
-      const body = {
+      const body: Partial<Seminar> = {
         date: draft.date, presenter, title: draft.title.trim(), summary: draft.summary.trim(),
         area_id: draft.area || null,
-        pdf_file_id: keep ? seminar?.pdf_file_id ?? null : pdf?.id ?? null,
-        cover_file_id: keep ? seminar?.cover_file_id ?? null : cover?.id ?? null,
+        ...(keep ? {} : { pdf_file_id: pdf?.id ?? null, cover_file_id: cover?.id ?? null }),
       };
-      const res = seminar
-        ? await api.patch<Seminar>(`/seminars/${seminar.id}`, { ...body, version: seminar.version })
-        : await api.post<Seminar>('/seminars', body);
-      writeDraft(seminar?.id, null);
+      if (seminar) {
+        const changed = changedFields(seminar, body);
+        if (Object.keys(changed).length === 0) { cancel(); return; }
+        const res = await api.patch<Seminar>(`/seminars/${seminar.id}`, { ...changed, version: seminar.version });
+        writeDraft(seminar.id, null);
+        onSaved(res.data, res.publish);
+        return;
+      }
+      const res = await api.post<Seminar>('/seminars', body);
+      writeDraft(undefined, null);
       onSaved(res.data, res.publish);
     } catch (err) {
+      if (signedOut(err)) return;
       await dialog.error('저장하지 못했습니다', errorBody(err, LABELS));
       if (err instanceof ApiError) {
         if (err.code === 'CONFLICT') onConflict();

@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Section } from '@/components/Section';
 import { useDialog } from '@admin/components/Dialog';
-import { api, ApiError } from '@admin/lib/api';
+import { api, ApiError, signedOut } from '@admin/lib/api';
 import { errorBody } from '@admin/lib/errors';
 import type { PickerPerson, Seminar, SeminarArea, System } from '@admin/lib/types';
 import { usePublish } from '@admin/lib/usePublish';
 import { AreaList } from './AreaList';
 import { SeminarForm } from './SeminarForm';
+import list from '@admin/components/List.module.css';
 import styles from './seminars.module.css';
 
 /**
@@ -48,6 +49,7 @@ export function SeminarsScreen() {
       ]);
       setLoaded({ system: system.data, seminars: seminars.data, areas: areas.data, people: people.data });
     } catch (err) {
+      if (signedOut(err)) return;
       if (await dialog.error('불러오지 못했습니다', errorBody(err), { retry: true })) void load();
     }
   }, [dialog]);
@@ -69,6 +71,7 @@ export function SeminarsScreen() {
       replace(res.data);
       track(res.data.id, res.publish);
     } catch (err) {
+      if (signedOut(err)) return;
       await dialog.error('저장하지 못했습니다', errorBody(err));
       if (err instanceof ApiError && err.code === 'CONFLICT') void load();
     } finally {
@@ -94,23 +97,23 @@ export function SeminarsScreen() {
         <button type="button" className="admin-text-button" onClick={() => setEditing('new')}>세미나 올리기</button>
       )}>
         {editing === 'new' && (
-          <div className={styles.formRow}>
+          <div className={list.open}>
             <SeminarForm loaded={loaded} onSaved={saved} onCancel={() => setEditing(null)} onConflict={load} />
           </div>
         )}
         {seminars.length === 0 && editing !== 'new' ? (
           <p className="admin-muted">아직 등록된 세미나가 없습니다.</p>
         ) : (
-          <ul className={styles.list}>
+          <ul className={list.list}>
             {seminars.map((s) => editing === s.id ? (
-              <li key={s.id} className={styles.formRow}>
+              <li key={s.id} className={list.open}>
                 <SeminarForm loaded={loaded} seminar={s} onSaved={saved} onCancel={() => setEditing(null)} onConflict={load} />
               </li>
             ) : (
-              <li key={s.id} className={styles.row}>
-                <div className={styles.main}>
-                  <p className={styles.title}>{s.title}</p>
-                  <p className={styles.meta}>
+              <li key={s.id} className={list.row}>
+                <div className={list.main}>
+                  <p className={list.title}>{s.title}</p>
+                  <p className={list.meta}>
                     <span className="num">{formatDate(s.date)}</span>
                     <span>{presenterName(s, people)}</span>
                     {s.area_id && <span>{areas.find((a) => a.id === s.area_id)?.name}</span>}
@@ -118,8 +121,8 @@ export function SeminarsScreen() {
                     {s.highlight && <span>첫 화면</span>}
                   </p>
                 </div>
-                <span className={styles.status}>{status(s)}</span>
-                <span className={styles.actions}>
+                <span className={list.status}>{status(s)}</span>
+                <span className={list.actions}>
                   <button type="button" className="admin-text-button" disabled={busyRow === s.id || editing !== null} onClick={() => setEditing(s.id)}>고치기</button>
                   {s.pdf_file_id && !s.hidden && (
                     <button type="button" className="admin-text-button" disabled={busyRow === s.id} onClick={() => patch(s, { highlight: !s.highlight })}>

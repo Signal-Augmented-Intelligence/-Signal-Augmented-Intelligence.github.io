@@ -1,0 +1,117 @@
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
+import { Section } from '@/components/Section';
+import { useDialog } from '@admin/components/Dialog';
+import { cell, PhotoGrid, PickPhotos, TextEdit, usePhotoUploads } from '@admin/components/PhotoGrid';
+import { api, ApiError, signedOut } from '@admin/lib/api';
+import { errorBody } from '@admin/lib/errors';
+import type { FileInfo } from '@admin/lib/files';
+import type { HomeSlide, System } from '@admin/lib/types';
+import { usePublish } from '@admin/lib/usePublish';
+
+/**
+ * Home › 첫 화면 사진 (api.md 7장). 사진 칸 목록에서 올리기, 메모, 숨기기, 순서.
+ * 메모는 관리 화면에서만 보이고 공개 사이트에는 나오지 않습니다.
+ */
+const HIDE_BODY = '숨기면 공개 사이트 첫 화면에서 보이지 않습니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
+const MB = 1024 * 1024;
+
+export function HomeSlidesScreen() {
+  const dialog = useDialog();
+  const { publishing, track } = usePublish();
+  const [system, setSystem] = useState<System | null>(null);
+  const [slides, setSlides] = useState<HomeSlide[] | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(async () => {
+    try {
+      const [sys, list] = await Promise.all([api.get<System>('/system'), api.get<HomeSlide[]>('/home-slides')]);
+      setSystem(sys.data);
+      setSlides(list.data);
+    } catch (err) {
+      if (signedOut(err)) return;
+      if (await dialog.error('불러오지 못했습니다', errorBody(err), { retry: true })) void load();
+    }
+  }, [dialog]);
+
+  useEffect(() => { void load(); }, [load]);
+
+  /** 저장 하나를 실행하고, 실패하면 오류 팝업. 동시 수정이면 새로 불러옵니다. 성공하면 true. */
+  const run = async (work: () => Promise<void>) => {
+    setBusy(true);
+    try { await work(); return true; } catch (err) {
+      if (signedOut(err)) return false;
+      await dialog.error('저장하지 못했습니다', errorBody(err, { note: '메모' }));
+      if (err instanceof ApiError && err.code === 'CONFLICT') void load();
+      return false;
+    } finally { setBusy(false); }
+  };
+
+  const limits = system?.limits;
+  const { uploads, add } = usePhotoUploads({
+    purpose: 'home',
+    maxBytes: (limits?.photo_mb ?? 0) * MB,
+    types: limits?.photo_types ?? [],
+    tooLarge: `사진이 ${limits?.photo_mb} MB를 넘습니다.`,
+    onReady: async (info: FileInfo) => {
+      const res = await api.post<HomeSlide>('/home-slides', { file_id: info.id });
+      setSlides((s) => [...(s ?? []), res.data]);
+      track(res.data.id, res.publish);
+    },
+  });
+
+  if (!system || !slides) return <p className="admin-muted">불러오는 중입니다.</p>;
+
+  const put = (s: HomeSlide) => setSlides((list) => list && list.map((x) => (x.id === s.id ? s : x)));
+
+  const patch = (s: HomeSlide, change: Partial<HomeSlide>) => run(async () => {
+    const res = await api.patch<HomeSlide>(`/home-slides/${s.id}`, { ...change, version: s.version });
+    put(res.data);
+    track(s.id, res.publish);
+  });
+
+  const hide = async (s: HomeSlide) => {
+    if (await dialog.confirm('사진을 숨길까요?', HIDE_BODY, '숨기기')) void patch(s, { hidden: true });
+  };
+
+  const move = (from: number, to: number) => void run(async () => {
+    const next = [...slides];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    const res = await api.put<HomeSlide[]>('/home-slides/order', { ids: next.map((s) => s.id) });
+    setSlides(res.data ?? next);
+    track(moved.id, res.publish);
+  });
+
+  const connected = system.storage.connected;
+  const status = (s: HomeSlide) => publishing(s.id) ? '반영 중' : s.hidden ? '숨김' : '공개 중';
+
+  return (
+    <Section title="첫 화면 사진" aside={connected && (
+      <PickPhotos accept={system.limits.photo_types.join(',')} onFiles={add} />
+    )}>
+      {!connected && <p className="admin-muted">원본 파일 저장소가 연결되어 있지 않습니다.</p>}
+      {slides.length === 0 && uploads.length === 0 ? (
+        connected && <p className="admin-muted">아직 등록된 사진이 없습니다.</p>
+      ) : (
+        <PhotoGrid items={slides} uploads={uploads} onDropFiles={connected ? add : undefined} onMove={move} alt={(s) => s.note}>
+          {(s, i) => (
+            <>
+              {s.note && <p className={cell.caption}>{s.note}</p>}
+              <p className={cell.meta}>{status(s)}</p>
+              <span className={cell.actions}>
+                <TextEdit label="메모" value={s.note} disabled={busy} onSave={(note) => patch(s, { note })} />
+                {s.hidden
+                  ? <button type="button" className="admin-text-button" disabled={busy} onClick={() => patch(s, { hidden: false })}>다시 보이기</button>
+                  : <button type="button" className="admin-text-button" disabled={busy} onClick={() => hide(s)}>숨기기</button>}
+                <button type="button" className="admin-text-button" disabled={busy || i === 0} onClick={() => move(i, i - 1)}>앞으로</button>
+                <button type="button" className="admin-text-button" disabled={busy || i === slides.length - 1} onClick={() => move(i, i + 1)}>뒤로</button>
+              </span>
+            </>
+          )}
+        </PhotoGrid>
+      )}
+    </Section>
+  );
+}

@@ -24,3 +24,6 @@
 .admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
 .admin-actions { display: flex; align-items: center; gap: 20px; }
 .admin-muted { color: var(--muted); }
+/* 칸 바로 아래에 붙는 선택 하나 (예: 날짜 "월까지만"). */
+.admin-check { display: flex; align-items: center; gap: 8px; margin-top: -12px; font-size: var(--text-sm); cursor: pointer; }
+.admin-check input { width: 16px; height: 16px; accent-color: var(--accent); }

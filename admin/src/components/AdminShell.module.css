@@ -12,6 +12,8 @@ a.item:hover { background: var(--surface); text-decoration: none; }
 .item[aria-current='page'] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 .pending { color: var(--muted); cursor: default; }
 .soon { font-size: var(--text-xs); font-weight: 400; }
+.single { grid-template-columns: minmax(0, 1fr); }
+.single .body { padding-left: var(--gutter); }
 .body { min-width: 0; padding-top: 56px; padding-bottom: 96px; padding-left: 48px; }
 /* Section 컴포넌트는 자체 container 여백을 가지므로, 본문 안에서는 없앱니다. */
 .body :global(.container) { padding: 0; }

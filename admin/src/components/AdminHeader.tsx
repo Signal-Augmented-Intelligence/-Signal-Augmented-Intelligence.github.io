@@ -1,17 +1,18 @@
+'use client';
+
 import { SignalMark } from '@/components/SignalMark';
 import site from '@/components/SiteHeader.module.css';
 import styles from './AdminHeader.module.css';
+import { useSession } from './Session';
 
 /**
  * 공개 사이트와 같은 남색 헤더. 왼쪽: 신호 표시 + "SAI Lab" │ "관리". 오른쪽: "공개 사이트"(새 탭).
  * 로그인한 뒤에는 오른쪽에 "비밀번호 바꾸기"(팝업)와 "로그아웃"이 붙습니다(공용 계정이라 이름은 없음).
+ * 좁은 화면에서는 한 줄에 들어가도록 "비밀번호"로 줄여 씁니다.
  */
-export function AdminHeader({ siteUrl, loggedIn = false, onChangePassword, onLogout }: {
-  siteUrl: string;
-  loggedIn?: boolean;
-  onChangePassword?: () => void;
-  onLogout?: () => void;
-}) {
+export function AdminHeader({ siteUrl }: { siteUrl: string }) {
+  const { state, changePassword, logout } = useSession();
+  const loggedIn = state === 'in';
   return (
     <header className={site.header}>
       <div className={`container ${site.inner} ${styles.inner}`}>
@@ -25,8 +26,8 @@ export function AdminHeader({ siteUrl, loggedIn = false, onChangePassword, onLog
           <li><a className={site.link} href={siteUrl} target="_blank" rel="noopener noreferrer">공개 사이트</a></li>
           {loggedIn && (
             <>
-              <li><button type="button" className={`${site.link} ${styles.button}`} onClick={onChangePassword}>비밀번호 바꾸기</button></li>
-              <li><button type="button" className={`${site.link} ${styles.button}`} onClick={onLogout}>로그아웃</button></li>
+              <li><button type="button" className={`${site.link} ${styles.button}`} onClick={changePassword}>비밀번호<span className={styles.wide}> 바꾸기</span></button></li>
+              <li><button type="button" className={`${site.link} ${styles.button}`} onClick={() => void logout()}>로그아웃</button></li>
             </>
           )}
         </ul>

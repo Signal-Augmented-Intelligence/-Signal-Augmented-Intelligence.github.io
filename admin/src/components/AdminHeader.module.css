@@ -1,13 +1,24 @@
-/* 공개 사이트 헤더(SiteHeader.module.css)에 더하는 부분만 둡니다. */
-.divider { width: 1px; height: 18px; margin: 0 4px; background: rgba(255, 255, 255, 0.3); }
-.area { font-size: 1.0625rem; font-weight: 500; color: rgba(255, 255, 255, 0.85); }
+.header { position: sticky; top: 0; z-index: 10; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: var(--header-h); }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: #111111; }
+.brand:hover { text-decoration: none; }
+.brandLogo { position: relative; display: block; width: 162px; height: 65px; overflow: hidden; flex: none; }
+.logoImage { width: 205px; height: auto; max-width: none; transform: translate(-32px, -22px); }
+.divider { width: 1px; height: 20px; margin: 0 4px; background: var(--rule); }
+.area { font-size: 1.0625rem; font-weight: 500; color: var(--ink); }
 .actions { display: flex; align-items: center; gap: 28px; }
+.link { display: block; padding: 6px 0; color: var(--ink); font-size: 0.9375rem; font-weight: 500; }
+.link:hover { color: var(--accent); text-decoration: none; }
 .button { border: 0; background: none; font: inherit; cursor: pointer; }
 
-/* 좁은 화면에서도 한 줄에 둡니다. 로그인 뒤 항목이 늘면 간격만 줄입니다. */
 @media (max-width: 640px) {
-  .inner { height: var(--header-h); padding-top: 0; padding-bottom: 0; flex-direction: row; align-items: center; }
-  .inner > a { flex-shrink: 0; white-space: nowrap; }
+  .inner { gap: 8px; }
+  .brand { gap: 6px; flex-shrink: 0; white-space: nowrap; }
+  .brandLogo { width: 118px; height: 48px; }
+  .logoImage { width: 150px; transform: translate(-23px, -16px); }
+  .divider { height: 16px; margin: 0 2px; }
+  .area { font-size: var(--text-sm); }
   .actions { gap: 10px; font-size: var(--text-sm); white-space: nowrap; }
+  .link { font-size: var(--text-sm); }
   .wide { display: none; }
 }

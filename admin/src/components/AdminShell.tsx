@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { MENU } from '@admin/lib/menu';
@@ -43,6 +44,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
               );
             })}
           </ul>
+          <div className={styles.university}>
+            <Image src="/images/admin/hanshin-university.png" width={696} height={228} alt="한신대학교" />
+          </div>
         </div>
       </nav>
       <div className={`container ${styles.body}`}>{children}</div>

@@ -11,7 +11,7 @@ import { SessionProvider } from '@admin/components/Session';
 import { SITE_URL } from '@admin/site';
 
 export const metadata: Metadata = {
-  title: { default: '관리 화면 | SAI Lab', template: '%s | SAI Lab 관리 화면' },
+  title: { default: 'SAI Lab 관리', template: '%s | SAI Lab 관리' },
   robots: { index: false, follow: false },
   icons: { icon: { url: icon.src, type: 'image/svg+xml' } },
 };

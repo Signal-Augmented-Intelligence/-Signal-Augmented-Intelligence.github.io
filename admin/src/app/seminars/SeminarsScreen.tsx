@@ -10,12 +10,12 @@ import { usePublish } from '@admin/lib/usePublish';
 import { AreaList } from './AreaList';
 import { SeminarForm } from './SeminarForm';
 import list from '@admin/components/List.module.css';
-import styles from './seminars.module.css';
 
 /**
  * Seminars 한 화면 (세미나 업로드 설계 5장, 규칙 문서 3-2).
  * 세미나: 목록(날짜 최신순), 목록 위에서 올리기, 줄 자리에서 고치기, 숨기기, 첫 화면에 보이기.
  * 세미나 분야: 추가, 이름 바꾸기, 숨기기, 순서.
+ * 폼이 열려 있는 동안(올리기·고치기)에는 목록의 다른 동작과 "세미나 올리기"를 막습니다. 폼 하나만 다루게 하려는 것입니다.
  */
 export type Loaded = { system: System; seminars: Seminar[]; areas: SeminarArea[]; people: PickerPerson[] };
 
@@ -90,12 +90,15 @@ export function SeminarsScreen() {
     setEditing(null);
   };
 
+  /** 그 줄을 저장하는 중이거나 폼이 열려 있으면 줄의 동작을 막습니다. */
+  const locked = (s: Seminar) => busyRow === s.id || editing !== null;
+
   const status = (s: Seminar) => publishing(s.id) || s.publication.state === 'publishing'
     ? '반영 중' : s.publication.state === 'failed' ? '반영 실패' : s.hidden ? '숨김' : '공개 중';
 
   return (
     <>
-      <Section title="세미나" aside={editing !== 'new' && (
+      <Section title="세미나" aside={editing === null && (
         <button type="button" className="admin-text-button" onClick={() => setEditing('new')}>세미나 올리기</button>
       )}>
         {editing === 'new' && (
@@ -126,16 +129,16 @@ export function SeminarsScreen() {
                 </div>
                 <span className={list.status}>{status(s)}</span>
                 <span className={list.actions}>
-                  <button type="button" className="admin-text-button" disabled={busyRow === s.id || editing !== null} onClick={() => setEditing(s.id)}>고치기</button>
+                  <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => setEditing(s.id)}>고치기</button>
                   {s.pdf_file_id && !s.hidden && (
-                    <button type="button" className="admin-text-button" disabled={busyRow === s.id} onClick={() => patch(s, { highlight: !s.highlight })}>
+                    <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => patch(s, { highlight: !s.highlight })}>
                       {s.highlight ? '첫 화면에서 빼기' : '첫 화면에 보이기'}
                     </button>
                   )}
                   {s.hidden ? (
-                    <button type="button" className="admin-text-button" disabled={busyRow === s.id} onClick={() => patch(s, { hidden: false })}>다시 보이기</button>
+                    <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => patch(s, { hidden: false })}>다시 보이기</button>
                   ) : (
-                    <button type="button" className="admin-text-button" disabled={busyRow === s.id} onClick={() => hide(s)}>숨기기</button>
+                    <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => hide(s)}>숨기기</button>
                   )}
                 </span>
               </li>
@@ -144,15 +147,13 @@ export function SeminarsScreen() {
         )}
       </Section>
 
-      <Section title="세미나 분야">
-        <AreaList
-          areas={areas}
-          onChange={(next) => setLoaded((l) => l && { ...l, areas: next })}
-          onConflict={load}
-          publishing={publishing}
-          track={track}
-        />
-      </Section>
+      <AreaList
+        areas={areas}
+        onChange={(next) => setLoaded((l) => l && { ...l, areas: next })}
+        onConflict={load}
+        publishing={publishing}
+        track={track}
+      />
     </>
   );
 }

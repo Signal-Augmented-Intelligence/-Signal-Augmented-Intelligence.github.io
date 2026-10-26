@@ -33,6 +33,7 @@ export function AlbumPhotos({ albumId, system, onAlbum, track }: {
   const dialog = useDialog();
   const [album, setAlbum] = useState<Album | null>(null);
   const [busy, setBusy] = useState(false);
+  const [altOpen, setAltOpen] = useState<string | null>(null); // 설명을 고치는 사진 id. 고치는 동안 다른 칸의 동작과 올리기를 막습니다.
 
   const load = useCallback(async () => {
     try {
@@ -110,28 +111,34 @@ export function AlbumPhotos({ albumId, system, onAlbum, track }: {
     <div className={styles.photos}>
       <div className={styles.photosHead}>
         <h3 className={styles.photosTitle}>사진</h3>
-        {connected && <PickPhotos accept={limits.photo_types.join(',')} onFiles={add} />}
+        {connected && <PickPhotos accept={limits.photo_types.join(',')} onFiles={add} disabled={altOpen !== null} />}
       </div>
       {!connected && <p className="admin-muted">원본 파일 저장소가 연결되어 있지 않습니다.</p>}
       {photos.length === 0 && uploads.length === 0 ? (
         connected && <p className="admin-muted">아직 올린 사진이 없습니다.</p>
       ) : (
-        <PhotoGrid items={photos} uploads={uploads} onDropFiles={connected ? add : undefined} onMove={move} alt={(p) => p.alt}>
-          {(p, i) => (
-            <>
-              {p.alt && <p className={cell.caption}>{p.alt}</p>}
-              <p className={cell.meta}>{[p.id === cover && '대표', p.hidden ? '숨김' : '공개 중'].filter(Boolean).join(' · ')}</p>
-              <span className={cell.actions}>
-                {p.id !== cover && !p.hidden && <button type="button" className="admin-text-button" disabled={busy} onClick={() => makeCover(p)}>대표로</button>}
-                <TextEdit label="설명" value={p.alt} disabled={busy} onSave={(alt) => patchPhoto(p, { alt })} />
-                {p.hidden
-                  ? <button type="button" className="admin-text-button" disabled={busy} onClick={() => patchPhoto(p, { hidden: false })}>다시 보이기</button>
-                  : <button type="button" className="admin-text-button" disabled={busy} onClick={() => hide(p)}>숨기기</button>}
-                <button type="button" className="admin-text-button" disabled={busy || i === 0} onClick={() => move(i, i - 1)}>앞으로</button>
-                <button type="button" className="admin-text-button" disabled={busy || i === photos.length - 1} onClick={() => move(i, i + 1)}>뒤로</button>
-              </span>
-            </>
-          )}
+        <PhotoGrid items={photos} uploads={uploads} onDropFiles={connected && altOpen === null ? add : undefined} onMove={(from, to) => { if (altOpen === null) move(from, to); }} alt={(p) => p.alt}>
+          {(p, i) => {
+            const locked = busy || altOpen !== null;
+            const editing = altOpen === p.id;
+            return (
+              <>
+                <p className={cell.caption}>{p.alt}</p>
+                <p className={cell.meta}>{[p.id === cover && '대표', p.hidden ? '숨김' : '공개 중'].filter(Boolean).join(' · ')}</p>
+                <span className={cell.actions}>
+                  {!editing && p.id !== cover && !p.hidden && <button type="button" className="admin-text-button" disabled={locked} onClick={() => makeCover(p)}>대표로</button>}
+                  <TextEdit label="설명" value={p.alt} disabled={locked} open={editing} onOpen={(open) => setAltOpen(open ? p.id : null)} onSave={(alt) => patchPhoto(p, { alt })} />
+                  {!editing && (p.hidden
+                    ? <button type="button" className="admin-text-button" disabled={locked} onClick={() => patchPhoto(p, { hidden: false })}>다시 보이기</button>
+                    : <button type="button" className="admin-text-button" disabled={locked} onClick={() => hide(p)}>숨기기</button>)}
+                </span>
+                <span className={cell.order}>
+                  <button type="button" className="admin-text-button" disabled={locked || i === 0} onClick={() => move(i, i - 1)}>앞으로</button>
+                  <button type="button" className="admin-text-button" disabled={locked || i === photos.length - 1} onClick={() => move(i, i + 1)}>뒤로</button>
+                </span>
+              </>
+            );
+          }}
         </PhotoGrid>
       )}
     </div>

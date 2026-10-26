@@ -30,5 +30,6 @@ a.item:hover { background: var(--surface); text-decoration: none; }
   .item { height: 56px; padding: 0; margin-bottom: -1px; border-radius: 0; border-bottom: 2px solid transparent; white-space: nowrap; font-weight: 600; }
   .item[aria-current='page'] { background: none; border-bottom-color: var(--accent); }
   .soon { display: none; }
+  .pendingItem { display: none; }
   .body { padding-top: 32px; padding-left: var(--gutter); }
 }

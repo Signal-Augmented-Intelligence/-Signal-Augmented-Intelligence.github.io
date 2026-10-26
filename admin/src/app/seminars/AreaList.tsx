@@ -1,6 +1,7 @@
 'use client';
 
 import { type FormEvent, useState } from 'react';
+import { Section } from '@/components/Section';
 import { useDialog } from '@admin/components/Dialog';
 import { api, ApiError, type Publish, signedOut } from '@admin/lib/api';
 import { errorBody } from '@admin/lib/errors';
@@ -9,8 +10,9 @@ import list from '@admin/components/List.module.css';
 import styles from './seminars.module.css';
 
 /**
- * 세미나 분야 (api.md 9장). 추가, 이름 바꾸기(그 줄 자리에서), 숨기기, 순서(위로·아래로).
+ * 세미나 분야 Section (api.md 9장). 추가(제목 오른쪽, 목록 맨 위에 펼침), 이름 바꾸기(그 줄 자리에서), 숨기기, 순서(위로·아래로).
  * 숨긴 분야는 올리기 폼의 선택지에서 빠지고, 이미 그 분야인 세미나는 그대로 둡니다.
+ * 추가·이름 바꾸기 칸이 열려 있는 동안에는 다른 줄의 동작과 "분야 추가"를 막습니다(세미나 목록과 같은 규칙).
  */
 const HIDE_BODY = '숨기면 공개 사이트의 분야 목록에서 빠집니다. 이 분야의 세미나는 그대로 보이고, 다시 보이게 할 수 있습니다.';
 
@@ -36,6 +38,9 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
       if (err instanceof ApiError && err.code === 'CONFLICT') onConflict();
     } finally { setBusy(false); }
   };
+
+  const formOpen = adding || renaming !== null;
+  const locked = busy || formOpen;
 
   const put = (a: SeminarArea) => onChange(areas.map((x) => (x.id === a.id ? a : x)));
 
@@ -78,20 +83,20 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
   });
 
   return (
-    <>
-      <div className={styles.areaAdd}>
-        {adding ? (
+    <Section title="세미나 분야" aside={!formOpen && (
+      <button type="button" className="admin-text-button" onClick={() => setAdding(true)}>분야 추가</button>
+    )}>
+      {adding && (
+        <div className={list.open}>
           <form className={styles.inline} onSubmit={add}>
             <input aria-label="분야 이름" value={newName} onChange={(e) => setNewName(e.target.value)} autoFocus />
-            <button type="submit" className="admin-text-button" disabled={busy}>추가</button>
-            <button type="button" className="admin-text-button" onClick={() => { setAdding(false); setNewName(''); }}>취소</button>
+            <button type="submit" className="admin-text-button" disabled={busy}>{busy ? '추가 중' : '추가'}</button>
+            <button type="button" className="admin-text-button" disabled={busy} onClick={() => { setAdding(false); setNewName(''); }}>취소</button>
           </form>
-        ) : (
-          <button type="button" className="admin-text-button" onClick={() => setAdding(true)}>분야 추가</button>
-        )}
-      </div>
+        </div>
+      )}
       {areas.length === 0 ? (
-        <p className="admin-muted">아직 등록된 분야가 없습니다.</p>
+        !adding && <p className="admin-muted">아직 등록된 분야가 없습니다.</p>
       ) : (
         <ul className={list.list}>
           {areas.map((a, i) => (
@@ -100,8 +105,8 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
                 {renaming?.id === a.id ? (
                   <form className={styles.inline} onSubmit={(e) => rename(e, a)}>
                     <input aria-label="분야 이름" value={renaming.name} onChange={(e) => setRenaming({ id: a.id, name: e.target.value })} autoFocus />
-                    <button type="submit" className="admin-text-button" disabled={busy}>저장</button>
-                    <button type="button" className="admin-text-button" onClick={() => setRenaming(null)}>취소</button>
+                    <button type="submit" className="admin-text-button" disabled={busy}>{busy ? '저장 중' : '저장'}</button>
+                    <button type="button" className="admin-text-button" disabled={busy} onClick={() => setRenaming(null)}>취소</button>
                   </form>
                 ) : (
                   <>
@@ -112,17 +117,17 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
               </div>
               <span className={list.status}>{publishing(a.id) ? '반영 중' : a.hidden ? '숨김' : '공개 중'}</span>
               <span className={list.actions}>
-                <button type="button" className="admin-text-button" disabled={busy || i === 0} onClick={() => move(i, -1)}>위로</button>
-                <button type="button" className="admin-text-button" disabled={busy || i === areas.length - 1} onClick={() => move(i, 1)}>아래로</button>
-                <button type="button" className="admin-text-button" disabled={busy || renaming !== null} onClick={() => setRenaming({ id: a.id, name: a.name })}>이름 바꾸기</button>
+                <button type="button" className="admin-text-button" disabled={locked || i === 0} onClick={() => move(i, -1)}>위로</button>
+                <button type="button" className="admin-text-button" disabled={locked || i === areas.length - 1} onClick={() => move(i, 1)}>아래로</button>
+                <button type="button" className="admin-text-button" disabled={locked} onClick={() => setRenaming({ id: a.id, name: a.name })}>이름 바꾸기</button>
                 {a.hidden
-                  ? <button type="button" className="admin-text-button" disabled={busy} onClick={() => setHidden(a, false)}>다시 보이기</button>
-                  : <button type="button" className="admin-text-button" disabled={busy} onClick={() => setHidden(a, true)}>숨기기</button>}
+                  ? <button type="button" className="admin-text-button" disabled={locked} onClick={() => setHidden(a, false)}>다시 보이기</button>
+                  : <button type="button" className="admin-text-button" disabled={locked} onClick={() => setHidden(a, true)}>숨기기</button>}
               </span>
             </li>
           ))}
         </ul>
       )}
-    </>
+    </Section>
   );
 }

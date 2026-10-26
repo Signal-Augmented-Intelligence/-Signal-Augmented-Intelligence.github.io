@@ -22,3 +22,8 @@
   .link { font-size: var(--text-sm); }
   .wide { display: none; }
 }
+
+/* 공개 사이트 헤더와 같이, 스크롤하면 아래 글이 흐리게 비쳐 지나갑니다. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header { background: var(--paper-glass); -webkit-backdrop-filter: blur(12px) saturate(140%); backdrop-filter: blur(12px) saturate(140%); }
+}

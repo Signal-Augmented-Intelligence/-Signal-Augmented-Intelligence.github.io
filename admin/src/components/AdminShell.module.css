@@ -33,3 +33,9 @@ a.item:hover { background: var(--surface); text-decoration: none; }
   .pendingItem { display: none; }
   .body { padding-top: 32px; padding-left: var(--gutter); }
 }
+
+@media (max-width: 960px) {
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav { background: var(--paper-glass); -webkit-backdrop-filter: blur(12px) saturate(140%); backdrop-filter: blur(12px) saturate(140%); }
+  }
+}

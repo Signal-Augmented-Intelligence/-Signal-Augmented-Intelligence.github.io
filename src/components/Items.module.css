@@ -5,11 +5,11 @@
 
 .item { max-width: 52rem; }
 /* Publications: no rule between entries, just space (reference: KAIST Smart Sound Lab). */
-.list > .item { padding: 0; border-bottom: 0; }
-.list > .item + .item { margin-top: 26px; }
+.list > .item { padding: 14px 0; border-bottom: 0; }
+.list > .item + .item { margin-top: 4px; }
 .title { font-size: 1rem; font-weight: 600; line-height: 1.45; letter-spacing: -0.01em; }
 .title a { color: var(--ink); }
-.title a:hover { color: var(--accent); }
+.title a:hover { color: var(--accent); text-decoration: none; }
 .authors { margin-top: 4px; font-size: var(--text-sm); color: #3d4757; }
 .authors :global(.person-link) { color: inherit; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 0.2em; }
 .authors :global(.person-link):hover { color: var(--ink); }
@@ -29,3 +29,18 @@
   .seminar { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
   .date { grid-column: 1 / -1; }
 }
+
+/*
+ * Publications lift a little under the pointer (whole entry opens the title link).
+ * The padding is pulled back with negative margins so the text stays aligned with the rest of the page.
+ */
+.list > .item { position: relative; margin-left: -16px; margin-right: -16px; padding-left: 16px; padding-right: 16px; border-radius: 8px;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.list > .item:hover { transform: translateY(-1px) scale(1.015); background: var(--surface); box-shadow: 0 6px 18px rgba(13, 24, 48, 0.08), 0 1px 3px rgba(13, 24, 48, 0.06); }
+.item .title a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .list > .item { transition: background-color 180ms ease, box-shadow 180ms ease; }
+  .list > .item:hover { transform: none; }
+}
+/* Author links and the label link stay clickable above the whole-entry link. */
+.item .authors :global(.person-link), .item .link { position: relative; z-index: 1; }

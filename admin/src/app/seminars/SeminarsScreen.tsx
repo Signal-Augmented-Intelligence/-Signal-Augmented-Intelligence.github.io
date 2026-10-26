@@ -34,7 +34,7 @@ export function presenterName(s: Seminar, people: PickerPerson[]) {
 
 export function SeminarsScreen() {
   const dialog = useDialog();
-  const { publishing, track } = usePublish();
+  const { publishing, track, settled } = usePublish();
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const [editing, setEditing] = useState<string | null>(null); // 'new' 또는 세미나 id
   const [busyRow, setBusyRow] = useState<string | null>(null);
@@ -55,6 +55,7 @@ export function SeminarsScreen() {
   }, [dialog]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (settled) void load(); }, [settled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!loaded) return <p className="admin-muted">불러오는 중입니다.</p>;
   const { seminars, areas, people } = loaded;

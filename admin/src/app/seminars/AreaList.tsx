@@ -2,7 +2,7 @@
 
 import { type FormEvent, useState } from 'react';
 import { useDialog } from '@admin/components/Dialog';
-import { api, ApiError, type Publish } from '@admin/lib/api';
+import { api, ApiError, type Publish, signedOut } from '@admin/lib/api';
 import { errorBody } from '@admin/lib/errors';
 import type { SeminarArea } from '@admin/lib/types';
 import styles from './seminars.module.css';
@@ -30,6 +30,7 @@ export function AreaList({ areas, onChange, onConflict, publishing, track }: {
     if (busy) return;
     setBusy(true);
     try { await work(); } catch (err) {
+      if (signedOut(err)) return;
       await dialog.error('저장하지 못했습니다', errorBody(err, { name: '분야 이름' }));
       if (err instanceof ApiError && err.code === 'CONFLICT') onConflict();
     } finally { setBusy(false); }

@@ -11,8 +11,6 @@ export const MAIN_NAV: NavItem[] = [
 ];
 
 /** One-line descriptions under each section's page banner. */
-export const MEMBERS_LEDE = 'People of SAI Lab, Hanshin University';
-export const RESEARCH_LEDE = 'Research areas and publications of SAI Lab';
 
 export const MEMBERS_TABS: NavItem[] = [
   { title: 'Professor', href: '/members/professor/' },

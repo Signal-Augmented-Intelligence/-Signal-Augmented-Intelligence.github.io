@@ -6,8 +6,8 @@
 .nav { padding-top: 56px; }
 .navInner { position: sticky; top: calc(var(--header-h) + 24px); display: flex; flex-direction: column; min-height: min(600px, calc(100vh - var(--header-h) - 260px)); padding-right: 32px; border-right: 1px solid var(--rule); }
 .menu { display: grid; gap: 2px; padding-bottom: 24px; }
-.university { width: 180px; height: 42px; margin-top: auto; overflow: hidden; }
-.university img { width: 230px; height: auto; max-width: none; transform: translate(-27px, -13px); }
+.university { width: 153px; height: 36px; margin-top: auto; overflow: hidden; }
+.university img { width: 196px; height: auto; max-width: none; transform: translate(-23px, -11px); }
 .groupStart { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); }
 .item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; border-radius: 6px; color: var(--ink); font-size: 0.9375rem; font-weight: 500; }
 a.item:hover { background: var(--surface); text-decoration: none; }

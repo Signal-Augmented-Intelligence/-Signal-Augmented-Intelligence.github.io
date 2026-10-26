@@ -1,16 +1,21 @@
 'use client';
 
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { currentMenu } from '@admin/lib/menu';
 import styles from './AdminHeader.module.css';
 import { useSession } from './Session';
 
 /**
  * 관리 화면 헤더. 왼쪽에는 연구실 로고, 오른쪽에는 공개 사이트 링크와 계정 동작을 둡니다.
+ * "공개 사이트"(새 탭)는 지금 화면이 고치는 공개 사이트 페이지를 엽니다(Seminars → /seminars/, Album → /album/, 그 밖에는 첫 화면).
  * 로그인한 뒤에는 오른쪽에 "비밀번호 바꾸기"(팝업)와 "로그아웃"이 붙습니다(공용 계정이라 이름은 없음).
  * 좁은 화면에서는 한 줄에 들어가도록 "비밀번호"로 줄여 씁니다.
  */
 export function AdminHeader({ siteUrl }: { siteUrl: string }) {
   const { state, changePassword, logout } = useSession();
+  const path = usePathname();
+  const siteHref = `${siteUrl}${currentMenu(path)?.site ?? '/'}`;
   const loggedIn = state === 'in';
   return (
     <header className={styles.header}>
@@ -23,7 +28,7 @@ export function AdminHeader({ siteUrl }: { siteUrl: string }) {
           <span className={styles.area}>관리</span>
         </a>
         <ul className={styles.actions}>
-          <li><a className={styles.link} href={siteUrl} target="_blank" rel="noopener noreferrer">공개 사이트</a></li>
+          <li><a className={styles.link} href={siteHref} target="_blank" rel="noopener noreferrer">공개 사이트</a></li>
           {loggedIn && (
             <>
               <li><button type="button" className={`${styles.link} ${styles.button}`} onClick={changePassword}>비밀번호<span className={styles.wide}> 바꾸기</span></button></li>

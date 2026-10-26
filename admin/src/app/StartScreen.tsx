@@ -11,7 +11,7 @@ import type { LastRun, System } from '@admin/lib/types';
 import { usePublish } from '@admin/lib/usePublish';
 
 /**
- * 첫 화면 (규칙 문서 1부 6장): 마지막 반영, 마지막 백업, 원본 파일 저장소를 목록 한 줄 형식으로.
+ * 반영·백업 화면 (규칙 문서 1부 6장의 "첫 화면"): 마지막 반영, 마지막 백업, 원본 파일 저장소를 목록 한 줄 형식으로.
  * "다시 반영"은 지금 저장된 내용 전체로 공개 사이트를 다시 만듭니다 (api.md 4장 POST /publish).
  */
 const SITE = 'site'; // 반영 중 표시용 항목 id

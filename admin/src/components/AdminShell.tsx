@@ -3,13 +3,14 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { MENU } from '@admin/lib/menu';
+import { currentMenu, MENU } from '@admin/lib/menu';
 import { LoginForm, useSession } from './Session';
 import styles from './AdminShell.module.css';
 
 /**
  * 페이지 띠 아래의 틀: 왼쪽 메뉴 + 본문.
  * 960px 이하에서는 메뉴가 띠 아래의 가로 탭(공개 사이트의 탭과 같은 모양)이 됩니다. 접기 버튼은 두지 않습니다.
+ * 가로 탭에는 누를 수 있는 화면만 둡니다. "준비 중" 메뉴까지 넣으면 탭이 화면 밖으로 밀려 Album 같은 화면이 안 보입니다.
  * 로그인 전에는 메뉴를 두지 않고 본문 자리에 로그인 칸을 둡니다. 로그인 상태를 확인하는 동안은 비워 둡니다.
  */
 export function AdminShell({ children }: { children: ReactNode }) {
@@ -29,10 +30,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
         <div className={`container ${styles.navInner}`}>
           <ul className={styles.menu}>
             {items.map((m, i) => {
-              const current = m.href === '/' ? path === '/' : path.startsWith(m.href);
+              const current = currentMenu(path) === m;
               const groupStart = i > 0 && items[i - 1].group !== m.group;
               return (
-                <li key={m.href} className={groupStart ? styles.groupStart : undefined}>
+                <li key={m.href} className={[groupStart && styles.groupStart, !m.ready && styles.pendingItem].filter(Boolean).join(' ') || undefined}>
                   {m.ready ? (
                     <a href={m.href} className={styles.item} aria-current={current ? 'page' : undefined}>{m.title}</a>
                   ) : (

@@ -5,15 +5,22 @@
  * 변경 기록(항목마다 "이전 기록" 팝업).
  * `ready`: 그 화면이 만들어졌는지. 만들기 전에는 메뉴에 글자만 보이고 누를 수 없습니다.
  * `group`: 메뉴를 나누는 묶음. 묶음 사이에 가는 선을 둡니다.
+ * `site`: 이 화면이 고치는 공개 사이트 주소. 헤더의 "공개 사이트" 링크가 지금 화면에 맞는 곳을 엽니다.
+ * "첫 화면"은 공개 사이트 첫 화면(Home)만 가리킵니다. 관리 화면의 시작 화면은 "반영·백업"이라고 부릅니다.
  */
-export type MenuItem = { title: string; href: string; ready: boolean; note: string; group: 'start' | 'content' };
+export type MenuItem = { title: string; href: string; site: string; ready: boolean; note: string; group: 'start' | 'content' };
+
+/** 주소에 맞는 메뉴 항목. 없는 주소면 undefined. */
+export function currentMenu(path: string): MenuItem | undefined {
+  return MENU.find((m) => (m.href === '/' ? path === '/' : path.startsWith(m.href)));
+}
 
 export const MENU: MenuItem[] = [
-  { title: '첫 화면', href: '/', ready: true, note: '마지막 반영·백업', group: 'start' },
-  { title: 'Home', href: '/home/', ready: true, note: '첫 화면 사진, 시, 랩 정보', group: 'content' },
-  { title: 'Members', href: '/members/', ready: false, note: '교수님, 멤버', group: 'content' },
-  { title: 'Research', href: '/research/', ready: false, note: '연구 분야, 논문', group: 'content' },
-  { title: 'Seminars', href: '/seminars/', ready: true, note: '세미나 올리기, 세미나 분야', group: 'content' },
-  { title: 'Album', href: '/album/', ready: true, note: '행사, 사진, 대표 사진', group: 'content' },
-  { title: 'News', href: '/news/', ready: false, note: '소식', group: 'content' },
+  { title: '반영·백업', href: '/', site: '/', ready: true, note: '마지막 반영·백업, 원본 파일 저장소', group: 'start' },
+  { title: 'Home', href: '/home/', site: '/', ready: true, note: '첫 화면 사진, 시, 랩 정보', group: 'content' },
+  { title: 'Members', href: '/members/', site: '/members/', ready: false, note: '교수님, 멤버', group: 'content' },
+  { title: 'Research', href: '/research/', site: '/research/', ready: false, note: '연구 분야, 논문', group: 'content' },
+  { title: 'Seminars', href: '/seminars/', site: '/seminars/', ready: true, note: '세미나 올리기, 세미나 분야', group: 'content' },
+  { title: 'Album', href: '/album/', site: '/album/', ready: true, note: '행사, 사진, 대표 사진', group: 'content' },
+  { title: 'News', href: '/news/', site: '/news/', ready: false, note: '소식', group: 'content' },
 ];

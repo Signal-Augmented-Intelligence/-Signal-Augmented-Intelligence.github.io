@@ -3,7 +3,7 @@
 import { createContext, type FormEvent, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Section } from '@/components/Section';
 import { api, ApiError, setCsrfToken, setUnauthenticatedHandler, signedOut } from '@admin/lib/api';
-import { errorBody } from '@admin/lib/errors';
+import { errorBody, fieldList } from '@admin/lib/errors';
 import type { System } from '@admin/lib/types';
 import { useDialog } from './Dialog';
 import { Field, focusField } from './Field';
@@ -117,11 +117,17 @@ export function LoginForm() {
   );
 }
 
-const PASSWORD_LABELS = { current_password: '지금 비밀번호', new_password: '새 비밀번호' };
+const PASSWORD_LABELS = { current_password: '지금 비밀번호', new_password: '새 비밀번호', new_password_confirm: '새 비밀번호 확인' };
+const PASSWORD_EMPTY: Record<keyof typeof PASSWORD_LABELS, string> = {
+  current_password: '지금 비밀번호를 적어 주세요.',
+  new_password: '새 비밀번호를 적어 주세요.',
+  new_password_confirm: '새 비밀번호를 한 번 더 적어 주세요.',
+};
 
 /**
  * 헤더의 "비밀번호 바꾸기" 팝업 (api.md 3장). 바꾸면 알림 없이 닫힙니다.
  * 이 창은 로그인이 유지되고, 다른 곳의 로그인은 관리 서버가 끊습니다.
+ * 랩 공용 계정 하나라 잘못 치면 모두 로그인하지 못하므로, 새 비밀번호를 한 번 더 받아 같은지 화면에서 확인합니다(서버로는 보내지 않음).
  */
 function PasswordDialog({ onClose }: { onClose: () => void }) {
   const dialog = useDialog();
@@ -130,6 +136,7 @@ function PasswordDialog({ onClose }: { onClose: () => void }) {
   const [rule, setRule] = useState('');
   const [current, setCurrent] = useState('');
   const [next, setNext] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -142,10 +149,17 @@ function PasswordDialog({ onClose }: { onClose: () => void }) {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (busy) return;
-    const empty = [!current && 'current_password', !next && 'new_password'].filter((x): x is string => !!x);
+    const empty = [!current && 'current_password', !next && 'new_password', !confirm && 'new_password_confirm'].filter((x): x is keyof typeof PASSWORD_LABELS => !!x);
     if (empty.length > 0) {
-      await dialog.error('비밀번호를 바꾸지 못했습니다', empty.length === 2 ? '비밀번호를 적어 주세요.' : `${PASSWORD_LABELS[empty[0] as keyof typeof PASSWORD_LABELS]}를 적어 주세요.`);
+      const lines = empty.map((k) => PASSWORD_EMPTY[k]);
+      await dialog.error('비밀번호를 바꾸지 못했습니다', lines.length === 1 ? lines[0] : fieldList(lines));
       focusField(form.current, empty);
+      return;
+    }
+    if (next !== confirm) {
+      await dialog.error('비밀번호를 바꾸지 못했습니다', '새 비밀번호와 새 비밀번호 확인이 다릅니다. 다시 적어 주세요.');
+      setConfirm('');
+      focusField(form.current, ['new_password_confirm']);
       return;
     }
     setBusy(true);
@@ -170,6 +184,9 @@ function PasswordDialog({ onClose }: { onClose: () => void }) {
         </Field>
         <Field label="새 비밀번호" limit={rule || undefined}>
           <input type="password" name="new_password" autoComplete="new-password" value={next} onChange={(e) => setNext(e.target.value)} />
+        </Field>
+        <Field label="새 비밀번호 확인">
+          <input type="password" name="new_password_confirm" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
         </Field>
         <div className={styles.actions}>
           <button type="button" className="admin-text-button" onClick={close} disabled={busy}>취소</button>

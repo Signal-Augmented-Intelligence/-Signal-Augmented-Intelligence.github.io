@@ -7,5 +7,7 @@
 /* 좁은 화면에서도 한 줄에 둡니다. 로그인 뒤 항목이 늘면 간격만 줄입니다. */
 @media (max-width: 640px) {
   .inner { height: var(--header-h); padding-top: 0; padding-bottom: 0; flex-direction: row; align-items: center; }
-  .actions { gap: 16px; font-size: var(--text-sm); }
+  .inner > a { flex-shrink: 0; white-space: nowrap; }
+  .actions { gap: 10px; font-size: var(--text-sm); white-space: nowrap; }
+  .wide { display: none; }
 }

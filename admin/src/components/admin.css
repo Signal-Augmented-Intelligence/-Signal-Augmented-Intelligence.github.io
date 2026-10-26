@@ -27,3 +27,6 @@
 /* 칸 바로 아래에 붙는 선택 하나 (예: 날짜 "월까지만"). */
 .admin-check { display: flex; align-items: center; gap: 8px; margin-top: -12px; font-size: var(--text-sm); cursor: pointer; }
 .admin-check input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+/* 목록 위에 펼친 새 항목 폼의 작은 제목 ("새 세미나"). 설명 문장이 아니라 제목만 둡니다. */
+.admin-form-title { margin-bottom: 20px; font-size: var(--text-md); font-weight: 600; }

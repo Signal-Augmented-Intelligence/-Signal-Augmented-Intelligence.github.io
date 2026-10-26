@@ -143,6 +143,7 @@ export function AlbumScreen() {
     )}>
       {open === 'new' && (
         <div className={`${list.open} ${styles.form}`}>
+          <h3 className="admin-form-title">새 행사</h3>
           <AlbumForm onSaved={added} onCancel={() => setOpen(null)} onConflict={load} />
         </div>
       )}

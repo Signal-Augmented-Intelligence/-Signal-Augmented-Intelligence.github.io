@@ -14,11 +14,10 @@
 .keywords { margin-top: 20px; max-width: 52rem; color: var(--muted); font-size: var(--text-sm); }
 
 .pubs > li { display: grid; grid-template-columns: 140px minmax(0, 1fr); column-gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
-.pubs > li:first-child { padding-top: 0; }
 .pubDate { color: var(--muted); font-size: 0.9375rem; }
 .pubTitle { font-weight: 600; line-height: 1.5; }
 .pubTitle a { color: var(--ink); }
-.pubTitle a:hover { color: var(--accent); }
+.pubTitle a:hover { color: var(--accent); text-decoration: none; }
 .pubMeta { margin-top: 4px; color: var(--muted); font-size: var(--text-sm); }
 .pubMeta em { font-style: italic; }
 
@@ -35,4 +34,17 @@
   .profile { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
   .profile > :first-child { width: 180px; }
   .pubs > li { grid-template-columns: minmax(0, 1fr); }
+}
+
+/*
+ * Publications lift a little under the pointer (whole entry opens the title link).
+ * The padding is pulled back with negative margins so the text stays aligned with the rest of the page.
+ */
+.pubs > li { position: relative; margin-left: -16px; margin-right: -16px; padding-left: 16px; padding-right: 16px; border-radius: 8px;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.pubs > li:hover { border-bottom-color: transparent; transform: translateY(-1px) scale(1.015); background: var(--surface); box-shadow: 0 6px 18px rgba(13, 24, 48, 0.08), 0 1px 3px rgba(13, 24, 48, 0.06); }
+.pubTitle a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .pubs > li { transition: background-color 180ms ease, box-shadow 180ms ease; }
+  .pubs > li:hover { transform: none; }
 }

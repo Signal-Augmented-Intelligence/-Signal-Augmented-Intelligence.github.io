@@ -66,6 +66,7 @@ export function MembersScreen() {
       <button type="button" className="admin-text-button" disabled={editing !== null} onClick={() => setEditing('new')}>멤버 추가</button>
     )}>
       {editing === 'new' && <div className={list.open}>
+        <h3 className="admin-form-title">새 멤버</h3>
         <MemberForm system={system} onSaved={saved} onCancel={() => setEditing(null)} onConflict={load} />
       </div>}
       {members.length === 0 && editing !== 'new' ? <p className="admin-muted">등록된 멤버가 없습니다.</p> : (

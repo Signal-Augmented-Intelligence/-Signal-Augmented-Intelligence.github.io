@@ -1,4 +1,7 @@
-/* Navy header on every page; it continues into the navy page banner (PageHeader) or the Home first screen. */
+/*
+ * Navy header on every page; it continues into the navy page banner (PageHeader) or the Home first screen.
+ * Sticky and see-through: content scrolling under it shows blurred (--night-glass). Browsers without backdrop-filter keep the solid navy.
+ */
 .header {
   position: sticky;
   top: 0;
@@ -19,9 +22,13 @@
 .link[aria-current='page'] { color: var(--night-accent); }
 
 @media (max-width: 640px) {
-  .inner { height: auto; padding-top: 14px; padding-bottom: 10px; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .inner { height: calc(var(--site-header-h) - 1px); padding-top: 14px; padding-bottom: 10px; flex-direction: column; align-items: flex-start; gap: 6px; }
   .brandLogo { width: 100px; height: 41px; }
   .logoImage { width: 128px; transform: translate(-20px, -14px); }
   .customLogo { max-width: 128px; height: 41px; }
   .nav { gap: 24px; }
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header { background: var(--night-glass); -webkit-backdrop-filter: blur(12px) saturate(140%); backdrop-filter: blur(12px) saturate(140%); }
 }

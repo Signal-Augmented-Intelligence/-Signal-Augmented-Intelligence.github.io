@@ -4,7 +4,8 @@ import { NavLinks } from './NavLinks';
 import styles from './PageHeader.module.css';
 
 /**
- * Navy page banner (title, one-line description, optional back link) and an optional tab bar under it.
+ * Navy page banner (title, optional back link) and an optional tab bar under it.
+ * `lede`: only for facts about the item itself (an album's date and photo count, a research area's summary), never a sentence describing the page.
  * `long`: a smaller title for long titles such as paper titles.
  */
 export function PageHeader({ title, lede, tabs, back, long = false }: { title: string; lede?: ReactNode; tabs?: NavItem[]; back?: ReactNode; long?: boolean }) {

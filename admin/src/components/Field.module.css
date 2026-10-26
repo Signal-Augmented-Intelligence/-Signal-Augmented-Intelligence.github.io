@@ -13,3 +13,6 @@
 .status { flex-shrink: 0; color: var(--muted); font-variant-numeric: tabular-nums; }
 .change { display: flex; gap: 16px; margin-left: auto; flex-shrink: 0; position: relative; z-index: 1; }
 .preview { width: 160px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }
+
+/* 로그인처럼 칸이 하나뿐인 화면: Section 제목과 선을 폼 폭에 맞춥니다. */
+.narrow { max-width: 40rem; }

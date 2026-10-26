@@ -8,6 +8,7 @@ import type { System } from '@admin/lib/types';
 import { useDialog } from './Dialog';
 import { Field, focusField } from './Field';
 import styles from './Dialog.module.css';
+import formStyles from './Field.module.css';
 
 /**
  * 로그인 상태 (api.md 1장 "로그인", 3장). 랩 공용 계정 하나라 비밀번호만 받습니다.
@@ -75,7 +76,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   );
 }
 
-/** 로그인 전에 각 화면 본문 자리에 나오는 로그인 칸. */
+/** 로그인 전에 각 화면 본문 자리에 나오는 로그인 칸. 제목 아래 선도 폼 폭(40rem)까지만 둡니다. */
 export function LoginForm() {
   const dialog = useDialog();
   const { login } = useSession();
@@ -104,6 +105,7 @@ export function LoginForm() {
   };
 
   return (
+    <div className={formStyles.narrow}>
     <Section title="로그인">
       <form ref={form} className="admin-form" onSubmit={submit} noValidate>
         <Field label="비밀번호">
@@ -114,6 +116,7 @@ export function LoginForm() {
         </div>
       </form>
     </Section>
+    </div>
   );
 }
 

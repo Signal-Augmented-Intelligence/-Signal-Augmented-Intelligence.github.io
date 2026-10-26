@@ -9,6 +9,8 @@
   --accent: #2452c6;
   --accent-soft: #eaf0fc;
   --night: #0d1830;         /* header, page banners, Home first screen */
+  --night-glass: rgba(13, 24, 48, 0.86);   /* sticky header: --night, see-through with blur */
+  --paper-glass: rgba(255, 255, 255, 0.78); /* sticky white bars (tabs, 관리 화면 header) */
   --night-accent: #a9c1ff;  /* links and current item on navy */
 
   /* Latin: Instrument Sans. Hangul falls through to Pretendard. Formulas: STIX Two Text italic. */
@@ -22,12 +24,17 @@
   --text-hero: 4.5rem;    /* 72 */
 
   --container: 1160px;
+  --container-header: 1360px; /* 헤더만 본문보다 넓게: 넓은 화면에서 로고와 메뉴가 가운데로 몰리지 않게 */
   --gutter: 40px;
   --header-h: 72px;
+  --site-header-h: var(--header-h); /* 공개 사이트 헤더 실제 높이 (휴대폰에서는 로고 아래 메뉴 줄까지 두 줄) */
 }
 
 @media (max-width: 960px) {
   :root { --gutter: 24px; --text-hero: 3.25rem; --text-2xl: 1.875rem; }
+}
+@media (max-width: 640px) {
+  :root { --site-header-h: 108px; }
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -58,6 +65,7 @@ a:hover { text-decoration: underline; text-underline-offset: 0.18em; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
 .container { width: 100%; max-width: calc(var(--container) + var(--gutter) * 2); margin: 0 auto; padding: 0 var(--gutter); }
+.container-header { max-width: calc(var(--container-header) + var(--gutter) * 2); }
 
 .skip-link { position: absolute; left: var(--gutter); top: -100px; z-index: 100; padding: 0.5rem 0.75rem; background: var(--paper); color: var(--ink); }
 .skip-link:focus { top: 0.5rem; }

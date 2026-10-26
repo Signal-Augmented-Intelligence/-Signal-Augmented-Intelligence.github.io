@@ -30,6 +30,7 @@ function writeWaiting(w: Waiting) {
 export function usePublish() {
   const dialog = useDialog();
   const [waiting, setWaiting] = useState<Waiting>({});
+  const [settled, setSettled] = useState(0);
   const failing = useRef(false);
   const misses = useRef<Record<string, number>>({});
 
@@ -76,10 +77,11 @@ export function usePublish() {
         }
         delete misses.current[id];
         update((w) => Object.fromEntries(Object.entries(w).flatMap(([item, pub]) => pub !== id ? [[item, pub]] : retried ? [[item, retried.id]] : [])));
+        setSettled((count) => count + 1);
       }
     }, POLL_MS);
     return () => clearInterval(timer);
   }, [waiting, dialog, update]);
 
-  return { publishing: (itemId: string) => itemId in waiting, track };
+  return { publishing: (itemId: string) => itemId in waiting, track, settled };
 }

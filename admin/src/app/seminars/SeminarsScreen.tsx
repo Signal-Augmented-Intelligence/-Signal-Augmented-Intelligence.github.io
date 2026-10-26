@@ -89,7 +89,8 @@ export function SeminarsScreen() {
     setEditing(null);
   };
 
-  const status = (s: Seminar) => publishing(s.id) ? '반영 중' : s.hidden ? '숨김' : '공개 중';
+  const status = (s: Seminar) => publishing(s.id) || s.publication.state === 'publishing'
+    ? '반영 중' : s.publication.state === 'failed' ? '반영 실패' : s.hidden ? '숨김' : '공개 중';
 
   return (
     <>
@@ -119,6 +120,7 @@ export function SeminarsScreen() {
                     {s.area_id && <span>{areas.find((a) => a.id === s.area_id)?.name}</span>}
                     {!s.pdf_file_id && <span>PDF 없음</span>}
                     {s.highlight && <span>첫 화면</span>}
+                    {s.publication.state === 'failed' && s.publication.message && <span>{s.publication.message}</span>}
                   </p>
                 </div>
                 <span className={list.status}>{status(s)}</span>

@@ -11,6 +11,7 @@ export type Seminar = Common & {
   pdf_file_id: string | null;
   cover_file_id: string | null;
   highlight: boolean;
+  publication: { state: 'publishing' | 'published' | 'failed'; job_id: string | null; message: string | null; commit_sha: string | null };
 };
 export type SeminarArea = Common & { name: string; seminar_count: number };
 export type PickerPerson = { id: string; name: string; name_ko: string; group: string };

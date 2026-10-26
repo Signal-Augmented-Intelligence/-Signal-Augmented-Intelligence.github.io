@@ -42,3 +42,4 @@ export const TEAM_GROUPS = [
 ] as const;
 
 export const SITE_URL = 'https://signal-augmented-intelligence.github.io';
+export const MANAGEMENT_URL = 'https://sai-lab-admin.tail6d485a.ts.net/';

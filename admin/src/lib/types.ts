@@ -48,3 +48,35 @@ export type HomeSlide = Common & { file_id: string; preview_url: string | null; 
 
 /** GET /system의 마지막 반영·백업 (api.md 4장). */
 export type LastRun = { id?: string; state: 'queued' | 'running' | 'done' | 'failed'; finished_at: string | null; message?: string | null };
+
+/* ---------- Research, News (설계: SAI-Lab-관리화면-Research-News-설계.md, API는 관리 서버 반영 전) ---------- */
+
+/** 논문 저자 한 명: 멤버면 person_id, 외부 저자면 이름. 순서가 저자 순서입니다. */
+export type Author = { person_id: string } | { name: string };
+export type PublicationType = 'journal' | 'conference-paper' | 'conference-poster' | 'other';
+export type Publication = Common & {
+  title: string;
+  title_ko: string;
+  type: PublicationType;
+  authors: Author[];
+  venue: string;
+  pub_date: string; // YYYY, YYYY-MM, YYYY-MM-DD
+  status: string;
+  award: string;
+  links: { label: string; url: string }[];
+  area_ids: string[];
+  /** 관리 서버가 처음 저장할 때 만들고 바꾸지 않음 (연구 분야·News 연결용). 읽기 전용. */
+  permalink: string;
+};
+export type ResearchArea = Common & {
+  title: string;
+  summary: string;
+  body: string;
+  figure_file_id: string | null;
+  figure_preview_url: string | null;
+  figure_alt: string;
+  figure_caption: string;
+  /** 읽기 전용 */
+  publication_count: number;
+};
+export type NewsItem = Common & { date: string; text: string; publication_id: string | null };

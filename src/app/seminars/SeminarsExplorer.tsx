@@ -8,7 +8,7 @@ const normalize = (value: string) => value.normalize('NFKC').toLocaleLowerCase()
 const fileUrl = (seminar: SeminarEntry) => seminar.file ? `/files/seminars/${seminar.file}` : '';
 const coverUrl = (seminar: SeminarEntry) => seminar.cover ? `/images/seminars/${seminar.cover}` : '';
 
-type SeminarEntry = Seminar & { presenterNames: string };
+type SeminarEntry = Seminar & { presenterName: string; presenterNames: string };
 
 export function SeminarsExplorer({ seminars }: { seminars: SeminarEntry[] }) {
   const [query, setQuery] = useState('');
@@ -80,6 +80,7 @@ export function SeminarsExplorer({ seminars }: { seminars: SeminarEntry[] }) {
                     <time className={`${styles.date} num`} dateTime={seminar.date}>{seminar.date.replaceAll('-', '.')}</time>
                     <div>
                       <h3 className={styles.title}>{file ? <a href={file}>{seminar.title}</a> : seminar.title}</h3>
+                      {seminar.presenterName && <p className={styles.presenter}>{seminar.presenterName}</p>}
                       {seminar.area && <p className={styles.areaLabel}>{seminar.area}</p>}
                     </div>
                     <div className={styles.coverGroup}>

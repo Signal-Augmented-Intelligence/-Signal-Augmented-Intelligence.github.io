@@ -41,3 +41,15 @@ export const TEAM_GROUPS = [
 
 export const SITE_URL = 'https://signal-augmented-intelligence.github.io';
 export const MANAGEMENT_URL = 'https://sai-lab-admin.tail6d485a.ts.net/';
+
+/**
+ * 공개 사이트 주소 → 그 내용을 고치는 관리 화면 주소 (푸터의 "관리 화면" 링크).
+ * 위에서부터 처음 맞는 것을 씁니다. 관리 화면에 아직 없는 화면(Research, News)은 관리 화면 첫 화면으로 보냅니다.
+ */
+export const MANAGEMENT_PATHS: { site: string[]; admin: string }[] = [
+  { site: ['/members/', '/people/'], admin: '/members/' },
+  { site: ['/seminars/', '/upload/'], admin: '/seminars/' },
+  { site: ['/album/'], admin: '/album/' },
+];
+/** 공개 사이트 첫 화면(/)은 관리 화면 Home(첫 화면 사진)으로 갑니다. */
+export const MANAGEMENT_HOME = '/home/';

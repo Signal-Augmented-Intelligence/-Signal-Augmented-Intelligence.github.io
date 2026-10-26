@@ -20,7 +20,7 @@
   .area { font-size: var(--text-sm); }
   .actions { gap: 10px; font-size: var(--text-sm); white-space: nowrap; }
   .link { font-size: var(--text-sm); }
-  .wide { display: none; }
+  .password { display: none; }
 }
 
 /* 공개 사이트 헤더와 같이, 스크롤하면 아래 글이 흐리게 비쳐 지나갑니다. */

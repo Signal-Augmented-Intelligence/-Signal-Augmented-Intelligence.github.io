@@ -9,6 +9,7 @@ import { errorBody } from '@admin/lib/errors';
 import { formatTime } from '@admin/lib/format';
 import type { LastRun, System } from '@admin/lib/types';
 import { usePublish } from '@admin/lib/usePublish';
+import { useSession } from '@admin/components/Session';
 
 /**
  * 반영·백업 화면 (규칙 문서 1부 6장의 "첫 화면"): 마지막 반영, 마지막 백업, 원본 파일 저장소를 목록 한 줄 형식으로.
@@ -22,6 +23,7 @@ const BACKUP: Record<LastRun['state'], string> = { queued: '백업 중', running
 export function StartScreen() {
   const dialog = useDialog();
   const { publishing, track } = usePublish();
+  const { changePassword } = useSession();
   const [system, setSystem] = useState<System | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -59,6 +61,7 @@ export function StartScreen() {
   const pubState = running ? '반영 중' : pub ? STATE[pub.state] : '';
 
   return (
+    <>
     <Section title="공개 사이트">
       <ul className={list.list}>
         <li className={list.row}>
@@ -94,5 +97,19 @@ export function StartScreen() {
         </li>
       </ul>
     </Section>
+
+    {/* 휴대폰에서는 헤더에 "비밀번호 바꾸기"가 없어서 여기서 바꿉니다. PC에서도 같이 둡니다. */}
+    <Section title="계정">
+      <ul className={list.list}>
+        <li className={list.row}>
+          <div className={list.main}><p className={list.title}>공용 비밀번호</p></div>
+          <span className={list.status} />
+          <span className={list.actions}>
+            <button type="button" className="admin-text-button" onClick={changePassword}>바꾸기</button>
+          </span>
+        </li>
+      </ul>
+    </Section>
+    </>
   );
 }

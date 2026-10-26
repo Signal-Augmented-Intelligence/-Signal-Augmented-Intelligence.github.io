@@ -7,10 +7,12 @@
 .links a:hover { color: var(--accent); }
 .bottom { display: flex; justify-content: space-between; gap: 24px; padding-top: 20px; padding-bottom: 32px; border-top: 1px solid var(--rule); color: var(--muted); font-size: var(--text-xs); }
 .bottom a { color: var(--muted); }
+.bottomEnd { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px 20px; }
 .bottom a:hover { color: var(--accent); }
 
 @media (max-width: 640px) {
   .footer { margin-top: 80px; }
   .inner { grid-template-columns: 1fr; gap: 28px; }
   .bottom { flex-direction: column; gap: 4px; }
+  .bottomEnd { flex-direction: column; justify-content: flex-start; gap: 4px; }
 }

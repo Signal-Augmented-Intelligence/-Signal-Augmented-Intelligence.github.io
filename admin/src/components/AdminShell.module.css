@@ -4,9 +4,9 @@
  */
 .frame { display: grid; grid-template-columns: calc(var(--gutter) + 232px) minmax(0, 1fr); max-width: calc(var(--container) + var(--gutter) * 2); margin: 0 auto; }
 .nav { padding-top: 56px; }
-.navInner { position: sticky; top: calc(var(--header-h) + 24px); display: flex; flex-direction: column; min-height: min(600px, calc(100vh - var(--header-h) - 260px)); padding-right: 32px; border-right: 1px solid var(--rule); }
+.navInner { position: sticky; top: calc(var(--header-h) + 24px); display: flex; flex-direction: column; padding-right: 32px; border-right: 1px solid var(--rule); }
 .menu { display: grid; gap: 2px; padding-bottom: 24px; }
-.university { width: 153px; height: 36px; margin-top: auto; overflow: hidden; }
+.university { width: 153px; height: 36px; margin: 12px 0 8px 12px; overflow: hidden; }
 .university img { width: 196px; height: auto; max-width: none; transform: translate(-23px, -11px); }
 .groupStart { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); }
 .item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; border-radius: 6px; color: var(--ink); font-size: 0.9375rem; font-weight: 500; }
@@ -23,7 +23,9 @@ a.item:hover { background: var(--surface); text-decoration: none; }
 @media (max-width: 960px) {
   .frame { grid-template-columns: minmax(0, 1fr); }
   .nav { position: sticky; top: var(--header-h); z-index: 9; padding-top: 0; background: var(--paper); border-bottom: 1px solid var(--rule); }
-  .navInner { position: static; display: block; min-height: 0; padding-right: var(--gutter); border-right: 0; overflow-x: auto; }
+  /* 탭이 넘치면 오른쪽 끝을 흐리게 해서 옆으로 더 있다는 것을 보입니다. */
+  .navInner { position: static; display: block; padding-right: var(--gutter); border-right: 0; overflow-x: auto; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent); }
+  .menu::after { content: ''; flex: 0 0 8px; }
   .menu { display: flex; gap: 28px; padding-bottom: 0; }
   .university { display: none; }
   .groupStart { margin-top: 0; padding-top: 0; border-top: 0; }

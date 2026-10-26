@@ -103,6 +103,7 @@ export function SeminarsScreen() {
       )}>
         {editing === 'new' && (
           <div className={list.open}>
+            <h3 className="admin-form-title">새 세미나</h3>
             <SeminarForm loaded={loaded} onSaved={saved} onCancel={() => setEditing(null)} onConflict={load} />
           </div>
         )}

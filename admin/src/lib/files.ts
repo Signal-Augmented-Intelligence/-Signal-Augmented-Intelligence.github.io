@@ -1,7 +1,7 @@
 import { api, ApiError } from './api';
 
 /** 파일 (api.md 5장). 항목과 따로 먼저 올리고, ready가 된 파일의 id를 항목에 넣어 저장합니다. */
-export type FilePurpose = 'album' | 'home' | 'seminar_pdf' | 'seminar_cover' | 'person';
+export type FilePurpose = 'album' | 'home' | 'seminar_pdf' | 'seminar_cover' | 'person' | 'research_figure';
 export type FileInfo = {
   id: string;
   purpose: FilePurpose;

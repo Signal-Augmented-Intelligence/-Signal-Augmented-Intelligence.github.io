@@ -19,8 +19,7 @@ export default function HomePage() {
     <>
       <Hero
         name={lab.name}
-        fullName={lab.full_name}
-        nameKo={lab.name_ko}
+        logo={lab.logo}
         institution={lab.institution}
         quote={poem.hero}
         poemTitle={poem.stanzas.length > 0 ? poem.title : ''}

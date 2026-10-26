@@ -10,7 +10,7 @@ function Formula({ text }: { text: string }) {
   return <>{parts.map((part, i) => (i % 2 === 1 ? <sup key={i}>{part}</sup> : part))}</>;
 }
 
-type Props = { name: string; fullName: string; nameKo: string; institution: string; quote: string[]; poemTitle: string; slides: string[] };
+type Props = { name: string; logo: string; institution: string; quote: string[]; poemTitle: string; slides: string[] };
 
 /**
  * Home first screen: a full-width photo hero of the lab (photos from content/home.yml; none yet: plain navy).
@@ -18,7 +18,7 @@ type Props = { name: string; fullName: string; nameKo: string; institution: stri
  * falling formulas, then the sky fades away to the photos after NIGHT_MS. The inline script in the root layout
  * sets html[data-hero="night"] before paint; returning to Home through the menu skips the night phase.
  */
-export function Hero({ name, fullName, nameKo, institution, quote, poemTitle, slides }: Props) {
+export function Hero({ name, logo, institution, quote, poemTitle, slides }: Props) {
   const [slide, setSlide] = useState(0);
   const [night, setNight] = useState(true);
 
@@ -60,8 +60,10 @@ export function Hero({ name, fullName, nameKo, institution, quote, poemTitle, sl
         </div>
 
         <div className={styles.text}>
-          <h1 className={styles.name}>{name}</h1>
-          <p className={styles.fullName}>{fullName}{nameKo && <span lang="ko"> | {nameKo}</span>}</p>
+          <h1 className={logo ? styles.customBrand : styles.brandLogo}>
+            <img src={logo || '/images/sai-lab-black.png'} alt={name}
+              className={logo ? styles.customLogo : styles.logoImage} />
+          </h1>
           {institution && <p className={styles.institution}>{institution}</p>}
           {quote.length > 0 && (
             <blockquote className={styles.quote} lang="ko">

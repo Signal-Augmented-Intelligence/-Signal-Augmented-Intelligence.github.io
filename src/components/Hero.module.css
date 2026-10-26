@@ -19,9 +19,11 @@
 
 .inner { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
 .text { position: relative; max-width: 620px; }
-.name { font-size: 5.5rem; font-weight: 600; line-height: 0.95; letter-spacing: -0.045em; }
+.brandLogo { width: 360px; height: 144px; overflow: hidden; }
+.logoImage { width: 455px; height: auto; max-width: none; transform: translate(-71px, -50px); filter: brightness(0) invert(1); }
+.customBrand { width: 360px; height: 144px; }
+.customLogo { width: 100%; height: 100%; object-fit: contain; object-position: left center; }
 .institution { margin-top: 6px; font-size: 1rem; color: rgba(255, 255, 255, 0.6); }
-.fullName { margin-top: 16px; font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.82); }
 .quote { margin: 40px 0 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 1.1875rem; line-height: 1.85; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.92); }
 .poemLink {
   display: inline-block;
@@ -77,6 +79,10 @@
 @media (max-width: 960px) {
   .hero { height: auto; min-height: 520px; }
   .inner { padding-top: 72px; padding-bottom: 96px; }
-  .name { font-size: var(--text-hero); }
   .field { display: none; }
+}
+
+@media (max-width: 640px) {
+  .brandLogo, .customBrand { width: 260px; height: 104px; }
+  .logoImage { width: 329px; transform: translate(-51px, -36px); }
 }

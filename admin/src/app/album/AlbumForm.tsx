@@ -96,7 +96,7 @@ export function AlbumForm({ album, onSaved, onCancel, onConflict }: {
         <input name="title" value={draft.title} onChange={(e) => set({ title: e.target.value })} />
       </Field>
       <div className="admin-actions">
-        <button type="submit" className="admin-button" disabled={saving}>{saving ? '저장 중' : '저장'}</button>
+        <button type="submit" className="admin-button" disabled={saving}>{saving ? '저장 중' : album ? '저장' : '저장하고 사진 올리기'}</button>
         <button type="button" className="admin-text-button" onClick={cancel} disabled={saving}>취소</button>
       </div>
     </form>

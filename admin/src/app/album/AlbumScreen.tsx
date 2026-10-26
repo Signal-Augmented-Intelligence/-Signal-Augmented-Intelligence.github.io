@@ -106,7 +106,7 @@ export function AlbumScreen() {
                 <span className={list.status}>{status(a)}</span>
                 <span className={list.actions}>
                   <button type="button" className="admin-text-button" aria-expanded={opened === a.id} onClick={() => setOpened(opened === a.id ? null : a.id)}>
-                    {opened === a.id ? '사진 접기' : '사진'}
+                    {opened === a.id ? '사진 접기' : a.photo_count === 0 ? '사진 올리기' : '사진'}
                   </button>
                   <button type="button" className="admin-text-button" disabled={busyRow === a.id || editing !== null} onClick={() => setEditing(a.id)}>고치기</button>
                   {a.hidden

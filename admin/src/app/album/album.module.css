@@ -1,5 +1,5 @@
 /* Album에만 있는 것: 목록 줄의 대표 사진 칸, 행사 폼 폭, 펼친 행사의 "사진" 머리줄. 목록 한 줄은 components/List.module.css, 사진 칸은 PhotoGrid.module.css. */
-.form { max-width: 36rem; }
+.form > form { max-width: 36rem; }
 .photos { display: grid; gap: 20px; }
 .photosHead { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; font-size: var(--text-sm); }
 .photosTitle { font-size: var(--text-md); font-weight: 600; }

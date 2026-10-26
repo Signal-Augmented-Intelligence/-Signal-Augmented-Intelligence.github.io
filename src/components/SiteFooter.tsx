@@ -13,7 +13,10 @@ export function SiteFooter() {
         <div>
           <p className={styles.lab}>{lab.name}</p>
           <p className="muted">{lab.full_name}</p>
-          <p className="muted">{lab.institution}{lab.location && `, ${lab.location}`}</p>
+          {lab.institution === 'Hanshin University'
+            ? <img src="/images/hanshin-university.png" alt={lab.institution} className={styles.universityLogo} />
+            : <p className="muted">{lab.institution}</p>}
+          {lab.location && <p className="muted">{lab.location}</p>}
           {lab.email && <p><a href={`mailto:${lab.email}`}>{lab.email}</a></p>}
         </div>
         <nav aria-label="Quick links">

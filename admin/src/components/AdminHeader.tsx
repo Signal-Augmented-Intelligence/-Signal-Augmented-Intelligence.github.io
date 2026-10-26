@@ -19,7 +19,7 @@ export function AdminHeader({ siteUrl }: { siteUrl: string }) {
   const loggedIn = state === 'in';
   return (
     <header className={styles.header}>
-      <div className={`container ${styles.inner}`}>
+      <div className={`container container-header ${styles.inner}`}>
         <a href="/" className={styles.brand} aria-label="SAI Lab 관리 화면 첫 화면">
           <span className={styles.brandLogo}>
             <Image src="/images/admin/sai-lab-black.png" width={1778} height={885} alt="SAI Lab" className={styles.logoImage} />

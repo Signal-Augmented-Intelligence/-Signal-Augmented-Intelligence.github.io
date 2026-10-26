@@ -10,7 +10,7 @@ export function SiteHeader() {
   const items = visibleNav(MAIN_NAV);
   return (
     <header className={styles.header}>
-      <div className={`container ${styles.inner}`}>
+      <div className={`container container-header ${styles.inner}`}>
         <Link href="/" className={styles.brand} aria-label={`${lab.name} home`}>
           {lab.logo
             ? <img src={lab.logo} alt={lab.name} className={styles.customLogo} />

@@ -22,6 +22,7 @@
   --text-hero: 4.5rem;    /* 72 */
 
   --container: 1160px;
+  --container-header: 1360px; /* 헤더만 본문보다 넓게: 넓은 화면에서 로고와 메뉴가 가운데로 몰리지 않게 */
   --gutter: 40px;
   --header-h: 72px;
 }
@@ -58,6 +59,7 @@ a:hover { text-decoration: underline; text-underline-offset: 0.18em; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
 .container { width: 100%; max-width: calc(var(--container) + var(--gutter) * 2); margin: 0 auto; padding: 0 var(--gutter); }
+.container-header { max-width: calc(var(--container-header) + var(--gutter) * 2); }
 
 .skip-link { position: absolute; left: var(--gutter); top: -100px; z-index: 100; padding: 0.5rem 0.75rem; background: var(--paper); color: var(--ink); }
 .skip-link:focus { top: 0.5rem; }

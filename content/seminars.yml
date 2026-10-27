@@ -18,3 +18,10 @@
   file: "2026-10-26-3761da3c.pdf"
   cover: "2026-10-26-8aa14b79.jpg"
   highlight: true
+- date: 2025-12-11
+  presenter: so-yeong-park
+  title: "우분투 GPU 서버 기반 딥러닝 개발 실전 활용 경험 공유"
+  summary: "서버활용방법개요"
+  file: "2026-10-26-e18b8014.pdf"
+  cover: "2026-10-26-be9c4ab6.jpg"
+  highlight: true

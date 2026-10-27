@@ -15,14 +15,14 @@ import styles from './news.module.css';
 
 /**
  * News 한 화면 (설계 문서 3장): 소식 목록(날짜 최신순), 추가·고치기·숨기기. 순서는 날짜로만 정합니다.
- * 칸: 날짜(아는 만큼), 내용(영어 한두 문장), 관련 논문(선택, 논문 목록에서 고르기).
+ * 칸: 날짜(아는 만큼), 내용(영어 한두 문장), 관련 논문 또는 근거 링크.
  */
 const HIDE_BODY = '숨기면 공개 사이트의 News에서 빠집니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
 const byDate = (a: NewsItem, b: NewsItem) => b.date.localeCompare(a.date);
 
 export function NewsScreen() {
   const dialog = useDialog();
-  const { publishing, track } = usePublish();
+  const { publishing, track, settled } = usePublish();
   const [items, setItems] = useState<NewsItem[] | null>(null);
   const [publications, setPublications] = useState<Publication[]>([]);
   const [open, setOpen] = useState<string | null>(null); // 'new' 또는 소식 id
@@ -40,6 +40,7 @@ export function NewsScreen() {
   }, [dialog]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (settled) void load(); }, [settled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!items) return <p className="admin-muted">불러오는 중입니다.</p>;
 
@@ -92,7 +93,10 @@ export function NewsScreen() {
                   {pubTitle(n.publication_id) && <span>{pubTitle(n.publication_id)}</span>}
                 </p>
               </div>
-              <span className={list.status}>{publishing(n.id) ? '반영 중' : n.hidden ? '숨김' : '공개 중'}</span>
+              <span className={list.status} title={n.publication.message ?? undefined}>
+                {publishing(n.id) || n.publication.state === 'publishing' ? '반영 중'
+                  : n.publication.state === 'failed' ? '반영 실패' : n.hidden ? '숨김' : '공개 중'}
+              </span>
               <span className={list.actions}>
                 <button type="button" className="admin-text-button" disabled={locked || busy === n.id} onClick={() => setOpen(n.id)}>고치기</button>
                 <button type="button" className="admin-text-button" disabled={locked || busy === n.id} onClick={() => void setHidden(n, !n.hidden)}>{n.hidden ? '다시 보이기' : '숨기기'}</button>
@@ -105,9 +109,9 @@ export function NewsScreen() {
   );
 }
 
-type Draft = { date: string; text: string; publication_id: string };
+type Draft = { date: string; text: string; publication_id: string; link_url: string };
 const draftKey = (id?: string) => `sai-admin:news:${id ?? 'new'}`;
-const LABELS: Record<string, string> = { date: '날짜', text: '내용', publication_id: '관련 논문' };
+const LABELS: Record<string, string> = { date: '날짜', text: '내용', publication_id: '관련 논문', link_url: '근거 링크' };
 
 function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
   item?: NewsItem;
@@ -118,8 +122,10 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
 }) {
   const dialog = useDialog();
   const form = useRef<HTMLFormElement>(null);
-  const [draft, setDraft] = useState<Draft>(() => readDraft<Draft>(draftKey(item?.id))
-    ?? { date: item?.date ?? '', text: item?.text ?? '', publication_id: item?.publication_id ?? '' });
+  const [draft, setDraft] = useState<Draft>(() => ({
+    date: item?.date ?? '', text: item?.text ?? '', publication_id: item?.publication_id ?? '',
+    link_url: item?.link_url ?? '', ...readDraft<Draft>(draftKey(item?.id)),
+  }));
   const [saving, setSaving] = useState(false);
 
   const set = (change: Partial<Draft>) => setDraft((d) => {
@@ -135,12 +141,17 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
     const problems: [string, string][] = [];
     if (!PARTIAL_DATE.test(draft.date.trim())) problems.push(['date', '날짜를 YYYY, YYYY-MM 또는 YYYY-MM-DD로 적어 주세요.']);
     if (!draft.text.trim()) problems.push(['text', '내용을 적어 주세요.']);
+    else if (draft.text.trim().length > 500 || /[\r\n]/.test(draft.text))
+      problems.push(['text', '내용은 줄바꿈 없이 500자 이내로 적어 주세요.']);
+    if (draft.link_url && !/^(?:https?:\/\/\S+|\/\S+)$/.test(draft.link_url.trim()))
+      problems.push(['link_url', '근거 링크는 https:// 주소 또는 사이트 내부 주소로 적어 주세요.']);
     if (problems.length > 0) {
       await dialog.error('저장하지 못했습니다', fieldList(problems.map(([, m]) => m)));
       focusField(form.current, problems.map(([k]) => k));
       return;
     }
-    const body: Partial<NewsItem> = { date: draft.date.trim(), text: draft.text.trim(), publication_id: draft.publication_id || null };
+    const body: Partial<NewsItem> = { date: draft.date.trim(), text: draft.text.trim(),
+      publication_id: draft.publication_id || null, link_url: draft.link_url.trim() || null };
     setSaving(true);
     try {
       if (item) {
@@ -177,10 +188,14 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
         <textarea name="text" value={draft.text} onChange={(e) => set({ text: e.target.value })} />
       </Field>
       <Field label="관련 논문" optional>
-        <select name="publication_id" value={draft.publication_id} onChange={(e) => set({ publication_id: e.target.value })}>
+        <select name="publication_id" value={draft.publication_id} onChange={(e) => set({ publication_id: e.target.value, link_url: '' })}>
           <option value="">없음</option>
           {shown.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
         </select>
+      </Field>
+      <Field label="근거 링크" optional>
+        <input name="link_url" type="url" value={draft.link_url}
+          onChange={(e) => set({ link_url: e.target.value, publication_id: '' })} />
       </Field>
       <div className="admin-actions">
         <button type="submit" className="admin-button" disabled={saving}>{saving ? '저장 중' : '저장'}</button>

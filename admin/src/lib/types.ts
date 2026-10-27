@@ -85,4 +85,7 @@ export type ResearchArea = Common & {
   publication_count: number;
   publication: { state: 'publishing' | 'published' | 'failed'; job_id: string | null; message: string | null; commit_sha: string | null };
 };
-export type NewsItem = Common & { date: string; text: string; publication_id: string | null };
+export type NewsItem = Common & {
+  date: string; text: string; publication_id: string | null; link_url: string | null;
+  publication: { state: 'publishing' | 'published' | 'failed'; job_id: string | null; message: string | null; commit_sha: string | null };
+};

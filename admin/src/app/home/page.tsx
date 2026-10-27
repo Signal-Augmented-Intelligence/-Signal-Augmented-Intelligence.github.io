@@ -1,15 +1,15 @@
 import { AdminBanner } from '@admin/components/AdminBanner';
 import { AdminShell } from '@admin/components/AdminShell';
-import { HomeSlidesScreen } from './HomeSlidesScreen';
+import { HomePageContent } from './HomePageContent';
 
 export const metadata = { title: 'Home' };
 
-/** Home: 지금은 첫 화면 사진만. 시와 랩 정보는 API가 정해지면 같은 화면의 Section으로 덧붙입니다. */
+/** Home: 첫 화면 사진, 랩 정보와 시를 같은 화면에서 관리합니다. */
 export default function HomePage() {
   return (
     <>
       <AdminBanner title="Home" />
-      <AdminShell><HomeSlidesScreen /></AdminShell>
+      <AdminShell><HomePageContent /></AdminShell>
     </>
   );
 }

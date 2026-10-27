@@ -4,6 +4,7 @@ import { createContext, type FormEvent, type ReactNode, useCallback, useContext,
 import { Section } from '@/components/Section';
 import { api, ApiError, setCsrfToken, setUnauthenticatedHandler, signedOut } from '@admin/lib/api';
 import { errorBody, fieldList } from '@admin/lib/errors';
+import { clearLocalWork } from '@admin/lib/edit';
 import type { System } from '@admin/lib/types';
 import { useDialog } from './Dialog';
 import { Field, focusField } from './Field';
@@ -14,7 +15,7 @@ import formStyles from './Field.module.css';
  * 로그인 상태 (api.md 1장 "로그인", 3장). 랩 공용 계정 하나라 비밀번호만 받습니다.
  * - 화면을 열면 GET /session으로 로그인 여부와 CSRF 토큰을 받습니다.
  * - 로그인 전이거나 어느 요청이든 401이 오면, 메뉴 대신 그 자리에 로그인 칸이 나옵니다(따로 화면을 두지 않음).
- *   쓰던 내용은 각 폼이 브라우저에 임시 보관해 두었으므로, 다시 로그인하면 이어서 씁니다.
+ *   세션이 만료됐을 때는 각 폼의 임시 입력을 이어서 씁니다. 명시적으로 로그아웃하면 공용 컴퓨터의 임시 입력을 지웁니다.
  * - 로그아웃, 비밀번호 바꾸기(팝업)는 헤더에서 부릅니다.
  */
 type State = 'checking' | 'in' | 'out';
@@ -64,6 +65,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       if (!signedOut(err)) { await dialog.error('로그아웃하지 못했습니다', errorBody(err)); return; }
     }
+    clearLocalWork();
     setState('out');
     void check();
   };

@@ -17,10 +17,13 @@ export default function NewsPage() {
       <PageHeader title="News" />
       <div className="container">
         {news.length === 0 ? <p className="muted">No news yet.</p> : (
-          <DateList items={news.map((n) => ({
-            date: formatDate(n.date),
-            content: <>{n.text}{target(n.link) && <> {target(n.link).startsWith('/') && !target(n.link).startsWith('/files/') ? <Link href={target(n.link)}>Details</Link> : <a href={target(n.link)}>Details</a>}</>}</>,
-          }))} />
+          <DateList items={news.map((n) => {
+            const href = target(n.link);
+            const label = `Details: ${n.text}`;
+            return { date: formatDate(n.date), content: <>{n.text}{href && <> {href.startsWith('/') && !href.startsWith('/files/')
+              ? <Link href={href} aria-label={label}>Details</Link>
+              : <a href={href} aria-label={label}>Details</a>}</>}</> };
+          })} />
         )}
       </div>
     </>

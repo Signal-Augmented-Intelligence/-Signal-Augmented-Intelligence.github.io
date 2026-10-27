@@ -22,25 +22,32 @@ const BACKUP: Record<LastRun['state'], string> = { queued: '백업 중', running
 
 export function StartScreen() {
   const dialog = useDialog();
-  const { publishing, track } = usePublish();
+  const { publishing, track, settled } = usePublish();
   const { changePassword } = useSession();
   const [system, setSystem] = useState<System | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (quiet = false) => {
     try {
       setSystem((await api.get<System>('/system')).data);
     } catch (err) {
       if (signedOut(err)) return;
+      if (quiet) return;
       if (await dialog.error('불러오지 못했습니다', errorBody(err), { retry: true })) void load();
     }
   }, [dialog]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    void load();
+    const refresh = () => { if (document.visibilityState === 'visible') void load(true); };
+    const timer = window.setInterval(refresh, 10_000);
+    window.addEventListener('focus', refresh);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', refresh); };
+  }, [load]);
 
   // 반영이 끝나면 마지막 반영 시각을 새로 받습니다.
   const running = publishing(SITE);
-  useEffect(() => { if (!running && system) void load(); }, [running]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (settled) void load(true); }, [settled, load]);
 
   if (!system) return <p className="admin-muted">불러오는 중입니다.</p>;
 
@@ -59,6 +66,7 @@ export function StartScreen() {
 
   const { last_publish: pub, last_backup: backup } = system;
   const pubState = running ? '반영 중' : pub ? STATE[pub.state] : '';
+  const publishBusy = running || pub?.state === 'queued' || pub?.state === 'running';
 
   return (
     <>
@@ -74,14 +82,14 @@ export function StartScreen() {
           </div>
           <span className={list.status}>{pubState}</span>
           <span className={list.actions}>
-            <button type="button" className="admin-text-button" disabled={busy || running} onClick={republish}>다시 반영</button>
+            <button type="button" className="admin-text-button" disabled={busy || publishBusy} onClick={republish}>다시 반영</button>
           </span>
         </li>
         <li className={list.row}>
           <div className={list.main}>
             <p className={list.title}>마지막 백업</p>
             <p className={list.meta}>
-              {backup?.finished_at ? <span className="num">{formatTime(backup.finished_at)}</span> : <span>아직 없음</span>}
+              {backup?.finished_at ? <span className="num">{formatTime(backup.finished_at)}</span> : <span>{backup ? '진행 중' : '백업 설정 전'}</span>}
               {backup?.state === 'failed' && backup.message && <span>{backup.message}</span>}
             </p>
           </div>

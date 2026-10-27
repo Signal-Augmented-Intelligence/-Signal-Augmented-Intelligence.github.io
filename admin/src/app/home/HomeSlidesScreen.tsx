@@ -8,7 +8,7 @@ import { api, ApiError, signedOut } from '@admin/lib/api';
 import { errorBody } from '@admin/lib/errors';
 import type { FileInfo } from '@admin/lib/files';
 import type { HomeSlide, System } from '@admin/lib/types';
-import { usePublish } from '@admin/lib/usePublish';
+import type { usePublish } from '@admin/lib/usePublish';
 
 /**
  * Home › 첫 화면 사진 (api.md 7장). 사진 칸 목록에서 올리기, 메모, 숨기기, 순서.
@@ -18,9 +18,8 @@ import { usePublish } from '@admin/lib/usePublish';
 const HIDE_BODY = '숨기면 공개 사이트 첫 화면에서 보이지 않습니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
 const MB = 1024 * 1024;
 
-export function HomeSlidesScreen() {
+export function HomeSlidesScreen({ publish: { publishing, track, settled } }: { publish: ReturnType<typeof usePublish> }) {
   const dialog = useDialog();
-  const { publishing, track } = usePublish();
   const [system, setSystem] = useState<System | null>(null);
   const [slides, setSlides] = useState<HomeSlide[] | null>(null);
   const [busy, setBusy] = useState(false);
@@ -38,6 +37,7 @@ export function HomeSlidesScreen() {
   }, [dialog]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (settled) void load(); }, [settled, load]);
 
   /** 저장 하나를 실행하고, 실패하면 오류 팝업. 동시 수정이면 새로 불러옵니다. 성공하면 true. */
   const run = async (work: () => Promise<void>) => {
@@ -87,7 +87,8 @@ export function HomeSlidesScreen() {
   });
 
   const connected = system.storage.connected;
-  const status = (s: HomeSlide) => publishing(s.id) ? '반영 중' : s.hidden ? '숨김' : '공개 중';
+  const status = (s: HomeSlide) => publishing(s.id) || s.publication.state === 'publishing' ? '반영 중'
+    : s.publication.state === 'failed' ? '반영 실패' : s.hidden ? '숨김' : '공개 중';
 
   return (
     <Section title="첫 화면 사진" aside={connected && (
@@ -103,7 +104,7 @@ export function HomeSlidesScreen() {
             return (
               <>
                 <p className={cell.caption}>{s.note}</p>
-                <p className={cell.meta}>{status(s)}</p>
+                <p className={cell.meta} title={s.publication.message ?? undefined}>{status(s)}</p>
                 <span className={cell.actions}>
                   <TextEdit label="메모" value={s.note} disabled={locked} open={noteOpen === s.id} onOpen={(open) => setNoteOpen(open ? s.id : null)} onSave={(note) => patch(s, { note })} />
                   {noteOpen !== s.id && (s.hidden

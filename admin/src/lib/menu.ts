@@ -22,5 +22,5 @@ export const MENU: MenuItem[] = [
   { title: 'Research', href: '/research/', site: '/research/', ready: true, note: '연구 분야, 논문', group: 'content' },
   { title: 'Seminars', href: '/seminars/', site: '/seminars/', ready: true, note: '세미나 올리기, 세미나 분야', group: 'content' },
   { title: 'Album', href: '/album/', site: '/album/', ready: true, note: '행사, 사진, 대표 사진', group: 'content' },
-  { title: 'News', href: '/news/', site: '/news/', ready: false, note: '소식', group: 'content' },
+  { title: 'News', href: '/news/', site: '/news/', ready: true, note: '소식', group: 'content' },
 ];

@@ -1,13 +1,14 @@
 import { api, ApiError } from './api';
 
 /** 파일 (api.md 5장). 항목과 따로 먼저 올리고, ready가 된 파일의 id를 항목에 넣어 저장합니다. */
-export type FilePurpose = 'album' | 'home' | 'seminar_pdf' | 'seminar_cover' | 'person' | 'research_figure';
+export type FilePurpose = 'album' | 'home' | 'seminar_pdf' | 'seminar_cover' | 'person' | 'research_figure' | 'publication_pdf';
 export type FileInfo = {
   id: string;
   purpose: FilePurpose;
   status: 'processing' | 'ready' | 'failed';
   original_name: string;
   preview_url: string | null;
+  content_url?: string | null;
   public_size_bytes?: number | null;
   message?: string | null;
   warnings?: string[];

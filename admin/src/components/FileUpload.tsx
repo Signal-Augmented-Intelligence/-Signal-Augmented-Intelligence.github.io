@@ -12,14 +12,15 @@ import styles from './Field.module.css';
  * previous: 바꾸기 전의 파일. 처리에 실패하면 이 파일로 되돌립니다.
  */
 export type FileValue = {
-  id: string; name: string; size: number | null; preview_url: string | null; warnings: string[];
+  id: string; name: string; size: number | null; preview_url: string | null; content_url?: string | null; warnings: string[];
   processing?: true; previous?: FileValue | null;
 };
 
 type Busy = { kind: 'uploading'; name: string; percent: number } | { kind: 'processing'; name: string };
 
 const ready = (info: FileInfo, name: string): FileValue =>
-  ({ id: info.id, name: info.original_name || name, size: info.public_size_bytes ?? null, preview_url: info.preview_url, warnings: info.warnings ?? [] });
+  ({ id: info.id, name: info.original_name || name, size: info.public_size_bytes ?? null,
+    preview_url: info.preview_url, content_url: info.content_url, warnings: info.warnings ?? [] });
 
 /**
  * 파일 하나를 고르면 바로 올리고, 칸 안에 상태를 보통 글자로 보여 줍니다 (세미나 업로드 설계 5장).
@@ -114,6 +115,7 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
         )}
       </span>
       {value?.preview_url && !busy && <img className={styles.preview} src={value.preview_url} alt="" />}
+      {value?.content_url && !busy && <a href={value.content_url} target="_blank" rel="noopener noreferrer">PDF 열기</a>}
     </span>
   );
 }

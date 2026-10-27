@@ -65,8 +65,13 @@ export type Publication = Common & {
   award: string;
   links: { label: string; url: string }[];
   area_ids: string[];
+  pdf_file_id: string | null;
+  pdf_content_url: string | null;
+  excerpt: string;
+  body: string;
   /** 관리 서버가 처음 저장할 때 만들고 바꾸지 않음 (연구 분야·News 연결용). 읽기 전용. */
   permalink: string;
+  publication: { state: 'publishing' | 'published' | 'failed'; job_id: string | null; message: string | null; commit_sha: string | null };
 };
 export type ResearchArea = Common & {
   title: string;
@@ -78,5 +83,6 @@ export type ResearchArea = Common & {
   figure_caption: string;
   /** 읽기 전용 */
   publication_count: number;
+  publication: { state: 'publishing' | 'published' | 'failed'; job_id: string | null; message: string | null; commit_sha: string | null };
 };
 export type NewsItem = Common & { date: string; text: string; publication_id: string | null };

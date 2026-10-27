@@ -95,7 +95,11 @@ export function ResearchScreen() {
     track(next[index + by].id, res.publish);
   });
 
-  const status = (id: string, hidden: boolean) => (publishing(id) ? '반영 중' : hidden ? '숨김' : '공개 중');
+  const status = (item: Publication | ResearchArea) => {
+    if (publishing(item.id) || item.publication.state === 'publishing') return '반영 중';
+    if (item.publication.state === 'failed') return '반영 실패';
+    return item.hidden ? '숨김' : '공개 중';
+  };
   const locked = open !== null;
   const areaNames = (ids: string[]) => ids.map((id) => areas.find((a) => a.id === id)?.title).filter(Boolean).join(', ');
 
@@ -107,7 +111,7 @@ export function ResearchScreen() {
         {open?.kind === 'publication' && open.id === 'new' && (
           <div className={list.open}>
             <h3 className="admin-form-title">새 논문</h3>
-            <PublicationForm people={people} areas={areas} onSaved={savedPublication} onCancel={() => setOpen(null)} onConflict={load} />
+            <PublicationForm people={people} areas={areas} system={system} onSaved={savedPublication} onCancel={() => setOpen(null)} onConflict={load} />
           </div>
         )}
         {publications.length === 0 && !(open?.kind === 'publication' && open.id === 'new') ? (
@@ -116,7 +120,7 @@ export function ResearchScreen() {
           <ul className={list.list}>
             {publications.map((p) => open?.kind === 'publication' && open.id === p.id ? (
               <li key={p.id} className={list.open}>
-                <PublicationForm publication={p} people={people} areas={areas} onSaved={savedPublication} onCancel={() => setOpen(null)} onConflict={load} />
+                <PublicationForm publication={p} people={people} areas={areas} system={system} onSaved={savedPublication} onCancel={() => setOpen(null)} onConflict={load} />
               </li>
             ) : (
               <li key={p.id} className={list.row}>
@@ -129,7 +133,7 @@ export function ResearchScreen() {
                     {p.area_ids.length > 0 && <span>{areaNames(p.area_ids)}</span>}
                   </p>
                 </div>
-                <span className={list.status}>{status(p.id, p.hidden)}</span>
+                <span className={list.status} title={p.publication.message ?? undefined}>{status(p)}</span>
                 <span className={list.actions}>
                   <button type="button" className="admin-text-button" disabled={locked || busy === p.id} onClick={() => setOpen({ kind: 'publication', id: p.id })}>고치기</button>
                   <button type="button" className="admin-text-button" disabled={locked || busy === p.id} onClick={() => void hidePublication(p, !p.hidden)}>{p.hidden ? '다시 보이기' : '숨기기'}</button>
@@ -163,7 +167,7 @@ export function ResearchScreen() {
                   <p className={list.title}>{a.title}</p>
                   <p className={list.meta}><span>논문 <span className="num">{a.publication_count}</span>편</span></p>
                 </div>
-                <span className={list.status}>{status(a.id, a.hidden)}</span>
+                <span className={list.status} title={a.publication.message ?? undefined}>{status(a)}</span>
                 <span className={list.actions}>
                   <button type="button" className="admin-text-button" disabled={locked || busy !== null || i === 0} onClick={() => moveArea(i, -1)}>위로</button>
                   <button type="button" className="admin-text-button" disabled={locked || busy !== null || i === areas.length - 1} onClick={() => moveArea(i, 1)}>아래로</button>

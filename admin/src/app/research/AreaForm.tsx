@@ -35,7 +35,7 @@ export function AreaForm({ area, system, onSaved, onCancel, onConflict }: {
 }) {
   const dialog = useDialog();
   const form = useRef<HTMLFormElement>(null);
-  const [draft, setDraft] = useState<Draft>(() => readDraft<Draft>(draftKey(area?.id)) ?? fromArea(area));
+  const [draft, setDraft] = useState<Draft>(() => ({ ...fromArea(area), ...readDraft<Draft>(draftKey(area?.id)) }));
   const [saving, setSaving] = useState(false);
   const pending = useRef<Promise<FileValue | null> | null>(null);
 
@@ -68,7 +68,8 @@ export function AreaForm({ area, system, onSaved, onCancel, onConflict }: {
       }
       const body: Partial<ResearchArea> = {
         title: draft.title.trim(), summary: draft.summary.trim(), body: draft.body.trim(),
-        figure_file_id: figure?.id ?? null, figure_alt: draft.figure_alt.trim(), figure_caption: draft.figure_caption.trim(),
+        figure_file_id: figure?.id ?? null, figure_alt: figure ? draft.figure_alt.trim() : '',
+        figure_caption: figure ? draft.figure_caption.trim() : '',
       };
       if (area) {
         const changed = changedFields(area, body);

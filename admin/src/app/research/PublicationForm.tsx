@@ -3,10 +3,11 @@
 import { type FormEvent, useRef, useState } from 'react';
 import { useDialog } from '@admin/components/Dialog';
 import { Field, focusField } from '@admin/components/Field';
+import { FileUpload, type FileValue } from '@admin/components/FileUpload';
 import { api, ApiError, type Publish, signedOut } from '@admin/lib/api';
 import { changedFields, PARTIAL_DATE, readDraft, writeDraft } from '@admin/lib/edit';
 import { errorBody, fieldList } from '@admin/lib/errors';
-import type { Author, PickerPerson, Publication, PublicationType, ResearchArea } from '@admin/lib/types';
+import type { Author, PickerPerson, Publication, PublicationType, ResearchArea, System } from '@admin/lib/types';
 import styles from './research.module.css';
 
 /**
@@ -27,6 +28,7 @@ type AuthorRow = { person: string; name: string }; // person: 멤버 id 또는 E
 type Draft = {
   title: string; title_ko: string; type: PublicationType; authors: AuthorRow[]; venue: string; pub_date: string;
   status: string; award: string; links: { label: string; url: string }[]; area_ids: string[];
+  pdf: FileValue | null; excerpt: string; body: string;
 };
 
 const toRow = (a: Author): AuthorRow => ('person_id' in a ? { person: a.person_id, name: '' } : { person: EXTERNAL, name: a.name });
@@ -35,26 +37,33 @@ const fromPublication = (p?: Publication): Draft => ({
   authors: p ? p.authors.map(toRow) : [{ person: '', name: '' }],
   venue: p?.venue ?? '', pub_date: p?.pub_date ?? '', status: p?.status ?? '', award: p?.award ?? '',
   links: p?.links ?? [], area_ids: p?.area_ids ?? [],
+  pdf: p?.pdf_file_id ? { id: p.pdf_file_id, name: '논문 PDF', size: null, preview_url: null,
+    content_url: p.pdf_content_url, warnings: [] } : null,
+  excerpt: p?.excerpt ?? '', body: p?.body ?? '',
 });
 const draftKey = (id?: string) => `sai-admin:publication:${id ?? 'new'}`;
 
 const LABELS: Record<string, string> = {
   title: '제목', title_ko: '국문 제목', type: '구분', authors: '저자', venue: '학회·저널', pub_date: '발표일',
-  status: '진행 상태', award: '수상', links: '링크', area_ids: '연구 분야',
+  status: '진행 상태', award: '수상', links: '링크', area_ids: '연구 분야', pdf_file_id: 'PDF',
 };
+const MB = 1024 * 1024;
 
-export function PublicationForm({ publication, people, areas, onSaved, onCancel, onConflict }: {
+export function PublicationForm({ publication, people, areas, system, onSaved, onCancel, onConflict }: {
   publication?: Publication;
   people: PickerPerson[];
   areas: ResearchArea[];
+  system: System;
   onSaved: (p: Publication, publish?: Publish) => void;
   onCancel: () => void;
   onConflict: () => void;
 }) {
   const dialog = useDialog();
   const form = useRef<HTMLFormElement>(null);
-  const [draft, setDraft] = useState<Draft>(() => readDraft<Draft>(draftKey(publication?.id)) ?? fromPublication(publication));
+  const [draft, setDraft] = useState<Draft>(() => ({ ...fromPublication(publication),
+    ...readDraft<Draft>(draftKey(publication?.id)) }));
   const [saving, setSaving] = useState(false);
+  const pending = useRef<Promise<FileValue | null> | null>(null);
 
   const set = (change: Partial<Draft>) => setDraft((d) => {
     const next = { ...d, ...change };
@@ -88,14 +97,19 @@ export function PublicationForm({ publication, people, areas, onSaved, onCancel,
       return;
     }
 
-    const body: Partial<Publication> = {
-      title: draft.title.trim(), title_ko: draft.title_ko.trim(), type: draft.type,
-      authors: authors.map((a): Author => (a.person === EXTERNAL ? { name: a.name.trim() } : { person_id: a.person })),
-      venue: draft.venue.trim(), pub_date: draft.pub_date.trim(), status: draft.status.trim(), award: draft.award.trim(),
-      links, area_ids: draft.area_ids,
-    };
     setSaving(true);
     try {
+      const wait = pending.current;
+      const done = wait ? await wait : null;
+      if (wait && !done) return;
+      const pdf = wait ? done : draft.pdf;
+      const body: Partial<Publication> = {
+        title: draft.title.trim(), title_ko: draft.title_ko.trim(), type: draft.type,
+        authors: authors.map((a): Author => (a.person === EXTERNAL ? { name: a.name.trim() } : { person_id: a.person })),
+        venue: draft.venue.trim(), pub_date: draft.pub_date.trim(), status: draft.status.trim(), award: draft.award.trim(),
+        links, area_ids: draft.area_ids, pdf_file_id: pdf?.id ?? null,
+        excerpt: draft.excerpt.trim(), body: draft.body.trim(),
+      };
       if (publication) {
         const changed = changedFields(publication, body);
         if (Object.keys(changed).length === 0) { cancel(); return; }
@@ -172,6 +186,17 @@ export function PublicationForm({ publication, people, areas, onSaved, onCancel,
       <Field label="수상" optional>
         <input name="award" value={draft.award} onChange={(e) => set({ award: e.target.value })} />
       </Field>
+      <Field label="짧은 설명" optional>
+        <input name="excerpt" value={draft.excerpt} onChange={(e) => set({ excerpt: e.target.value })} />
+      </Field>
+      <Field label="본문" optional>
+        <textarea name="body" value={draft.body} onChange={(e) => set({ body: e.target.value })} />
+      </Field>
+      {system.storage.connected && <Field label="PDF" optional limit={`${system.limits.seminar_pdf_upload_mb} MB 이하`}>
+        <FileUpload name="pdf" purpose="publication_pdf" accept="application/pdf" maxBytes={system.limits.seminar_pdf_upload_mb * MB}
+          tooLarge={`PDF가 ${system.limits.seminar_pdf_upload_mb} MB를 넘습니다.`} value={draft.pdf}
+          onChange={(pdf) => set({ pdf })} onPending={(p) => { pending.current = p; }} />
+      </Field>}
 
       <fieldset className={styles.group}>
         <legend>링크 <small>(선택)</small></legend>

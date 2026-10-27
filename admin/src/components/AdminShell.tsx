@@ -21,7 +21,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   if (state !== 'in') {
     return (
       <div className={`${styles.frame} ${styles.single}`}>
-        <div className={`container ${styles.body}`}>{state === 'out' && <LoginForm />}</div>
+        <div className={`container ${styles.body}`}>{state === 'out' ? <LoginForm /> : <p className="admin-muted">로그인 확인 중</p>}</div>
       </div>
     );
   }

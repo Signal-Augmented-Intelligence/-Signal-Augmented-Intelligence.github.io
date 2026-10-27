@@ -10,6 +10,16 @@ export function writeDraft<T>(key: string, value: T | null) {
   try { if (value) localStorage.setItem(key, JSON.stringify(value)); else localStorage.removeItem(key); } catch { /* 보관 못 해도 폼은 그대로 */ }
 }
 
+/** 공용 컴퓨터에서 명시적으로 로그아웃하면 이전 작성자의 임시 입력을 남기지 않습니다. */
+export function clearLocalWork() {
+  try {
+    for (let i = localStorage.length - 1; i >= 0; i -= 1) {
+      const key = localStorage.key(i);
+      if (key?.startsWith('sai-admin:')) localStorage.removeItem(key);
+    }
+  } catch { /* 저장소를 쓸 수 없어도 로그아웃은 계속합니다. */ }
+}
+
 /** 원래 값과 다른 칸만 (배열·객체는 내용으로 비교). */
 export function changedFields<T extends object>(original: T, body: Partial<T>): Partial<T> {
   return Object.fromEntries(Object.entries(body).filter(([k, v]) =>

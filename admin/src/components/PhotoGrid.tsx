@@ -22,7 +22,7 @@ import styles from './PhotoGrid.module.css';
  */
 export type GridItem = { id: string; preview_url: string | null };
 
-type Upload = { key: number; name: string; percent: number | null }; // null: 처리 중
+type Upload = { key: number; name: string; percent: number | null }; // -1: 대기, null: 처리 중
 
 export function usePhotoUploads({ purpose, maxBytes, types, tooLarge, onReady }: {
   purpose: FilePurpose;
@@ -62,9 +62,9 @@ export function usePhotoUploads({ purpose, maxBytes, types, tooLarge, onReady }:
       if (file.size > maxBytes) { failures.current.push(`${file.name}: ${tooLarge}`); continue; }
       const k = ++key.current;
       running.current += 1;
-      setUploads((u) => [...u, { key: k, name: file.name, percent: 0 }]);
+      setUploads((u) => [...u, { key: k, name: file.name, percent: -1 }]);
       const set = (percent: number | null) => setUploads((u) => u.map((x) => (x.key === k ? { ...x, percent } : x)));
-      uploadFile(file, purpose, set, () => set(null))
+      uploadFile(file, purpose, set, () => set(null), () => set(-1))
         .then((info) => ready.current(info))
         .catch((err: unknown) => {
           if (signedOut(err)) return;
@@ -148,7 +148,7 @@ export function PhotoGrid<T extends GridItem>({ items, uploads, onDropFiles, onM
         <li key={`up-${u.key}`} className={styles.cell}>
           <span className={styles.photo} />
           <p className={styles.caption}>{u.name}</p>
-          <p className={styles.meta}>{u.percent === null ? '처리 중' : `올리는 중 ${u.percent}%`}</p>
+          <p className={styles.meta}>{u.percent === null ? '처리 중' : u.percent < 0 ? '대기 중' : `올리는 중 ${u.percent}%`}</p>
           <span className={styles.actions} />
           <span className={styles.order} />
         </li>

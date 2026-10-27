@@ -2,7 +2,7 @@
 
 import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 import { ApiError, signedOut } from '@admin/lib/api';
-import { type FileInfo, type FilePurpose, formatSize, uploadFile, waitForFile } from '@admin/lib/files';
+import { FileProcessingError, type FileInfo, type FilePurpose, formatSize, retryFile, uploadFile, waitForFile } from '@admin/lib/files';
 import { useDialog } from './Dialog';
 import styles from './Field.module.css';
 
@@ -16,7 +16,7 @@ export type FileValue = {
   processing?: true; previous?: FileValue | null;
 };
 
-type Busy = { kind: 'uploading'; name: string; percent: number } | { kind: 'processing'; name: string };
+type Busy = { kind: 'queued' | 'processing'; name: string } | { kind: 'uploading'; name: string; percent: number };
 
 const ready = (info: FileInfo, name: string): FileValue =>
   ({ id: info.id, name: info.original_name || name, size: info.public_size_bytes ?? null,
@@ -42,9 +42,10 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
   const dialog = useDialog();
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState<Busy | null>(null);
+  const [failed, setFailed] = useState<{ id: string; name: string; previous: FileValue | null } | null>(null);
   const resumed = useRef<string | null>(null);
 
-  const uploading = busy?.kind === 'uploading';
+  const uploading = busy?.kind === 'uploading' || busy?.kind === 'queued';
   useEffect(() => {
     if (!uploading) return;
     const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); e.returnValue = ''; };
@@ -53,8 +54,11 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
   }, [uploading]);
 
   /** 실패하면 바꾸기 전 파일로 되돌리고 오류 팝업을 띄웁니다. */
-  const fail = (err: unknown, previous: FileValue | null) => {
+  const fail = (err: unknown, previous: FileValue | null, name: string, retryId?: string) => {
     onChange(previous);
+    setFailed(err instanceof FileProcessingError && err.retryable ? { id: err.fileId, name, previous }
+      : retryId && err instanceof ApiError && ['CONFLICT', 'STORAGE_UNAVAILABLE'].includes(err.code)
+        ? { id: retryId, name, previous } : null);
     if (signedOut(err)) return null;
     const message = err instanceof ApiError ? err.message : '파일을 처리하지 못했습니다.';
     void dialog.error('파일을 올리지 못했습니다', previous ? <>{message}<br />이전 파일은 그대로 남아 있습니다.</> : message);
@@ -73,7 +77,7 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
     setBusy({ kind: 'processing', name: value.name });
     track(waitForFile({ id: value.id, status: 'processing' })
       .then((info) => { const next = ready(info, value.name); onChange(next); return next; })
-      .catch((err: unknown) => fail(err, previous)));
+      .catch((err: unknown) => fail(err, previous, value.name)));
   });
 
   const pick = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,8 +86,9 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
     if (!file) return;
     if (file.size > maxBytes) { void dialog.error('파일을 올리지 못했습니다', tooLarge); return; }
 
+    setFailed(null);
     const previous = value?.processing ? value.previous ?? null : value;
-    setBusy({ kind: 'uploading', name: file.name, percent: 0 });
+    setBusy({ kind: 'queued', name: file.name });
     track(uploadFile(
       file, purpose,
       (percent) => setBusy({ kind: 'uploading', name: file.name, percent }),
@@ -92,12 +97,25 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
         setBusy({ kind: 'processing', name: file.name });
         onChange({ id: info.id, name: info.original_name || file.name, size: null, preview_url: null, warnings: [], processing: true, previous });
       },
+      () => setBusy({ kind: 'queued', name: file.name }),
     ).then((info) => { const next = ready(info, file.name); onChange(next); return next; })
-      .catch((err: unknown) => fail(err, previous)));
+      .catch((err: unknown) => fail(err, previous, file.name)));
+  };
+
+  const retry = () => {
+    if (!failed || busy) return;
+    const { id, name: fileName, previous } = failed;
+    setFailed(null);
+    setBusy({ kind: 'queued', name: fileName });
+    track(retryFile(id,
+      () => setBusy({ kind: 'queued', name: fileName }),
+      () => setBusy({ kind: 'processing', name: fileName }),
+    ).then((info) => { const next = ready(info, fileName); onChange(next); return next; })
+      .catch((err: unknown) => fail(err, previous, fileName, id)));
   };
 
   const status = busy
-    ? (busy.kind === 'uploading' ? `올리는 중 ${busy.percent}%` : '처리 중')
+    ? (busy.kind === 'uploading' ? `올리는 중 ${busy.percent}%` : busy.kind === 'queued' ? '대기 중' : '처리 중')
     : value && !value.processing ? formatSize(value.size) : '';
 
   return (
@@ -116,6 +134,7 @@ export function FileUpload({ name, purpose, accept, maxBytes, tooLarge, value, o
       </span>
       {value?.preview_url && !busy && <img className={styles.preview} src={value.preview_url} alt="" />}
       {value?.content_url && !busy && <a href={value.content_url} target="_blank" rel="noopener noreferrer">PDF 열기</a>}
+      {failed && !busy && <button type="button" className="admin-text-button" onClick={retry}>가공 다시 시도</button>}
     </span>
   );
 }

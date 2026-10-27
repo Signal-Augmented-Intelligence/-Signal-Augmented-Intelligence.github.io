@@ -29,7 +29,7 @@ const byDate = (a: Album, b: Album) => b.date.localeCompare(a.date);
 
 export function AlbumScreen() {
   const dialog = useDialog();
-  const { publishing, track } = usePublish();
+  const { publishing, track, settled } = usePublish();
   const [system, setSystem] = useState<System | null>(null);
   const [albums, setAlbums] = useState<Album[] | null>(null);
   const [open, setOpen] = useState<string | null>(null); // 'new' 또는 펼친 행사 id
@@ -49,6 +49,7 @@ export function AlbumScreen() {
   }, [dialog]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { if (settled) void load(); }, [settled, load]);
 
   const replace = useCallback((a: Album) => setAlbums((l) => l && [{ ...l.find((x) => x.id === a.id), ...a, photos: undefined }, ...l.filter((x) => x.id !== a.id)].sort(byDate)), []);
   const fromPhotos = useCallback((a: Album) => setAlbums((l) => l && l.map((x) => (x.id === a.id ? { ...x, ...a, photos: undefined } : x))), []);
@@ -93,7 +94,8 @@ export function AlbumScreen() {
     }
   };
 
-  const status = (a: Album) => publishing(a.id) ? '반영 중' : a.hidden ? '숨김' : !a.cover_preview_url ? '사진 없음' : '공개 중';
+  const status = (a: Album) => publishing(a.id) || a.publication.state === 'publishing' ? '반영 중'
+    : a.publication.state === 'failed' ? '반영 실패' : a.hidden ? '숨김' : !a.cover_preview_url ? '사진 없음' : '공개 중';
   const locked = (a: Album) => busyRow === a.id || open !== null;
 
   /** 줄 왼쪽: 대표 사진 칸, 행사 이름, 날짜·사진 수. 접힌 줄에서는 이름을 눌러 펼칩니다. */
@@ -109,7 +111,7 @@ export function AlbumScreen() {
           <span>사진 <span className="num">{a.photo_count}</span>장</span>
         </p>
       </div>
-      <span className={list.status}>{status(a)}</span>
+      <span className={list.status} title={a.publication.message ?? undefined}>{status(a)}</span>
     </>
   );
 

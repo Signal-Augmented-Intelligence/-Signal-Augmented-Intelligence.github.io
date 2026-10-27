@@ -39,12 +39,21 @@ export type Album = Common & {
   photo_count: number;
   /** 목록에서만: 대표 사진(없으면 숨기지 않은 첫 사진)의 미리보기. 보일 사진이 없으면 null. */
   cover_preview_url?: string | null;
+  publication: ContentPublication;
   photos?: AlbumPhoto[];
 };
 export type AlbumPhoto = Common & { file_id: string; preview_url: string | null; alt: string };
 
 /** 첫 화면 사진 (api.md 7장). note는 관리 화면에서만 보입니다. */
-export type HomeSlide = Common & { file_id: string; preview_url: string | null; note: string };
+export type HomeSlide = Common & { file_id: string; preview_url: string | null; note: string; publication: ContentPublication };
+export type ContentPublication = { state: 'publishing' | 'published' | 'failed'; job_id: string | null;
+  message: string | null; commit_sha: string | null };
+export type LabInfo = { id: 'main'; name: string; full_name: string; name_ko: string;
+  institution: string; advisor: string; intro: string; email: string; location: string;
+  draft: boolean; version: number; updated_at: string; publication: ContentPublication };
+export type PoemStanza = { id: string; lines: string[]; hidden: boolean };
+export type PoemInfo = { id: 'main'; title: string; hero: number; credit: string;
+  stanzas: PoemStanza[]; version: number; updated_at: string; publication: ContentPublication };
 
 /** GET /system의 마지막 반영·백업 (api.md 4장). */
 export type LastRun = { id?: string; state: 'queued' | 'running' | 'done' | 'failed'; finished_at: string | null; message?: string | null };

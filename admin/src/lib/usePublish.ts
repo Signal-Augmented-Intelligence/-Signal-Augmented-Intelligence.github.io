@@ -32,6 +32,7 @@ export function usePublish() {
   const [waiting, setWaiting] = useState<Waiting>({});
   const [settled, setSettled] = useState(0);
   const failing = useRef(false);
+  const polling = useRef(false);
   const misses = useRef<Record<string, number>>({});
 
   useEffect(() => { setWaiting(readWaiting()); }, []);
@@ -51,33 +52,39 @@ export function usePublish() {
     const ids = [...new Set(Object.values(waiting))];
     if (ids.length === 0) return;
     const timer = setInterval(async () => {
-      for (const id of ids) {
-        let result: Publish;
-        try {
-          result = (await api.get<Publish>(`/publish/${id}`)).data;
-          misses.current[id] = 0;
-        } catch (err) {
-          if (signedOut(err)) return;
-          if (err instanceof ApiError && err.code === 'NOT_FOUND') { update((w) => Object.fromEntries(Object.entries(w).filter(([, pub]) => pub !== id))); continue; }
-          misses.current[id] = (misses.current[id] ?? 0) + 1;
-          if (misses.current[id] === MISS_LIMIT && !failing.current) {
-            failing.current = true;
-            await dialog.error(UNKNOWN, err instanceof ApiError ? err.message : undefined);
-            failing.current = false;
+      if (polling.current) return;
+      polling.current = true;
+      try {
+        for (const id of ids) {
+          let result: Publish;
+          try {
+            result = (await api.get<Publish>(`/publish/${id}`)).data;
+            misses.current[id] = 0;
+          } catch (err) {
+            if (signedOut(err)) return;
+            if (err instanceof ApiError && err.code === 'NOT_FOUND') { update((w) => Object.fromEntries(Object.entries(w).filter(([, pub]) => pub !== id))); continue; }
+            misses.current[id] = (misses.current[id] ?? 0) + 1;
+            if (misses.current[id] === MISS_LIMIT && !failing.current) {
+              failing.current = true;
+              await dialog.error(UNKNOWN, err instanceof ApiError ? err.message : undefined);
+              failing.current = false;
+            }
+            continue;
           }
-          continue;
+          if (result.state !== 'done' && result.state !== 'failed') continue;
+          let retried: Publish | null = null;
+          if (result.state === 'failed' && !failing.current) {
+            failing.current = true;
+            const again = await dialog.error(FAILED, result.message ? `${result.message} ${FAILED_BODY}` : FAILED_BODY, { retry: true, retryLabel: '다시 반영' });
+            failing.current = false;
+            if (again) { try { retried = (await api.post<Publish>('/publish')).data; } catch { /* 다음 저장 때 다시 */ } }
+          }
+          delete misses.current[id];
+          update((w) => Object.fromEntries(Object.entries(w).flatMap(([item, pub]) => pub !== id ? [[item, pub]] : retried ? [[item, retried.id]] : [])));
+          setSettled((count) => count + 1);
         }
-        if (result.state !== 'done' && result.state !== 'failed') continue;
-        let retried: Publish | null = null;
-        if (result.state === 'failed' && !failing.current) {
-          failing.current = true;
-          const again = await dialog.error(FAILED, result.message ? `${result.message} ${FAILED_BODY}` : FAILED_BODY, { retry: true, retryLabel: '다시 반영' });
-          failing.current = false;
-          if (again) { try { retried = (await api.post<Publish>('/publish')).data; } catch { /* 다음 저장 때 다시 */ } }
-        }
-        delete misses.current[id];
-        update((w) => Object.fromEntries(Object.entries(w).flatMap(([item, pub]) => pub !== id ? [[item, pub]] : retried ? [[item, retried.id]] : [])));
-        setSettled((count) => count + 1);
+      } finally {
+        polling.current = false;
       }
     }, POLL_MS);
     return () => clearInterval(timer);

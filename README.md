@@ -13,7 +13,7 @@ Site: https://signal-augmented-intelligence.github.io/ · Organization: https://
 | Pages (Next.js App Router) | `src/app/` |
 | Shared components | `src/components/` |
 | Content loaders, menus | `src/lib/content.ts`, `src/lib/site.ts` |
-| Upload relay (Google Apps Script) | `tools/upload-relay/Code.gs` |
+| Management screen | `admin/` (built separately from GitHub Pages) |
 | Post-build checks | `scripts/check-site.py` |
 
 ## Develop
@@ -29,5 +29,8 @@ npm run check    # local links and personal-information patterns in out/
 GitHub Actions (`.github/workflows/pages.yml`) builds every push and pull request; pushes to `main` deploy `out/`
 to GitHub Pages (Settings → Pages → Source: GitHub Actions). `draft: true` in `content/lab.yml` keeps the site out
 of search engines and adds a footer note.
+
+Seminar files and other content are managed through the separate authenticated management screen. The legacy
+Google Apps Script upload relay and `/upload/` page have been removed from this source tree.
 
 Fonts (SIL Open Font License, via npm): Instrument Sans, Pretendard, STIX Two Text.

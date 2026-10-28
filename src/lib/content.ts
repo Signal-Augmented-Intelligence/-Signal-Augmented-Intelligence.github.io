@@ -42,7 +42,6 @@ export type Lab = {
   email: string;
   location: string;
   logo: string;
-  upload_endpoint: string;
   draft: boolean;
 };
 export function getLab(): Lab {
@@ -57,7 +56,6 @@ export function getLab(): Lab {
     email: str(raw.email),
     location: str(raw.location),
     logo: str(raw.logo),
-    upload_endpoint: str(raw.upload_endpoint),
     draft: raw.draft !== false,
   };
 }

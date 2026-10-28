@@ -49,7 +49,7 @@ export const MANAGEMENT_URL = 'https://sai-lab-admin.tail6d485a.ts.net/';
 export const MANAGEMENT_PATHS: { site: string[]; admin: string }[] = [
   { site: ['/members/', '/people/'], admin: '/members/' },
   { site: ['/research/', '/publications/'], admin: '/research/' },
-  { site: ['/seminars/', '/upload/'], admin: '/seminars/' },
+  { site: ['/seminars/'], admin: '/seminars/' },
   { site: ['/album/'], admin: '/album/' },
   { site: ['/news/'], admin: '/news/' },
   { site: ['/contact/'], admin: '/home/' },

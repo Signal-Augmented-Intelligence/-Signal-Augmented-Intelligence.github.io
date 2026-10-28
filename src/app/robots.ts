@@ -6,5 +6,5 @@ export const dynamic = 'force-static';
 
 export default function robots(): MetadataRoute.Robots {
   if (getLab().draft) return { rules: { userAgent: '*', disallow: '/' } };
-  return { rules: { userAgent: '*', allow: '/', disallow: '/upload/' }, sitemap: `${SITE_URL}/sitemap.xml` };
+  return { rules: { userAgent: '*', allow: '/' }, sitemap: `${SITE_URL}/sitemap.xml` };
 }

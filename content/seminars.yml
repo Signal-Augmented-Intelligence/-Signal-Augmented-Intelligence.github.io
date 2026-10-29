@@ -30,3 +30,9 @@
   summary: ".."
   file: "2026-10-28-b2f4b899.pdf"
   cover: "2026-10-28-94fb0468.jpg"
+- date: 2026-07-07
+  presenter: tae-yeon-kim
+  title: "디지털 파형 주파수 분석 원리"
+  summary: "푸리에 변환 유도를 통한 스펙트로그램 요소 파악"
+  file: "2026-10-29-6f65abdc.pdf"
+  cover: "2026-10-29-b0e3a23b.jpg"

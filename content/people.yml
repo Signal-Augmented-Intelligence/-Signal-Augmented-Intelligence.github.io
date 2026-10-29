@@ -62,3 +62,14 @@
   photo: "tae-yeon-kim.jpg"
   url: ""
   after: ""
+- id: lee-shin-hee
+  name: "Lee Shin Hee"
+  name_ko: "이신희"
+  group: undergrad
+  role: "."
+  since:
+  until:
+  bio: ""
+  photo: ""
+  url: ""
+  after: ""

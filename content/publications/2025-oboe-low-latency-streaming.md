@@ -3,7 +3,7 @@ title: "A Study on Low-Latency Audio Streaming Using OBOE for Android-Based Hear
 title_ko: "안드로이드 청각 보조 시스템을 위한 OBOE 기반 저지연 오디오 스트리밍 처리 연구"
 type: conference-paper
 authors: ["Hyun Jae Shin", "Jin Tae Seok", "Seon Man Kim"]
-venue: "2025 한국스마트미디어학회·한국전자거래학회 춘계학술대회"
+venue: "Joint Spring Conference · Korean Institute of Smart Media & Korea Society of e-Business Studies"
 pub_date: "2025"
 status: ""
 award: ""

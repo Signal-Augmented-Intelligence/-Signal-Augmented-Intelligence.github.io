@@ -5,12 +5,12 @@
 .cover { display: block; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 8px; background: var(--surface); }
 .cover img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s ease; }
 .album:hover .cover img { opacity: 0.88; }
-.albumTitle { display: -webkit-box; margin-top: 12px; overflow: hidden; font-weight: 600; line-height: 1.4; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.albumTitle { display: -webkit-box; margin-top: 12px; overflow: hidden; font-weight: 600; line-height: 1.4; -webkit-line-clamp: 2; -webkit-box-orient: vertical; min-height: 2.8em; }
 .album:hover .albumTitle { color: var(--accent); }
 .albumMeta { display: block; margin-top: 4px; color: var(--muted); font-size: var(--text-sm); }
 
 /* One event: square thumbnails in a tight grid; a photo opens in a dialog. */
-.grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.grid { display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 4px; }
 .thumb { display: block; width: 100%; padding: 0; border: 0; background: var(--surface); cursor: zoom-in; aspect-ratio: 1 / 1; overflow: hidden; }
 .thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.2s ease; }
 .thumb:hover img { opacity: 0.88; }
@@ -25,7 +25,7 @@
 
 @media (max-width: 960px) {
   .albums { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .grid { grid-template-columns: repeat(min(var(--cols, 4), 4), minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .albums { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 12px; }

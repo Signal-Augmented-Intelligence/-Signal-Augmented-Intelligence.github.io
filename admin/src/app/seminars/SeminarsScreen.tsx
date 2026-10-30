@@ -124,18 +124,12 @@ export function SeminarsScreen() {
                     <span>{presenterName(s, people)}</span>
                     {s.area_id && <span>{areas.find((a) => a.id === s.area_id)?.name}</span>}
                     {!s.pdf_file_id && <span>PDF 없음</span>}
-                    {s.highlight && <span>첫 화면</span>}
                     {s.publication.state === 'failed' && s.publication.message && <span>{s.publication.message}</span>}
                   </p>
                 </div>
                 <span className={list.status}>{status(s)}</span>
                 <span className={list.actions}>
                   <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => setEditing(s.id)}>고치기</button>
-                  {s.pdf_file_id && !s.hidden && (
-                    <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => patch(s, { highlight: !s.highlight })}>
-                      {s.highlight ? '첫 화면에서 빼기' : '첫 화면에 보이기'}
-                    </button>
-                  )}
                   {s.hidden ? (
                     <button type="button" className="admin-text-button" disabled={locked(s)} onClick={() => patch(s, { hidden: false })}>다시 보이기</button>
                   ) : (

@@ -28,11 +28,9 @@ export default function HomePage() {
         slides={getHomeSlides()}
       />
 
-      {highlights.length > 0 && (
-        <Section id="highlights" title="Recent Seminars" aside={<Link href="/seminars/">View all seminars</Link>}>
-          <ol className={itemStyles.list}>
-            {highlights.map((s) => <SeminarItem key={s.date + s.title} seminar={s} people={people} />)}
-          </ol>
+      {news.length > 0 && (
+        <Section id="news" title="뉴스" aside={<Link href="/news/">View all</Link>}>
+          <NewsList news={news} />
         </Section>
       )}
 

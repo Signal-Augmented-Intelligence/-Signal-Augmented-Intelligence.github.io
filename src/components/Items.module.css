@@ -15,6 +15,7 @@
 .authors :global(.person-link):hover { color: var(--ink); }
 .venue { margin-top: 2px; color: var(--muted); font-size: var(--text-xs); }
 .link { margin-left: 14px; font-weight: 600; font-style: normal; }
+.type { margin-right: 12px; color: var(--ink); font-weight: 600; }
 
 .seminar { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; column-gap: 24px; align-items: baseline; }
 .date { color: var(--muted); font-size: 0.9375rem; }

@@ -1,9 +1,11 @@
 .explorer { padding-bottom: 96px; }
 .searchLabel { display: block; margin-bottom: 9px; font-size: var(--text-sm); font-weight: 600; }
-.search { display: block; width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); color: var(--ink); font: inherit; }
+.search { display: block; width: 100%; max-width: 420px; min-height: 48px; padding: 10px 14px; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); color: var(--ink); font: inherit; }
 .search::placeholder { color: var(--muted); opacity: 1; }
 .search:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
-.layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 40px; margin-top: 50px; }
+.layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 40px; margin-top: 40px; }
+/* No areas entered yet: the Areas column is hidden and the list takes the full width. */
+.single { grid-template-columns: minmax(0, 1fr); }
 .heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
 .heading h2 { font-size: 1.5rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; }
 .count { color: var(--muted); font-size: var(--text-sm); white-space: nowrap; font-variant-numeric: tabular-nums; }

@@ -17,21 +17,19 @@ export default function PublicationsPage() {
     <>
       <PageHeader title="Research" tabs={RESEARCH_TABS} />
       <div className="container">
-        <div className={styles.layout}>
+        {years.length > 1 && (
           <nav className={styles.years} aria-label="Years">
             {years.map((y) => <a key={y} href={`#y${y}`} className="num">{y}</a>)}
           </nav>
-          <div>
-            {years.map((y) => (
-              <section key={y} id={`y${y}`} className={styles.year}>
-                <h2 className={`${styles.yearTitle} num`}>{y}</h2>
-                <ol className={itemStyles.list}>
-                  {publications.filter((p) => p.pub_date.startsWith(y)).map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}
-                </ol>
-              </section>
-            ))}
-          </div>
-        </div>
+        )}
+        {years.map((y) => (
+          <section key={y} id={`y${y}`} className={styles.year}>
+            <h2 className={`${styles.yearTitle} num`}>{y}</h2>
+            <ol className={itemStyles.list}>
+              {publications.filter((p) => p.pub_date.startsWith(y)).map((p) => <PublicationItem key={p.url} pub={p} people={people} />)}
+            </ol>
+          </section>
+        ))}
       </div>
     </>
   );

@@ -56,7 +56,7 @@ function collides(a: Placed, b: Placed) {
  */
 const placed: Placed[] = [];
 export const METEORS: SkyItem[] = FALLING.map((text, i) => {
-  const size = 15 + rand() * 3;
+  const size = 18 + rand() * 4;
   const w = text.length * size * 0.55 + 40;   // text plus the start of its trail
   const h = size * 1.3;
   const delay = -(ORDER.indexOf(i) / FALLING.length) * CYCLE_S;

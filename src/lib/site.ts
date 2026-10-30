@@ -12,8 +12,6 @@ export const MAIN_NAV: NavItem[] = [
   { title: 'Home', href: '/' },
 ];
 
-/** One-line descriptions under each section's page banner. */
-
 export const MEMBERS_TABS: NavItem[] = [
   { title: 'Professor', href: '/members/professor/' },
   { title: 'Our Team', href: '/members/our-team/' },
@@ -29,8 +27,7 @@ export const FOOTER_LINKS: NavItem[] = [
   { title: 'Research Areas', href: '/research/' },
   { title: 'Publications', href: '/research/publications/' },
   { title: 'Seminars', href: '/seminars/' },
-  { title: 'News', href: '/news/' },
-  { title: 'Notices', href: '/notices/' },
+  { title: '뉴스', href: '/news/' },
   { title: 'Album', href: '/album/', requires: 'album' },
   { title: 'Contact', href: '/contact/', requires: 'contact' },
 ];

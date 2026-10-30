@@ -1,6 +1,6 @@
 'use client';
 
-import { type KeyboardEvent, useRef, useState } from 'react';
+import { type CSSProperties, type KeyboardEvent, useRef, useState } from 'react';
 import styles from './album.module.css';
 
 type Photo = { src: string; alt: string };
@@ -19,7 +19,8 @@ export function AlbumGrid({ title, photos }: { title: string; photos: Photo[] })
 
   return (
     <>
-      <ul className={styles.grid}>
+      {/* 3–5 columns by photo count, so a short event still fills the row. */}
+      <ul className={styles.grid} style={{ '--cols': Math.min(5, Math.max(3, photos.length)) } as CSSProperties}>
         {photos.map((p, i) => (
           <li key={p.src}>
             <button type="button" className={styles.thumb} onClick={() => open(i)} aria-label={`${title}: photo ${i + 1} of ${photos.length}${p.alt ? `, ${p.alt}` : ''}`}>

@@ -109,7 +109,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 
 ## 4. 메뉴와 페이지
 
-상위 메뉴: **Members, Research, Seminars, Album, News, Notices, Home**. 앨범 사진이 없으면 Album만 숨깁니다. Contact는 공식 연락처가 있을 때 푸터에서 연결합니다. 메뉴와 탭 구성은 `src/lib/site.ts`.
+상위 메뉴: **Members, Research, Seminars, Album, 뉴스, Notices**. Home으로는 왼쪽 로고를 눌러 갑니다. 앨범 사진이 없으면 Album만 숨깁니다. 좁은 화면(640px 이하)에서 메뉴가 넘치면 가로로 밀리고 오른쪽 끝이 흐려집니다(스크롤바는 숨김). Contact는 공식 연락처가 있을 때 푸터에서 연결합니다. 메뉴와 탭 구성은 `src/lib/site.ts`.
 
 | 주소 | 페이지 | 파일 (`src/app/` 기준) |
 | --- | --- | --- |
@@ -122,7 +122,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 | `/research/publications/` | Research ▸ Publications (`/publications/`도 여기로. 논문별 페이지는 없음) | `research/publications/` |
 | `/publications/<논문>/` | 논문 상세 | `publications/[slug]/` + `content/publications/*.md` |
 | `/seminars/` | Seminars | `seminars/` + `content/seminars.yml` |
-| `/news/` | News | `news/` + `content/news.yml` |
+| `/news/` | 뉴스 | `news/` + `content/news.yml` |
 | `/notices/` | Notices (세미나 일정·학술대회·모집 공지) | `notices/` + `content/notices.yml` |
 | `/album/`, `/album/<folder>/` | Album 목록(행사별 대표 사진)과 행사별 사진 (사진이 생기면 메뉴에 나타남) | `album/` + `content/album.yml` |
 | `/contact/` | Contact | `contact/` |
@@ -174,8 +174,8 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - 사진이 하나도 없으면 상위 메뉴와 푸터에서 Album이 숨겨집니다.
 - 사진: 가로 사진, 긴 변 1600px 안팎, 1장 500KB 이하. 사람이 나오면 게시 동의를 받은 것만.
 
-### News
-날짜(모르면 공란) + 간결한 소식 제목 + 근거 링크(선택). 수상·발표 등 완료된 사실을 적고, 대학 뉴스보다 외부 언론 링크를 우선합니다.
+### 뉴스
+날짜(모르면 공란) + 간결한 소식 제목 + 근거 링크(선택). 수상·발표 등 완료된 사실을 적고, 대학 뉴스보다 외부 언론 링크를 우선합니다. 본문 폭은 64rem으로 씁니다 (`DateList`의 `wide`, `NewsList`).
 
 ### Notices
 앞으로의 세미나 일정·학술대회·모집을 알립니다. 게시 날짜와 행사 날짜는 따로 입력할 수 있습니다. 학부연구생 모집 공지만 Home 팝업으로 설정할 수 있으며, 동시에 표시되는 팝업은 하나입니다. 공고를 숨기면 공개 목록과 팝업에서 빠집니다. 팝업에는 닫기와 오늘 하루 보지 않기가 있습니다.

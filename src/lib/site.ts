@@ -7,7 +7,9 @@ export const MAIN_NAV: NavItem[] = [
   { title: 'Research', href: '/research/', match: ['/research/', '/publications/'] },
   { title: 'Seminars', href: '/seminars/', match: ['/seminars/'] },
   { title: 'Album', href: '/album/', match: ['/album/'], requires: 'album' },
-  { title: '뉴스', href: '/news/' },
+  { title: 'News', href: '/news/' },
+  { title: 'Notices', href: '/notices/' },
+  { title: 'Home', href: '/' },
 ];
 
 export const MEMBERS_TABS: NavItem[] = [

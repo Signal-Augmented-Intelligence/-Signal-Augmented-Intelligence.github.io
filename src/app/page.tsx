@@ -3,8 +3,9 @@ import { Hero } from '@/components/Hero';
 import itemStyles from '@/components/Items.module.css';
 import { PublicationItem } from '@/components/PublicationItem';
 import { Section } from '@/components/Section';
-import { NewsList } from '@/components/NewsList';
-import { getHomeSlides, getLab, getNews, getPeople, getPoem, getPublications, getResearchAreas } from '@/lib/content';
+import { SeminarItem } from '@/components/SeminarItem';
+import { getHomeSlides, getLab, getNotices, getPeople, getPoem, getPublications, getResearchAreas, getSeminars } from '@/lib/content';
+import { RecruitmentPopup } from '@/components/RecruitmentPopup';
 import styles from './home.module.css';
 
 export default function HomePage() {
@@ -13,10 +14,12 @@ export default function HomePage() {
   const people = getPeople();
   const areas = getResearchAreas();
   const publications = getPublications().slice(0, 3);
-  const news = getNews().slice(0, 5);
+  const highlights = getSeminars().filter((s) => s.highlight && s.file).slice(0, 5);
+  const popup = getNotices().find((notice) => notice.popup && notice.kind === 'recruitment');
 
   return (
     <>
+      {popup && <RecruitmentPopup notice={popup} />}
       <Hero
         name={lab.name}
         institution={lab.institution}

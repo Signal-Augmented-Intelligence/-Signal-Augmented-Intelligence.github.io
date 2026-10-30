@@ -77,6 +77,7 @@ SAI Lab (Signal Augmented Intelligence LAB), 한신대학교 · 지도교수 김
 - Home 첫 화면은 화면 폭 가득한 **사진 캐러셀 자리**입니다. 사진은 `content/home.yml`의 `slides`에 적고 파일은 `public/images/home/`에 둡니다 (가로 16:9, 1600×900 이상, 1장 400KB 이하, 6초마다 넘어감). 사진이 없으면 남색 첫 화면입니다. Home에서는 헤더도 남색입니다.
 - 새로고침하거나 주소로 들어올 때마다(넓은 화면, 모션 허용) 처음 6초는 남색 밤하늘에 수식이 유성처럼 떨어지고, 그 뒤 사진 캐러셀로 바뀝니다. 사이트 안에서 메뉴로 Home에 돌아오면 바로 캐러셀입니다. 시간은 `src/components/heroSky.ts`의 `NIGHT_MS`, `SLIDE_MS`.
 - 첫 화면의 시구와 아래 시 전문은 `content/poem.yml` (`hero`: 첫 화면에 보일 연 번호, `credit`: 전문 끝에만 붙는 표기 "- SAI Lab, augmented by Claude").
+- 헤더에는 SAI 로고의 큰 글자·심볼만 보이고, Home 첫 화면에는 로고 대신 랩명 제목을 씁니다. 인물 사진 위 텍스트의 가독성은 왼쪽 남색 오버레이로 확보합니다.
 - 헤더의 랩명 옆 작은 신호 표시(`SignalMark.tsx`)는 로고 파일이 정해지면(`content/lab.yml`의 `logo`) 로고로 바뀝니다.
 - 이 밖에 파형 장식, 그라데이션, 움직임은 더하지 않습니다.
 
@@ -101,13 +102,14 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - **영어 기본 + 국문 병기.** 메뉴·섹션 제목·날짜·이름표는 영어.
 - 사람 이름은 영문 이름 옆(또는 아래)에 국문 이름.
 - 원래 국문인 고유명사(과제명, 학회명, 위원회명)와 영어로 옮기면 길거나 어색한 제목은 **국문 그대로** 씁니다.
+- 화면 날짜는 아는 범위까지만 `YYYY`, `YYYY.MM`, `YYYY.MM.DD`로 표시합니다. 데이터에 없는 날짜는 채우지 않습니다.
 
 ### 화면 범위
 **PC 화면이 기준**입니다. 960px 이하에서는 카드·사진 그리드 열 수가 줄고, 640px 이하에서는 헤더·목록이 좁은 화면용으로 바뀝니다. 모바일 세부 다듬기는 나중에 합니다 (11장).
 
 ## 4. 메뉴와 페이지
 
-상위 메뉴: **Members, Research, Seminars** (+ 앨범 사진이 생기면 **Album**, `content/lab.yml`에 공식 연락처가 들어가면 **Contact**). 메뉴와 탭 구성은 `src/lib/site.ts`. News는 상위 메뉴에 두지 않고 푸터 바로가기에만 둡니다.
+상위 메뉴: **Members, Research, Seminars, Album, News, Home**. 앨범 사진이 없으면 Album만 숨깁니다. Contact는 공식 연락처가 있을 때 푸터에서 연결합니다. 메뉴와 탭 구성은 `src/lib/site.ts`.
 
 | 주소 | 페이지 | 파일 (`src/app/` 기준) |
 | --- | --- | --- |
@@ -127,10 +129,10 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 예전 주소 `/people/`, `/people/seon-man-kim/`은 새 주소로 자동 이동합니다.
 
 ### Home
-사진 캐러셀 첫 화면(랩명, 시 한 연, 전문 읽기 버튼) → **Highlights** (세미나 중 `highlight: true`이고 PDF가 있는 것, 최신 5건) → Research Areas → Recent Publications 3편 → 시 전문(`#poem`). Highlights가 하나도 없으면 그 섹션은 나오지 않습니다.
+사진 캐러셀 첫 화면(랩명 타이포그래피, 시 한 연, 전문 읽기 버튼) → **Recent Seminars** (세미나 중 `highlight: true`이고 PDF가 있는 것, 최신 5건) → Research Areas → Recent Publications 3편 → 시 전문(`#poem`). 대상 세미나가 하나도 없으면 그 섹션은 나오지 않습니다.
 
 ### Members ▸ Professor
-사진(왼쪽, 260px) + 이름 · 직위 · 소속 · 분야 · 연락처 · 프로필 링크 → Biography(입력 시) → Education & Career → Research Areas → Courses Taught(입력 시) → Publications → Intellectual Property → Research Projects → Academic Services(연도별, 날짜 없는 항목은 Other) → Student Awards. 비어 있는 항목은 표시되지 않습니다.
+사진(왼쪽, 260px) + 이름 · 직위 · 소속 · 분야 · 연락처 · 프로필 링크 → Biography(입력 시) → Education & Career → Research Areas → Courses Taught(입력 시) → Publications → Intellectual Property. 비어 있는 항목은 표시되지 않습니다. 학생 수상 소식은 News에 표시합니다.
 
 ### Members ▸ Our Team
 - 섹션: **Ph.D. Students → M.S. Students → Undergraduate Researchers** (사람이 있는 섹션만 표시)
@@ -142,7 +144,8 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 사진 없이 한 줄: 이름, 국문 이름, 현재 소속 (진로는 본인 동의 시에만).
 
 ### Research ▸ Areas / 주제 상세
-- 목록: 3열 카드. 위쪽 대표 그림(없으면 그림 칸 없이 글만), 제목, 한 줄 설명, Read more와 관련 논문 수
+- 목록: 3열 카드. 위쪽 대표 그림(없으면 그림 칸 없이 제목만), 제목. 카드에서 상세 페이지로 이동하며 설명과 관련 논문 수는 목록에 표시하지 않습니다.
+- Research 제목과 Areas 탭 아래에서는 `Research Areas` 섹션 제목을 반복해 보이지 않습니다. 접근성용 제목은 유지합니다.
 - 상세: 띠에 Back to Research Areas · 제목 · 한 줄 설명 → 대표 그림(선택) → Overview(본문이 있을 때) → Related Publications → Related Seminars(세미나의 `topics`에 이 주제가 있는 것)
 - 주제 분류와 명칭은 교수님 확정 전 임시입니다.
 
@@ -171,7 +174,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - 사진: 가로 사진, 긴 변 1600px 안팎, 1장 500KB 이하. 사람이 나오면 게시 동의를 받은 것만.
 
 ### News
-날짜 + 한 문장 + 근거 링크. 대학 뉴스보다 외부 언론 링크 우선.
+날짜(모르면 공란) + 한 문장 + 근거 링크(선택). 대학 뉴스보다 외부 언론 링크 우선.
 
 ## 4-1. 관리 화면 (`admin/`)
 
@@ -186,7 +189,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 - **버튼:** 주 버튼은 한 화면에 하나(`admin-button`), 나머지는 글자 버튼(`admin-text-button`). 공용 모양은 `admin/src/components/admin.css`.
 - **API:** 관리 화면은 `admin/src/lib/api.ts`로만 관리 서버(`/api/v1/`)에 요청합니다. GitHub에 직접 접속하지 않고 토큰도 갖지 않습니다.
 - **로그인:** 로그인 전이거나 어느 요청이든 401이 오면 메뉴 대신 본문 자리에 로그인 칸이 나옵니다(`admin/src/components/Session.tsx`). 이때 오류 팝업은 띄우지 않고(`signedOut`), 쓰던 내용은 각 폼의 임시 보관으로 이어 씁니다. 비밀번호 바꾸기는 헤더의 팝업입니다.
-- **관리 화면 링크:** 공개 사이트 푸터 맨 아래 줄 오른쪽 끝에 회색 글자 "관리 화면"(화살표 없음)을 둡니다. 누르면 같은 탭에서 보던 페이지를 고치는 관리 화면으로 갑니다(`src/lib/site.ts`의 `MANAGEMENT_PATHS`: 첫 화면·Contact → Home, Members → Members, Research·Publications → Research, Seminars → Seminars, Album → Album, News → News). 헤더 메뉴에는 두지 않습니다.
+- **관리 화면 주소:** 공개 사이트의 헤더·푸터와 빌드 산출물에 관리 화면 링크를 넣지 않습니다. 사이트 관리자는 별도로 공유받은 주소로 접속합니다.
 - **목록 한 줄의 상태 글자**("공개 중", "숨김", "반영 중")는 동작 버튼 바로 왼쪽에 붙입니다.
 - **새 항목 폼**은 목록 위에 펼치고 맨 위에 작은 제목("새 세미나", "새 행사", "새 멤버", "새 논문", "새 연구 분야", "새 소식")만 둡니다(`admin-form-title`).
 - **화면 오류:** 화면을 그리다 오류가 나면 관리 화면 틀 위에 공통 오류 팝업("화면을 표시하지 못했습니다" + "다시 시도")을 띄웁니다(`admin/src/app/error.tsx`). 영어 기본 오류 화면이 나오지 않게 합니다.
@@ -279,7 +282,7 @@ excerpt: "한 문장 요약"
   topics: [korean-asr]                 # 선택: content/research/ 파일 이름
   file: "2026-10-21-so-yeong-park.pdf" # 선택: public/files/seminars/ 안의 PDF. 비우면 제목만 표시
   cover: "2026-10-21-so-yeong-park.jpg" # 선택: public/images/seminars/ 안의 표지 이미지
-  highlight: false                     # 관리자가 지정. true면 Home Highlights에 표시
+  highlight: false                     # 관리자가 지정. true면 Home Recent Seminars에 표시
 ```
 - **필수는 날짜·발표자·제목·개요 한 문장**뿐입니다. 나머지는 없어도 됩니다.
 - `area`는 연구 주제 `topics`와 별개입니다. 새 이름을 입력할 수 있지만 기존 분야와 표기를 맞춰 주세요.
@@ -322,7 +325,7 @@ excerpt: "한 문장 요약"
 화면 코드를 고칠 때 로컬 확인: `npm install` 후 `npm run dev` (Node 22).
 
 ### `draft: true` 동안
-배포는 되지만 검색엔진 노출을 막고(`noindex`, robots `Disallow`) 푸터에 내부 검토용 문구가 붙습니다. 공개 승인 후 `content/lab.yml`에서 `draft: false`로 바꿉니다.
+배포는 되지만 검색엔진 노출을 막습니다(`noindex`, robots `Disallow`). 내부 검토 문구는 공개 화면에 표시하지 않습니다. 공개 승인 후 `content/lab.yml`에서 `draft: false`로 바꿉니다.
 
 저장소 Settings → Pages → Source는 **GitHub Actions**여야 합니다.
 

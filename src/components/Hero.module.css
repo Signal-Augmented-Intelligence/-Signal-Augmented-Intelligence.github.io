@@ -11,20 +11,17 @@
   color: #ffffff;
 }
 .slides, .shade, .sky { position: absolute; inset: 0; }
-.slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.4s ease; }
+.slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% center; opacity: 0; transition: opacity 1.4s ease; }
 .slide[data-active='true'] { opacity: 1; }
-.shade { background: linear-gradient(90deg, rgba(13, 24, 48, 0.86) 0%, rgba(13, 24, 48, 0.62) 45%, rgba(13, 24, 48, 0.35) 100%); }
+.shade { background: linear-gradient(90deg, rgba(13, 24, 48, 0.96) 0%, rgba(13, 24, 48, 0.83) 28%, rgba(13, 24, 48, 0.22) 78%, rgba(13, 24, 48, 0.14) 100%); }
 .sky { background: #0d1830; opacity: 0; transition: opacity 1.8s ease; }
 :global(html[data-hero='night']) .sky { opacity: 1; }
 
 .inner { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-.text { position: relative; max-width: 620px; }
-.brandLogo { width: 360px; height: 144px; overflow: hidden; }
-.logoImage { width: 455px; height: auto; max-width: none; transform: translate(-71px, -50px); filter: brightness(0) invert(1); }
-.customBrand { width: 360px; height: 144px; }
-.customLogo { width: 100%; height: 100%; object-fit: contain; object-position: left center; }
+.text { position: relative; max-width: 420px; }
+.title { font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.04em; }
 .institution { margin-top: 6px; font-size: 1rem; color: rgba(255, 255, 255, 0.6); }
-.quote { margin: 40px 0 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 1.1875rem; line-height: 1.85; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.92); }
+.quote { margin: 32px 0 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 1.125rem; line-height: 1.75; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.92); }
 .poemLink {
   display: inline-block;
   margin-top: 36px;
@@ -40,8 +37,8 @@
 
 .dots { position: absolute; left: var(--gutter); bottom: 48px; display: flex; gap: 10px; opacity: 1; transition: opacity 1s ease; }
 :global(html[data-hero='night']) .dots { opacity: 0; }
-.dot { width: 28px; height: 3px; padding: 0; border: 0; border-radius: 2px; background: rgba(255, 255, 255, 0.4); cursor: pointer; }
-.dot[aria-pressed='true'] { width: 44px; background: #ffffff; }
+.dot { width: 36px; height: 4px; padding: 0; border: 0; border-radius: 2px; background: rgba(255, 255, 255, 0.65); cursor: pointer; }
+.dot[aria-pressed='true'] { width: 52px; background: #ffffff; }
 .dot:focus-visible { outline-offset: 6px; }
 
 /* Falling formulas, right of the text, only during the night phase. */
@@ -79,10 +76,13 @@
 @media (max-width: 960px) {
   .hero { height: auto; min-height: 520px; }
   .inner { padding-top: 72px; padding-bottom: 96px; }
+  .text { max-width: 320px; }
+  .shade { background: linear-gradient(90deg, rgba(13, 24, 48, 0.98) 0%, rgba(13, 24, 48, 0.86) 47%, rgba(13, 24, 48, 0.26) 100%); }
   .field { display: none; }
 }
 
 @media (max-width: 640px) {
-  .brandLogo, .customBrand { width: 260px; height: 104px; }
-  .logoImage { width: 329px; transform: translate(-51px, -36px); }
+  .slide { object-position: 68% center; }
+  .text { max-width: 270px; }
+  .title { font-size: 2.75rem; }
 }

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { getLab } from '@/lib/content';
 import { visibleNav } from '@/lib/nav';
 import { FOOTER_LINKS } from '@/lib/site';
-import { ManagementLink } from './ManagementLink';
 import styles from './SiteFooter.module.css';
 
 export function SiteFooter() {
@@ -32,10 +31,6 @@ export function SiteFooter() {
       <div className="container">
         <div className={styles.bottom}>
           <p>&copy; {new Date().getFullYear()} {lab.name}</p>
-          <p className={styles.bottomEnd}>
-            {lab.draft && <span>Draft for internal review. Not yet approved for publication.</span>}
-            <ManagementLink />
-          </p>
         </div>
       </div>
     </footer>

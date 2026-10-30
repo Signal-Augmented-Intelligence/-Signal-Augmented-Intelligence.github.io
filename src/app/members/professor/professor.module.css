@@ -22,9 +22,7 @@
 .pubMeta em { font-style: italic; }
 
 .sub { margin: 36px 0 16px; font-size: var(--text-md); font-weight: 600; }
-.sub:first-child, .yearGroup:first-child .sub { margin-top: 0; }
-.yearGroup + .yearGroup { margin-top: 28px; }
-.plain { display: grid; gap: 10px; max-width: 52rem; }
+.sub:first-child { margin-top: 0; }
 
 @media (max-width: 960px) {
   .profile { grid-template-columns: 160px minmax(0, 1fr); column-gap: 32px; }
@@ -40,11 +38,6 @@
  * Publications lift a little under the pointer (whole entry opens the title link).
  * The padding is pulled back with negative margins so the text stays aligned with the rest of the page.
  */
-.pubs > li { position: relative; margin-left: -16px; margin-right: -16px; padding-left: 16px; padding-right: 16px; border-radius: 8px;
-  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
-.pubs > li:hover { border-bottom-color: transparent; transform: translateY(-1px) scale(1.015); background: var(--surface); box-shadow: 0 6px 18px rgba(13, 24, 48, 0.08), 0 1px 3px rgba(13, 24, 48, 0.06); }
+.pubs > li { position: relative; border-radius: 8px; transition: background-color 180ms ease; }
+.pubs > li:hover { background: var(--surface); }
 .pubTitle a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
-@media (prefers-reduced-motion: reduce) {
-  .pubs > li { transition: background-color 180ms ease, box-shadow 180ms ease; }
-  .pubs > li:hover { transform: none; }
-}

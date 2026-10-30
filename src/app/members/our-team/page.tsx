@@ -21,9 +21,9 @@ export default function TeamPage() {
           <div key={g.id} id={g.id} className={styles.group}>
             <h3 className={styles.groupTitle}>{g.title}</h3>
             <ul className={styles.team}>
-              {g.members.map((m) => (
+              {g.members.map((m, index) => (
                 <li key={m.id} id={m.id} className={styles.member}>
-                  <PhotoSlot photo={m.photo} alt={m.name} />
+                  <PhotoSlot photo={m.photo} alt={m.name} eager={index < 4} />
                   <p className={styles.name}>{m.name}</p>
                   {m.name_ko && <p className={styles.nameKo} lang="ko">{m.name_ko}</p>}
                   {m.bio && <p className={styles.bio}>{m.bio}</p>}

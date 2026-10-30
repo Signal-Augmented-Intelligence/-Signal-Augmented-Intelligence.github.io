@@ -19,7 +19,6 @@ export default function HomePage() {
     <>
       <Hero
         name={lab.name}
-        logo={lab.logo}
         institution={lab.institution}
         quote={poem.hero}
         poemTitle={poem.stanzas.length > 0 ? poem.title : ''}
@@ -27,7 +26,7 @@ export default function HomePage() {
       />
 
       {highlights.length > 0 && (
-        <Section id="highlights" title="Highlights" aside={<Link href="/seminars/">View all seminars</Link>}>
+        <Section id="highlights" title="Recent Seminars" aside={<Link href="/seminars/">View all seminars</Link>}>
           <ol className={itemStyles.list}>
             {highlights.map((s) => <SeminarItem key={s.date + s.title} seminar={s} people={people} />)}
           </ol>

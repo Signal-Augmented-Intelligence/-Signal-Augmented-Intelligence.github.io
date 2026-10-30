@@ -7,7 +7,8 @@ export const MAIN_NAV: NavItem[] = [
   { title: 'Research', href: '/research/', match: ['/research/', '/publications/'] },
   { title: 'Seminars', href: '/seminars/', match: ['/seminars/'] },
   { title: 'Album', href: '/album/', match: ['/album/'], requires: 'album' },
-  { title: 'Contact', href: '/contact/', match: ['/contact/'], requires: 'contact' },
+  { title: 'News', href: '/news/' },
+  { title: 'Home', href: '/' },
 ];
 
 /** One-line descriptions under each section's page banner. */
@@ -40,19 +41,3 @@ export const TEAM_GROUPS = [
 ] as const;
 
 export const SITE_URL = 'https://signal-augmented-intelligence.github.io';
-export const MANAGEMENT_URL = 'https://sai-lab-admin.tail6d485a.ts.net/';
-
-/**
- * 공개 사이트 주소 → 그 내용을 고치는 관리 화면 주소 (푸터의 "관리 화면" 링크).
- * 위에서부터 처음 맞는 것을 씁니다.
- */
-export const MANAGEMENT_PATHS: { site: string[]; admin: string }[] = [
-  { site: ['/members/', '/people/'], admin: '/members/' },
-  { site: ['/research/', '/publications/'], admin: '/research/' },
-  { site: ['/seminars/'], admin: '/seminars/' },
-  { site: ['/album/'], admin: '/album/' },
-  { site: ['/news/'], admin: '/news/' },
-  { site: ['/contact/'], admin: '/home/' },
-];
-/** 공개 사이트 첫 화면(/)은 관리 화면 Home(첫 화면 사진)으로 갑니다. */
-export const MANAGEMENT_HOME = '/home/';

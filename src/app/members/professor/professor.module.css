@@ -1,4 +1,4 @@
-.profile { display: grid; grid-template-columns: 260px minmax(0, 1fr); column-gap: 56px; align-items: start; margin-bottom: 80px; }
+.profile { display: grid; grid-template-columns: 200px minmax(0, 1fr); column-gap: 48px; align-items: start; margin-bottom: 80px; }
 .photo { border-radius: 10px; }
 .name { font-size: 2.125rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
 .nameKo { margin-left: 8px; color: var(--muted); font-size: 1.375rem; font-weight: 500; }
@@ -27,12 +27,12 @@
 .plain { display: grid; gap: 10px; max-width: 52rem; }
 
 @media (max-width: 960px) {
-  .profile { grid-template-columns: 180px minmax(0, 1fr); column-gap: 32px; }
+  .profile { grid-template-columns: 160px minmax(0, 1fr); column-gap: 32px; }
   .areas { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
   .profile { grid-template-columns: minmax(0, 1fr); row-gap: 24px; }
-  .profile > :first-child { width: 180px; }
+  .profile > :first-child { width: 160px; }
   .pubs > li { grid-template-columns: minmax(0, 1fr); }
 }
 

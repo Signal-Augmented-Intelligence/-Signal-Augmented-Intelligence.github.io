@@ -15,7 +15,7 @@ import styles from './news.module.css';
 
 /**
  * News 한 화면 (설계 문서 3장): 소식 목록(날짜 최신순), 추가·고치기·숨기기. 순서는 날짜로만 정합니다.
- * 칸: 날짜(아는 만큼), 내용(영어 한두 문장), 관련 논문 또는 근거 링크.
+ * 칸: 날짜(모르면 공란), 내용(영어 한두 문장), 관련 논문 또는 근거 링크.
  */
 const HIDE_BODY = '숨기면 공개 사이트의 News에서 빠집니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
 const byDate = (a: NewsItem, b: NewsItem) => b.date.localeCompare(a.date);
@@ -139,7 +139,7 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
     e.preventDefault();
     if (saving) return;
     const problems: [string, string][] = [];
-    if (!PARTIAL_DATE.test(draft.date.trim())) problems.push(['date', '날짜를 YYYY, YYYY-MM 또는 YYYY-MM-DD로 적어 주세요.']);
+    if (draft.date.trim() && !PARTIAL_DATE.test(draft.date.trim())) problems.push(['date', '날짜를 YYYY, YYYY-MM 또는 YYYY-MM-DD로 적어 주세요.']);
     if (!draft.text.trim()) problems.push(['text', '내용을 적어 주세요.']);
     else if (draft.text.trim().length > 500 || /[\r\n]/.test(draft.text))
       problems.push(['text', '내용은 줄바꿈 없이 500자 이내로 적어 주세요.']);
@@ -181,7 +181,7 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
 
   return (
     <form ref={form} className={`admin-form ${styles.form}`} onSubmit={submit} noValidate>
-      <Field label="날짜" limit="YYYY, YYYY-MM, YYYY-MM-DD">
+      <Field label="날짜" optional limit="YYYY, YYYY-MM, YYYY-MM-DD">
         <input name="date" inputMode="numeric" value={draft.date} onChange={(e) => set({ date: e.target.value })} />
       </Field>
       <Field label="내용" limit="영어, 한두 문장">

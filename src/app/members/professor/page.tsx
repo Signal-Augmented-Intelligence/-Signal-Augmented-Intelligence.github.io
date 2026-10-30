@@ -12,16 +12,16 @@ export const metadata: Metadata = { title: 'Professor', description: 'Prof. Seon
 
 export default function ProfessorPage() {
   const p = getProfessor();
-  const dated = p.services.filter((s) => s.date);
-  const years = [...new Set(dated.map((s) => s.date.slice(0, 4)))];
-  const undated = p.services.filter((s) => !s.date);
+  // Keep every source record; collapse title/year duplicates only in this public list.
+  const software = p.software.filter((entry, index, entries) => !entries.some((earlier, earlierIndex) =>
+    earlierIndex < index && earlier.title === entry.title && earlier.date.slice(0, 4) === entry.date.slice(0, 4)));
 
   return (
     <>
       <PageHeader title="Members" tabs={MEMBERS_TABS} />
 
       <div className={`container ${styles.profile}`}>
-        <PhotoSlot photo={p.photo} alt={p.name} className={styles.photo} />
+        <PhotoSlot photo={p.photo} alt={p.name} className={styles.photo} eager />
         <div>
           <h2 className={styles.name}>{p.name} <span lang="ko" className={styles.nameKo}>{p.name_ko}</span></h2>
           <p className={styles.position}>{p.position}</p>
@@ -40,7 +40,7 @@ export default function ProfessorPage() {
 
       <Section id="education" title={p.career.length ? 'Education & Career' : 'Education'}>
         <DateList items={[
-          ...p.education.map((e) => ({ date: formatDate(e.date, 'month'), content: `${e.degree}, ${e.school}` })),
+          ...p.education.map((e) => ({ date: formatDate(e.date, 'month'), content: <>{e.degree}, <span lang="ko">{e.school}</span></> })),
           ...p.career.map((c) => ({ date: c.period, content: c.role })),
         ]} />
       </Section>
@@ -76,39 +76,17 @@ export default function ProfessorPage() {
 
       <Section id="intellectual-property" title="Intellectual Property">
         <h3 className={styles.sub}>Software registrations</h3>
-        <DateList items={p.software.map((s) => ({ date: s.date, content: s.title, note: s.note }))} />
+        <DateList items={software.map((s) => ({ date: s.date, content: <span lang="ko">{s.title}</span>, note: s.note }))} />
         <h3 className={styles.sub}>Patents</h3>
-        <DateList items={p.patents.map((s) => ({
-          date: s.date || '—',
-          content: s.title,
-          note: [s.status, s.number].filter(Boolean).join(', '),
-        }))} />
+        <DateList items={p.patents.map((s) => {
+          const applicationYear = /^(\d{4}) 출원$/.exec(s.date);
+          return {
+            date: applicationYear?.[1] ?? formatDate(s.date),
+            content: <span lang="ko">{s.title}</span>,
+            note: [applicationYear && '출원', s.status, s.number].filter(Boolean).join(', '),
+          };
+        })} />
       </Section>
-
-      <Section id="projects" title="Research Projects">
-        <DateList items={p.projects.map((s) => ({ date: s.period, content: s.title, note: [s.role, s.funding].filter(Boolean).join(', ') }))} />
-      </Section>
-
-      <Section id="academic-services" title="Academic Services">
-        {years.map((y) => (
-          <div key={y} className={styles.yearGroup}>
-            <h3 className={styles.sub}>{y}</h3>
-            <DateList items={dated.filter((s) => s.date.startsWith(y)).map((s) => ({ date: formatDate(s.date, 'day'), content: s.text }))} />
-          </div>
-        ))}
-        {undated.length > 0 && (
-          <div className={styles.yearGroup}>
-            <h3 className={styles.sub}>Other</h3>
-            <ul className={styles.plain}>{undated.map((s) => <li key={s.text}>{s.text}</li>)}</ul>
-          </div>
-        )}
-      </Section>
-
-      {p.student_awards.length > 0 && (
-        <Section id="student-awards" title="Student Awards">
-          <ul className={styles.plain}>{p.student_awards.map((a) => <li key={a}>{a}</li>)}</ul>
-        </Section>
-      )}
     </>
   );
 }

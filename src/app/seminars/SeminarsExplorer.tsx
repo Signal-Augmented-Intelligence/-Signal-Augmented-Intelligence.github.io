@@ -58,8 +58,8 @@ export function SeminarsExplorer({ seminars }: { seminars: SeminarEntry[] }) {
         setQuery(event.target.value);
         updateUrl(event.target.value, area);
       }} />
-      <div className={styles.layout}>
-        <nav aria-label="Seminar areas">
+      <div className={`${styles.layout} ${areaNames.length === 0 ? styles.single : ''}`}>
+        {areaNames.length > 0 && <nav aria-label="Seminar areas">
           <div className={styles.heading}><h2>Areas</h2></div>
           <div className={styles.areas}>
             <button type="button" className={styles.areaFilter} aria-pressed={!area} onClick={() => { setArea(''); updateUrl(query, '', 'push'); }}>
@@ -71,7 +71,7 @@ export function SeminarsExplorer({ seminars }: { seminars: SeminarEntry[] }) {
               </button>
             ))}
           </div>
-        </nav>
+        </nav>}
         <section aria-label="Seminar materials">
           <div className={styles.heading}>
             <h2>Materials</h2>

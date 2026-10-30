@@ -1,4 +1,4 @@
-.banner { background: var(--night); color: #ffffff; padding: 48px 0 56px; }
+.banner { background: var(--night); color: #ffffff; padding: 40px 0 44px; }
 .back { margin-bottom: 18px; font-size: var(--text-sm); }
 .back a { color: var(--night-accent); }
 .title { max-width: 56rem; font-size: 3rem; font-weight: 600; line-height: 1.1; letter-spacing: -0.03em; }
@@ -14,10 +14,11 @@
 .gap { height: 56px; }
 
 @media (max-width: 640px) {
-  .banner { padding: 32px 0 40px; }
+  .banner { padding: 28px 0 32px; }
   .title { font-size: 2.25rem; }
   .titleLong { font-size: 1.625rem; }
-  .tabs { gap: 24px; overflow-x: auto; }
+  .tabs { gap: 24px; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
   .gap { height: 40px; }
 }
 

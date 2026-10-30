@@ -7,11 +7,8 @@ export const MAIN_NAV: NavItem[] = [
   { title: 'Research', href: '/research/', match: ['/research/', '/publications/'] },
   { title: 'Seminars', href: '/seminars/', match: ['/seminars/'] },
   { title: 'Album', href: '/album/', match: ['/album/'], requires: 'album' },
-  { title: 'News', href: '/news/' },
-  { title: 'Home', href: '/' },
+  { title: '뉴스', href: '/news/' },
 ];
-
-/** One-line descriptions under each section's page banner. */
 
 export const MEMBERS_TABS: NavItem[] = [
   { title: 'Professor', href: '/members/professor/' },
@@ -28,7 +25,7 @@ export const FOOTER_LINKS: NavItem[] = [
   { title: 'Research Areas', href: '/research/' },
   { title: 'Publications', href: '/research/publications/' },
   { title: 'Seminars', href: '/seminars/' },
-  { title: 'News', href: '/news/' },
+  { title: '뉴스', href: '/news/' },
   { title: 'Album', href: '/album/', requires: 'album' },
   { title: 'Contact', href: '/contact/', requires: 'contact' },
 ];

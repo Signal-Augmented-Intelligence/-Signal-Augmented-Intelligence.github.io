@@ -3,8 +3,8 @@ import { Hero } from '@/components/Hero';
 import itemStyles from '@/components/Items.module.css';
 import { PublicationItem } from '@/components/PublicationItem';
 import { Section } from '@/components/Section';
-import { SeminarItem } from '@/components/SeminarItem';
-import { getHomeSlides, getLab, getPeople, getPoem, getPublications, getResearchAreas, getSeminars } from '@/lib/content';
+import { NewsList } from '@/components/NewsList';
+import { getHomeSlides, getLab, getNews, getPeople, getPoem, getPublications, getResearchAreas } from '@/lib/content';
 import styles from './home.module.css';
 
 export default function HomePage() {
@@ -13,7 +13,7 @@ export default function HomePage() {
   const people = getPeople();
   const areas = getResearchAreas();
   const publications = getPublications().slice(0, 3);
-  const highlights = getSeminars().filter((s) => s.highlight && s.file).slice(0, 5);
+  const news = getNews().slice(0, 5);
 
   return (
     <>
@@ -25,11 +25,9 @@ export default function HomePage() {
         slides={getHomeSlides()}
       />
 
-      {highlights.length > 0 && (
-        <Section id="highlights" title="Recent Seminars" aside={<Link href="/seminars/">View all seminars</Link>}>
-          <ol className={itemStyles.list}>
-            {highlights.map((s) => <SeminarItem key={s.date + s.title} seminar={s} people={people} />)}
-          </ol>
+      {news.length > 0 && (
+        <Section id="news" title="뉴스" aside={<Link href="/news/">View all</Link>}>
+          <NewsList news={news} />
         </Section>
       )}
 

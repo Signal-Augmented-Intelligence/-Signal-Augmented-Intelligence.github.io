@@ -50,7 +50,8 @@
   font-family: 'STIX Two Text', 'Times New Roman', serif;
   font-style: italic;
   line-height: 1;
-  color: #e8eeff;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(169, 193, 255, 0.45);
   opacity: 0;
   animation: fall linear infinite;
 }
@@ -64,12 +65,12 @@
   height: 1px;
   transform-origin: left center;
   transform: rotate(-45deg);
-  background: linear-gradient(90deg, rgba(170, 195, 255, 0.75), rgba(170, 195, 255, 0));
+  background: linear-gradient(90deg, rgba(170, 195, 255, 0.55), rgba(170, 195, 255, 0));
 }
 @keyframes fall {
   0% { transform: translate(0, 0); opacity: 0; }
-  6% { opacity: 0.95; }
-  36% { opacity: 0.8; }
+  6% { opacity: 1; }
+  36% { opacity: 0.9; }
   45%, 100% { transform: translate(-200px, 200px); opacity: 0; }
 }
 

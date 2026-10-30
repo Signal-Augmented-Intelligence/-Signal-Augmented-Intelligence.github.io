@@ -5,7 +5,7 @@ import { SITE_URL } from '@/lib/site';
 export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ['/', '/members/professor/', '/members/our-team/', '/members/alumni/', '/research/', '/research/publications/', '/seminars/', '/news/'];
+  const pages = ['/', '/members/professor/', '/members/our-team/', '/members/alumni/', '/research/', '/research/publications/', '/seminars/', '/news/', '/notices/'];
   return [
     ...pages,
     ...(getAlbums().length > 0 ? ['/album/', ...getAlbums().map((a) => `/album/${a.slug}/`)] : []),

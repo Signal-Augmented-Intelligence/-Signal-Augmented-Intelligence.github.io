@@ -295,6 +295,19 @@ export function getNews(): NewsItem[] {
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
+/* ---------- notices ---------- */
+export type Notice = {
+  id: string; date: string; event_date: string; kind: 'seminar' | 'conference' | 'recruitment' | 'other';
+  title: string; body: string; link: string; popup: boolean;
+};
+export function getNotices(): Notice[] {
+  return readYaml<Record<string, unknown>[]>('notices.yml', [])
+    .map((n) => ({ id: str(n.id), date: str(n.date), event_date: str(n.event_date),
+      kind: str(n.kind) as Notice['kind'], title: str(n.title), body: str(n.body),
+      link: str(n.link), popup: n.popup === true }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
 /* ---------- poem ---------- */
 export type Poem = { title: string; hero: string[]; credit: string; stanzas: string[][] };
 export function getPoem(): Poem {

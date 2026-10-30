@@ -23,4 +23,5 @@ export const MENU: MenuItem[] = [
   { title: 'Seminars', href: '/seminars/', site: '/seminars/', ready: true, note: '세미나 올리기, 세미나 분야', group: 'content' },
   { title: 'Album', href: '/album/', site: '/album/', ready: true, note: '행사, 사진, 대표 사진', group: 'content' },
   { title: 'News', href: '/news/', site: '/news/', ready: true, note: '소식', group: 'content' },
+  { title: 'Notices', href: '/notices/', site: '/notices/', ready: true, note: '일정과 모집 공고', group: 'content' },
 ];

@@ -1,0 +1,7 @@
+.list { max-width: 55rem; margin: 0; padding: 0; list-style: none; }
+.row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.5rem; padding: 1.6rem 0; border-bottom: 1px solid var(--rule); }
+.date,.meta { color: var(--muted); font-size: var(--text-sm); }
+.kind { display: block; margin-bottom: .25rem; }
+.title { font-size: 1.1rem; line-height: 1.4; font-weight: 600; }
+.body { white-space: pre-line; margin: .5rem 0; }
+@media (max-width: 640px) { .row { grid-template-columns: 1fr; gap: .3rem; } }

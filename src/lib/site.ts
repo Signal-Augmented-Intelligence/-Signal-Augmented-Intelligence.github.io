@@ -8,6 +8,7 @@ export const MAIN_NAV: NavItem[] = [
   { title: 'Seminars', href: '/seminars/', match: ['/seminars/'] },
   { title: 'Album', href: '/album/', match: ['/album/'], requires: 'album' },
   { title: 'News', href: '/news/' },
+  { title: 'Notices', href: '/notices/' },
   { title: 'Home', href: '/' },
 ];
 
@@ -29,6 +30,7 @@ export const FOOTER_LINKS: NavItem[] = [
   { title: 'Publications', href: '/research/publications/' },
   { title: 'Seminars', href: '/seminars/' },
   { title: 'News', href: '/news/' },
+  { title: 'Notices', href: '/notices/' },
   { title: 'Album', href: '/album/', requires: 'album' },
   { title: 'Contact', href: '/contact/', requires: 'contact' },
 ];

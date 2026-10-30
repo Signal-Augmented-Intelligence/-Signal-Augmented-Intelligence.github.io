@@ -98,3 +98,7 @@ export type NewsItem = Common & {
   date: string; text: string; publication_id: string | null; link_url: string | null;
   publication: { state: 'publishing' | 'published' | 'failed'; job_id: string | null; message: string | null; commit_sha: string | null };
 };
+export type NoticeItem = Common & {
+  date: string; event_date: string; kind: 'seminar' | 'conference' | 'recruitment' | 'other';
+  title: string; body: string; link: string; popup: boolean; publication: ContentPublication;
+};

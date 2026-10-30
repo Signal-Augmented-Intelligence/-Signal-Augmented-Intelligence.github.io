@@ -15,7 +15,7 @@ import styles from './news.module.css';
 
 /**
  * News 한 화면 (설계 문서 3장): 소식 목록(날짜 최신순), 추가·고치기·숨기기. 순서는 날짜로만 정합니다.
- * 칸: 날짜(모르면 공란), 내용(영어 한두 문장), 관련 논문 또는 근거 링크.
+ * 칸: 날짜(모르면 공란), 소식 제목(국문 가능), 관련 논문 또는 근거 링크.
  */
 const HIDE_BODY = '숨기면 공개 사이트의 News에서 빠집니다. 원본은 남아 있어 다시 보이게 할 수 있습니다.';
 const byDate = (a: NewsItem, b: NewsItem) => b.date.localeCompare(a.date);
@@ -111,7 +111,7 @@ export function NewsScreen() {
 
 type Draft = { date: string; text: string; publication_id: string; link_url: string };
 const draftKey = (id?: string) => `sai-admin:news:${id ?? 'new'}`;
-const LABELS: Record<string, string> = { date: '날짜', text: '내용', publication_id: '관련 논문', link_url: '근거 링크' };
+const LABELS: Record<string, string> = { date: '날짜', text: '소식 제목', publication_id: '관련 논문', link_url: '근거 링크' };
 
 function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
   item?: NewsItem;
@@ -140,9 +140,9 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
     if (saving) return;
     const problems: [string, string][] = [];
     if (draft.date.trim() && !PARTIAL_DATE.test(draft.date.trim())) problems.push(['date', '날짜를 YYYY, YYYY-MM 또는 YYYY-MM-DD로 적어 주세요.']);
-    if (!draft.text.trim()) problems.push(['text', '내용을 적어 주세요.']);
+    if (!draft.text.trim()) problems.push(['text', '소식 제목을 적어 주세요.']);
     else if (draft.text.trim().length > 500 || /[\r\n]/.test(draft.text))
-      problems.push(['text', '내용은 줄바꿈 없이 500자 이내로 적어 주세요.']);
+      problems.push(['text', '소식 제목은 줄바꿈 없이 500자 이내로 적어 주세요.']);
     if (draft.link_url && !/^(?:https?:\/\/\S+|\/\S+)$/.test(draft.link_url.trim()))
       problems.push(['link_url', '근거 링크는 https:// 주소 또는 사이트 내부 주소로 적어 주세요.']);
     if (problems.length > 0) {
@@ -184,8 +184,8 @@ function NewsForm({ item, publications, onSaved, onCancel, onConflict }: {
       <Field label="날짜" optional limit="YYYY, YYYY-MM, YYYY-MM-DD">
         <input name="date" inputMode="numeric" value={draft.date} onChange={(e) => set({ date: e.target.value })} />
       </Field>
-      <Field label="내용" limit="영어, 한두 문장">
-        <textarea name="text" value={draft.text} onChange={(e) => set({ text: e.target.value })} />
+      <Field label="소식 제목" limit="한 줄, 500자 이내">
+        <input name="text" value={draft.text} placeholder="2026 한국음성학회 학술대회 우수논문 발표상 수상 (박소영)" onChange={(e) => set({ text: e.target.value })} />
       </Field>
       <Field label="관련 논문" optional>
         <select name="publication_id" value={draft.publication_id} onChange={(e) => set({ publication_id: e.target.value, link_url: '' })}>

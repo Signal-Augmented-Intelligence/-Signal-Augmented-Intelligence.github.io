@@ -20,6 +20,8 @@ export type Member = Common & {
   name: string; name_ko: string; aliases: string[]; group: MemberGroup; role: string;
   since: string; until: string; bio: string; url: string; after: string;
   photo_file_id: string | null; photo_preview_url: string | null;
+  /** Absent on older management server releases. */
+  publication?: ContentPublication | { state: 'unverified'; job_id: null; message: null; commit_sha: null };
 };
 
 export type System = {

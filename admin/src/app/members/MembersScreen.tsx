@@ -17,6 +17,14 @@ const GROUP_NAMES: Record<MemberGroup, string> = {
 };
 const HIDE_BODY = '숨기면 공개 사이트에서 보이지 않습니다. 원본 자료와 사진은 남습니다.';
 
+function statusLabel(member: Member, pending: boolean): string {
+  if (pending || member.publication?.state === 'publishing') return '반영 중';
+  if (member.publication?.state === 'failed') return '반영 실패';
+  if (member.hidden) return '숨김';
+  if (!member.publication || member.publication.state === 'unverified') return '반영 확인 필요';
+  return '공개 중';
+}
+
 export function MembersScreen() {
   const dialog = useDialog();
   const { publishing, track, settled } = usePublish();
@@ -85,9 +93,11 @@ export function MembersScreen() {
                 <div className={list.main}>
                   <p className={list.title}>{member.name} {member.name_ko && <span>({member.name_ko})</span>}</p>
                   <p className={list.meta}><span>{GROUP_NAMES[member.group]}</span><span>{member.role}</span></p>
+                  {member.publication?.state === 'failed' && member.publication.message &&
+                    <p className={list.meta}>반영 실패: {member.publication.message}</p>}
                 </div>
               </div>
-              <span className={list.status}>{publishing(member.id) ? '반영 중' : member.hidden ? '숨김' : '공개 중'}</span>
+              <span className={list.status}>{statusLabel(member, publishing(member.id))}</span>
               <span className={list.actions}>
                 <button type="button" className="admin-text-button" disabled={busyRow === member.id || editing !== null}
                   onClick={() => setEditing(member.id)}>고치기</button>

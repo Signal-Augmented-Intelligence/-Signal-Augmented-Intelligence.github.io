@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { load } from 'js-yaml';
 import { marked } from 'marked';
+import { mediaHtml, mediaUrl } from './media';
 
 const ROOT = path.join(process.cwd(), 'content');
 
@@ -25,7 +26,7 @@ function readMarkdownDir<T>(dir: string): (T & { slug: string; html: string })[]
       if (!match) throw new Error(`${dir}/${f}: missing front matter`);
       const data = (load(match[1]) ?? {}) as T;
       const body = match[2].trim();
-      return { ...data, slug: f.replace(/\.md$/, ''), html: body ? (marked.parse(body) as string) : '' };
+      return { ...data, slug: f.replace(/\.md$/, ''), html: body ? mediaHtml(marked.parse(body) as string) : '' };
     });
 }
 
@@ -55,7 +56,7 @@ export function getLab(): Lab {
     intro: str(raw.intro),
     email: str(raw.email),
     location: str(raw.location),
-    logo: str(raw.logo),
+    logo: mediaUrl(str(raw.logo)),
     draft: raw.draft !== false,
   };
 }
@@ -203,17 +204,17 @@ export function getPublications(): Publication[] {
       pub_date: str(p.pub_date),
       status: str(p.status),
       award: str(p.award),
-      links: ((p.links as { label: string; url: string }[] | null) ?? []).map((l) => ({ label: str(l.label), url: str(l.url) })),
+      links: ((p.links as { label: string; url: string }[] | null) ?? []).map((l) => ({ label: str(l.label), url: mediaUrl(str(l.url)) })),
       pdf: str(p.pdf),
       excerpt: str(p.excerpt),
-      figure: str(p.figure),
+      figure: mediaUrl(str(p.figure)),
       figure_alt: str(p.figure_alt),
       figure_caption: str(p.figure_caption),
       html: p.html,
     }))
     .map((p) => {
       const link = p.links.find((l) => l.url);
-      const pdf = p.pdf ? `/files/publications/${p.pdf}` : '';
+      const pdf = p.pdf ? mediaUrl(`/files/publications/${p.pdf}`) : '';
       return { ...p, href: link?.url ?? pdf, hrefLabel: link ? link.label : pdf ? 'PDF' : '' };
     })
     .sort((a, b) => b.pub_date.localeCompare(a.pub_date));
@@ -238,7 +239,7 @@ export function getResearchAreas(): ResearchArea[] {
       title: str(r.title),
       order: Number(r.order ?? 99),
       summary: str(r.summary),
-      figure: str(r.figure),
+      figure: mediaUrl(str(r.figure)),
       figure_alt: str(r.figure_alt),
       figure_caption: str(r.figure_caption),
       publications: ((r.publications as string[] | null) ?? []).map(str),
@@ -285,13 +286,13 @@ export function getSeminars(): Seminar[] {
     })
     .sort((a, b) => b.date.localeCompare(a.date));
 }
-export const seminarFileUrl = (s: Seminar) => (s.file ? `/files/seminars/${s.file}` : '');
+export const seminarFileUrl = (s: Seminar) => (s.file ? mediaUrl(`/files/seminars/${s.file}`) : '');
 
 /* ---------- news ---------- */
 export type NewsItem = { date: string; text: string; link: string };
 export function getNews(): NewsItem[] {
   return readYaml<Record<string, unknown>[]>('news.yml', [])
-    .map((n) => ({ date: str(n.date), text: str(n.text), link: str(n.link) }))
+    .map((n) => ({ date: str(n.date), text: str(n.text), link: mediaUrl(str(n.link)) }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -304,7 +305,7 @@ export function getNotices(): Notice[] {
   return readYaml<Record<string, unknown>[]>('notices.yml', [])
     .map((n) => ({ id: str(n.id), date: str(n.date), event_date: str(n.event_date),
       kind: str(n.kind) as Notice['kind'], title: str(n.title), body: str(n.body),
-      link: str(n.link), popup: n.popup === true }))
+      link: mediaUrl(str(n.link)), popup: n.popup === true }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -328,7 +329,7 @@ export function getAlbums(): Album[] {
     .map((a) => {
       const folder = str(a.folder).replace(/^\/+|\/+$/g, '');
       const photos = ((a.photos as Record<string, unknown>[] | null) ?? [])
-        .map((p) => ({ src: `/images/album/${folder ? `${folder}/` : ''}${str(p.file)}`, alt: str(p.alt) }))
+        .map((p) => ({ src: mediaUrl(`/images/album/${folder ? `${folder}/` : ''}${str(p.file)}`), alt: str(p.alt) }))
         .filter((p) => !p.src.endsWith('/'));
       const coverFile = str(a.cover);
       const cover = photos.find((p) => coverFile && p.src.endsWith(`/${coverFile}`)) ?? photos[0];
@@ -342,5 +343,5 @@ export function getAlbums(): Album[] {
 /** Photo URLs for the Home first-screen carousel (content/home.yml). */
 export function getHomeSlides(): string[] {
   const raw = readYaml<Record<string, unknown>>('home.yml', {});
-  return ((raw.slides as unknown[] | null) ?? []).map(str).filter(Boolean).map((f) => `/images/home/${f.replace(/^\/+/, '')}`);
+  return ((raw.slides as unknown[] | null) ?? []).map(str).filter(Boolean).map((f) => mediaUrl(`/images/home/${f.replace(/^\/+/, '')}`));
 }

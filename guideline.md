@@ -109,7 +109,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
 
 ## 4. 메뉴와 페이지
 
-상위 메뉴: **Members, Research, Seminars, Album, News, Notices, Home**. 앨범 사진이 없으면 Album만 숨깁니다. Contact는 공식 연락처가 있을 때 푸터에서 연결합니다. 메뉴와 탭 구성은 `src/lib/site.ts`.
+상위 메뉴: **Members, Research, Seminars, Album, 뉴스, Notices, Home**. 앨범 사진이 없으면 Album만 숨깁니다. Contact는 공식 연락처가 있을 때 푸터에서 연결합니다. 메뉴와 탭 구성은 `src/lib/site.ts`.
 
 | 주소 | 페이지 | 파일 (`src/app/` 기준) |
 | --- | --- | --- |

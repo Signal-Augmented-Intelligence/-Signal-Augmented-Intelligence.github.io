@@ -234,7 +234,7 @@ Home 첫 화면 밖의 이미지 슬라이드, 카드 남발, 색 있는 태그�
   name: "So Yeong Park"
   name_ko: "박소영"
   group: undergrad             # faculty / phd / ms / undergrad / alumni
-  role: "Undergraduate Researcher"
+  role: "Undergraduate Researcher"   # group에 따라 정해짐 (관리 화면에는 칸 없음, 저장 시 자동 입력)
   since: 2025-06
   until:                       # 졸업·이탈 시 입력하고 group을 alumni로
   bio: "Korean speech recognition, LLM applications"   # 사진 옆 한 줄 소개 (본인 작성)

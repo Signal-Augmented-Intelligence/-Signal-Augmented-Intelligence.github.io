@@ -92,7 +92,7 @@ export function MembersScreen() {
                   : <span className={styles.portrait} aria-hidden="true" />}
                 <div className={list.main}>
                   <p className={list.title}>{member.name} {member.name_ko && <span>({member.name_ko})</span>}</p>
-                  <p className={list.meta}><span>{GROUP_NAMES[member.group]}</span><span>{member.role}</span></p>
+                  <p className={list.meta}><span>{GROUP_NAMES[member.group]}</span></p>
                   {member.publication?.state === 'failed' && member.publication.message &&
                     <p className={list.meta}>반영 실패: {member.publication.message}</p>}
                 </div>

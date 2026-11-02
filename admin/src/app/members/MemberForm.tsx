@@ -9,6 +9,7 @@ import { uploadFile } from '@admin/lib/files';
 import type { Member, MemberGroup, System } from '@admin/lib/types';
 import styles from './members.module.css';
 
+/** The role is not edited on screen: it follows 구분 and is sent so the server's role field stays filled. */
 const ROLES: Record<Exclude<MemberGroup, 'faculty'>, string> = {
   phd: 'Ph.D. Student', ms: 'M.S. Student', undergrad: 'Undergraduate Researcher', alumni: 'Alumni',
 };
@@ -18,13 +19,13 @@ const GROUPS = [
 ] as const;
 
 type Draft = {
-  name: string; name_ko: string; group: Exclude<MemberGroup, 'faculty'>; role: string;
+  name: string; name_ko: string; group: Exclude<MemberGroup, 'faculty'>;
   since: string; until: string; bio: string; url: string; after: string; aliases: string;
 };
 const fromMember = (member?: Member): Draft => ({
   name: member?.name ?? '', name_ko: member?.name_ko ?? '',
   group: member?.group === 'faculty' ? 'undergrad' : member?.group ?? 'undergrad',
-  role: member?.role ?? ROLES.undergrad, since: member?.since ?? '', until: member?.until ?? '',
+  since: member?.since ?? '', until: member?.until ?? '',
   bio: member?.bio ?? '', url: member?.url ?? '', after: member?.after ?? '',
   aliases: member?.aliases.join(', ') ?? '',
 });
@@ -49,10 +50,10 @@ export function MemberForm({ member, system, onSaved, onCancel, onConflict }: {
     event.preventDefault();
     if (saving) return;
     const missing = [!draft.name.trim() && 'name', !draft.name_ko.trim() && 'name_ko',
-      !draft.role.trim() && 'role', !member && !consent && 'consent'].filter((x): x is string => !!x);
+      !member && !consent && 'consent'].filter((x): x is string => !!x);
     if (missing.length) {
       await dialog.error('저장하지 못했습니다', fieldList(missing.map((field) => ({
-        name: '영문 이름', name_ko: '국문 이름', role: '직함', consent: '공개 동의 확인',
+        name: '영문 이름', name_ko: '국문 이름', consent: '공개 동의 확인',
       })[field] + '을(를) 확인해 주세요.')));
       focusField(form.current, missing);
       return;
@@ -87,7 +88,7 @@ export function MemberForm({ member, system, onSaved, onCancel, onConflict }: {
       }
       setProgress('멤버 저장 중');
       const body: Record<string, unknown> = {
-        ...draft, name: draft.name.trim(), name_ko: draft.name_ko.trim(), role: draft.role.trim(),
+        ...draft, name: draft.name.trim(), name_ko: draft.name_ko.trim(), role: ROLES[draft.group],
         bio: draft.bio.trim(), url: draft.url.trim(), after: draft.after.trim(),
         aliases: draft.aliases.split(',').map((alias) => alias.trim()).filter(Boolean),
       };
@@ -111,11 +112,7 @@ export function MemberForm({ member, system, onSaved, onCancel, onConflict }: {
     <form ref={form} className={`admin-form ${styles.form}`} onSubmit={(event) => void submit(event)} noValidate>
       <Field label="영문 이름"><input name="name" value={draft.name} onChange={(event) => set({ name: event.target.value })} /></Field>
       <Field label="국문 이름"><input name="name_ko" value={draft.name_ko} onChange={(event) => set({ name_ko: event.target.value })} /></Field>
-      <Field label="구분"><select name="group" value={draft.group} onChange={(event) => {
-        const group = event.target.value as Draft['group'];
-        set({ group, role: Object.values(ROLES).includes(draft.role) ? ROLES[group] : draft.role });
-      }}>{GROUPS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></Field>
-      <Field label="직함"><input name="role" value={draft.role} onChange={(event) => set({ role: event.target.value })} /></Field>
+      <Field label="구분"><select name="group" value={draft.group} onChange={(event) => set({ group: event.target.value as Draft['group'] })}>{GROUPS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></Field>
       <Field label="연구실 합류" optional><input name="since" inputMode="numeric" placeholder="YYYY-MM" value={draft.since} onChange={(event) => set({ since: event.target.value })} /></Field>
       {draft.group === 'alumni' && <Field label="연구실 종료" optional><input name="until" inputMode="numeric" placeholder="YYYY-MM" value={draft.until} onChange={(event) => set({ until: event.target.value })} /></Field>}
       <Field label="한 줄 소개" optional><input name="bio" value={draft.bio} onChange={(event) => set({ bio: event.target.value })} /></Field>

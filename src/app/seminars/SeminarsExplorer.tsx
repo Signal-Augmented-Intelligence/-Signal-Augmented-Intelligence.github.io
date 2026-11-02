@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Seminar } from '@/lib/content';
 import styles from './seminars.module.css';
+import { mediaUrl } from '@/lib/media';
 
 const normalize = (value: string) => value.normalize('NFKC').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
-const fileUrl = (seminar: SeminarEntry) => seminar.file ? `/files/seminars/${seminar.file}` : '';
-const coverUrl = (seminar: SeminarEntry) => seminar.cover ? `/images/seminars/${seminar.cover}` : '';
+const fileUrl = (seminar: SeminarEntry) => seminar.file ? mediaUrl(`/files/seminars/${seminar.file}`) : '';
+const coverUrl = (seminar: SeminarEntry) => seminar.cover ? mediaUrl(`/images/seminars/${seminar.cover}`) : '';
 
 type SeminarEntry = Seminar & { presenterName: string; presenterNames: string };
 

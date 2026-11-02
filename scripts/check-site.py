@@ -7,6 +7,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlsplit
 import re
+import json
+import os
 
 ROOT = Path('out')
 ORIGIN = 'https://lab.invalid'
@@ -20,6 +22,11 @@ PRIVATE = {
     'personal email': re.compile(r'[\w.+-]+@(gmail|naver|daum|hanmail|kakao|nate|hotmail|outlook|yahoo)\.(com|net)', re.I),
 }
 errors = []
+MEDIA_DELIVERY = json.loads(Path('content/media-delivery.json').read_text())
+EXTERNAL_MEDIA = bool(MEDIA_DELIVERY['base_url'])
+SKIP_PRIVATE_MEDIA = (MEDIA_DELIVERY.get('mode') == 'pages_artifact' and
+                      os.environ.get('SAI_SKIP_PRIVATE_MEDIA_CHECK') == '1')
+MANAGED_MEDIA = re.compile(r'^/(?:files/(?:seminars|publications)|images/(?:seminars|people|home|album|figures))/')
 
 
 # ---- rendered site ----
@@ -42,12 +49,16 @@ pages = {p: Page(p.read_text()) for p in ROOT.rglob('*.html')}
 for path, page in pages.items():
     source_url = ORIGIN + '/' + str(path.relative_to(ROOT)).removesuffix('index.html')
     for link in page.links:
+        if EXTERNAL_MEDIA and MANAGED_MEDIA.match(link):
+            errors.append(f'{path}: managed media still uses GitHub Pages: {link}')
         parsed = urlsplit(urljoin(source_url, link))
         if f'{parsed.scheme}://{parsed.netloc}' != ORIGIN:
             continue
         target = ROOT / unquote(parsed.path).lstrip('/')
         if target.is_dir():
             target = target / 'index.html'
+        if not target.is_file() and SKIP_PRIVATE_MEDIA and MANAGED_MEDIA.match(parsed.path):
+            continue
         if not target.is_file():
             errors.append(f'{path}: missing {link}')
         elif parsed.fragment and target in pages and unquote(parsed.fragment) not in pages[target].ids:
